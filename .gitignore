@@ -1,13 +1,13 @@
 ###
 # Unity folders and files
 ###
-[Aa]ssets/Packages/
-[Bb]uild/
-[Ll]ibrary/
-[Ll]ocal[Cc]ache/
-[Oo]bj/
-[Tt]emp/
-[Uu]nityGenerated/
+/TheMountain/[Aa]ssets/Packages/
+/TheMountain/[Bb]uild/
+/TheMountain/[Ll]ibrary/
+/TheMountain/[Ll]ocal[Cc]ache/
+/TheMountain/[Oo]bj/
+/TheMountain/[Tt]emp/
+/TheMountain/[Uu]nityGenerated/
 # file on crash reports
 sysinfo.txt
 # Unity3D generated meta files
