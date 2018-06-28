@@ -116,7 +116,6 @@ namespace Player.PlayerController
                 AttackID = 0;
             }
             animator.SetInteger("AttackID", (int) AttackID);
-            Debug.Log("AttackID animator " + AttackID + " " + (int)AttackID);
         }
 
     }

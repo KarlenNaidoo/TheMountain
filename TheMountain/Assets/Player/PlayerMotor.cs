@@ -9,19 +9,17 @@ namespace Player.PlayerController
     public abstract class PlayerMotor : Character
     {
 
-        [System.Serializable]
-        public class MovementSpeed
-        {
-            [Tooltip("Rotation speed of the character")]
-            public float rotationSpeed = 1.1f;
+        public MovementSpeed freeSpeed;
 
-            [Tooltip("Character will walk by default and run when the sprint input is pressed. The Sprint animation will not play")]
-            public bool walkByDefault = false;
-        }
+        [HideInInspector]
+        public Vector2 input;
 
         public LocomotionType locomotionType = LocomotionType.Free;
 
         protected float currentSprintStamina = 10f;
+
+        protected Quaternion freeRotation;
+
         protected bool
             isCrouching,
             isSprinting,
@@ -33,71 +31,53 @@ namespace Player.PlayerController
 
         protected float randomIdleTime = 0f;
 
+        // generate input for the controller
+        protected bool rotateByWorld = false;
+
+        protected float speed;
+
+        // general variables to the locomotion
+        protected Vector3 targetDirection;
+
+        protected Quaternion targetRotation;
+
         protected bool useRootMotion = true;
 
-        public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; }  }
-        public bool IsLightAttack { get; set; }
-        public bool IsHeavyAttack { get; set; }
-        public bool IsCrouching { get; set; }
-        public bool IsSprinting { get { return isSprinting; } }
-        public bool IsRunning {  get { return isRunning; } }
         public enum LocomotionType { Free, Strafe }
-        public bool ResetAttackTriggers { get; set; }
-        public float CurrentSprintStamina { get { return currentSprintStamina; } set { currentSprintStamina = value; } }
-        public float MaxSprintStamina { get { return maxSprintStamina; } }
-        public int WeakAttackCount { get; set; }
+
         public Utility.AttackCategory AttackID { get; set; }
 
-        [HideInInspector]
-        public Vector2 input;                               // generate input for the controller
+        public float CurrentSprintStamina { get { return currentSprintStamina; } set { currentSprintStamina = value; } }
 
-        protected Quaternion freeRotation;
-        public MovementSpeed freeSpeed;
-        protected bool rotateByWorld = false;
-        protected float speed;    // general variables to the locomotion
-        protected Vector3 targetDirection;
-        protected Quaternion targetRotation;
+        public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
+
+        public bool IsCrouching { get; set; }
+
+        public bool IsHeavyAttack { get; set; }
+
+        public bool IsLightAttack { get; set; }
+
+        public bool IsRunning { get { return isRunning; } }
+
+        public bool IsSprinting { get { return isSprinting; } }
+
+        public float MaxSprintStamina { get { return maxSprintStamina; } }
+
+        public bool ResetAttackTriggers { get; set; }
+
         public float Speed { get { return speed; } set { speed = value; } }
+
         public Vector3 TargetDirection { get { return targetDirection; } set { targetDirection = value; } }
 
         public Quaternion TargetRotation { get { return targetRotation; } set { targetRotation = value; } }
+
+        public int WeakAttackCount { get; set; }
 
         public virtual void GetLocomotionType()
         {
             if (locomotionType.Equals(LocomotionType.Free))
                 FreeMovement();
         }
-
-        //Limits the character to walk only, useful for cutscenes and 'indoor' areas
-        public void SetWalkByDefault(bool value)
-        {
-            freeSpeed.walkByDefault = value;
-        }
-        
-        public virtual void UpdateMotor()
-        {
-            ControlCapsuleHeight();
-        }
-
-        protected virtual void FreeMovement()
-        {
-            ControlMovementSpeed();
-            //UpdateTargetDirection(Camera.main.transform);
-            //RotateToDirection(targetDirection);
-
-            if (input != Vector2.zero && targetDirection.magnitude > 0.1f)
-            {
-                Vector3 lookDirection = targetDirection.normalized;
-                freeRotation = Quaternion.LookRotation(lookDirection, transform.up);
-                var diferenceRotation = freeRotation.eulerAngles.y - transform.eulerAngles.y; // get the distance between your position and the target
-                var eulerY = transform.eulerAngles.y;
-
-                if (diferenceRotation < 0 || diferenceRotation > 0) eulerY = freeRotation.eulerAngles.y;
-                var euler = new Vector3(transform.eulerAngles.x, eulerY, transform.eulerAngles.z);
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(euler), freeSpeed.rotationSpeed * Time.deltaTime);
-            }
-        }
-        
 
         public virtual void RotateToTarget(Transform target)
         {
@@ -121,16 +101,15 @@ namespace Player.PlayerController
             targetRotation = transform.rotation;
         }
 
-
-        protected virtual void RotateToDirection(Vector3 direction, bool ignoreLerp = false)
+        //Limits the character to walk only, useful for cutscenes and 'indoor' areas
+        public void SetWalkByDefault(bool value)
         {
-            Quaternion rot = (direction != Vector3.zero) ? Quaternion.LookRotation(direction): Quaternion.identity;
-            var newPos = new Vector3(transform.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
-            targetRotation = Quaternion.Euler(newPos);
-            if (ignoreLerp)
-                transform.rotation = Quaternion.Euler(newPos);
-            else transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newPos), 0.1f * Time.deltaTime);
-            targetDirection = direction;
+            freeSpeed.walkByDefault = value;
+        }
+
+        public virtual void UpdateMotor()
+        {
+            ControlCapsuleHeight();
         }
 
         /// <summary>
@@ -155,6 +134,36 @@ namespace Player.PlayerController
             }
             else
                 targetDirection = new Vector3(input.x, 0, input.y);
+        }
+
+        protected virtual void FreeMovement()
+        {
+            ControlMovementSpeed();
+            //UpdateTargetDirection(Camera.main.transform);
+            //RotateToDirection(targetDirection);
+
+            if (input != Vector2.zero && targetDirection.magnitude > 0.1f)
+            {
+                Vector3 lookDirection = targetDirection.normalized;
+                freeRotation = Quaternion.LookRotation(lookDirection, transform.up);
+                var diferenceRotation = freeRotation.eulerAngles.y - transform.eulerAngles.y; // get the distance between your position and the target
+                var eulerY = transform.eulerAngles.y;
+
+                if (diferenceRotation < 0 || diferenceRotation > 0) eulerY = freeRotation.eulerAngles.y;
+                var euler = new Vector3(transform.eulerAngles.x, eulerY, transform.eulerAngles.z);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(euler), freeSpeed.rotationSpeed * Time.deltaTime);
+            }
+        }
+
+        protected virtual void RotateToDirection(Vector3 direction, bool ignoreLerp = false)
+        {
+            Quaternion rot = (direction != Vector3.zero) ? Quaternion.LookRotation(direction) : Quaternion.identity;
+            var newPos = new Vector3(transform.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
+            targetRotation = Quaternion.Euler(newPos);
+            if (ignoreLerp)
+                transform.rotation = Quaternion.Euler(newPos);
+            else transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newPos), 0.1f * Time.deltaTime);
+            targetDirection = direction;
         }
 
         private void ControlCapsuleHeight()
@@ -184,6 +193,16 @@ namespace Player.PlayerController
 
             if (!isSprinting && !isRunning || freeSpeed.walkByDefault)
                 speed = Mathf.Clamp(speed, 0f, 1f);
+        }
+
+        [System.Serializable]
+        public class MovementSpeed
+        {
+            [Tooltip("Rotation speed of the character")]
+            public float rotationSpeed = 1.1f;
+
+            [Tooltip("Character will walk by default and run when the sprint input is pressed. The Sprint animation will not play")]
+            public bool walkByDefault = false;
         }
     }
 }

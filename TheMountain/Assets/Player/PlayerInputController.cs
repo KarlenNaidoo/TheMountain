@@ -92,8 +92,6 @@ namespace Player.PlayerController
 
         }
 
-
-
         public void OnEnableAttack()
         {
             IsAttacking = true;

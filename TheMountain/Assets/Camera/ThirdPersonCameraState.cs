@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+
 namespace Player
 {
     [System.Serializable]
@@ -54,6 +55,7 @@ namespace Player
             this.cameraMode = TPCameraMode.FreeDirectional;
         }
     }
+
     [System.Serializable]
     public class LookPoint
     {
@@ -62,6 +64,7 @@ namespace Player
         public Vector3 eulerAngle;
         public bool freeRotation;
     }
+
     public enum TPCameraMode
     {
         FreeDirectional,

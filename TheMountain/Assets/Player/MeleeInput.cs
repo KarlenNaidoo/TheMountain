@@ -19,37 +19,53 @@ namespace Player.PlayerController
         //Time of last attack
         float lastTime;
         bool _lightAttack, _heavyAttack;
-
+        float timeBetweenAttacks;
+        float oldTime;
+        float[] inputBuffer;
+        int inputBufferCount = 0;
         // Use this for initialization
         protected override void Start()
         {
-
-            _lightAttack = Input.GetMouseButtonDown(0);
-            _heavyAttack = Input.GetMouseButtonDown(1);
+            inputBuffer = new float[6];
 
             //Starts the looping coroutine
             StartCoroutine(CheckForAttack());
-
-            // Need an if statement or else the base class will be called twice
-            //if (!playerInputController.IsAttacking)
-            //{
-                base.Start();
-            //}
+            base.Start();
+          
             
             
         }
 
-        protected override void HandleInput()
+        protected virtual void CreateInputBuffer()
         {
-            if (!playerInputController.IsAttacking)
-                base.HandleInput();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                inputBuffer[inputBufferCount] = (int) Utility.AttackCategory.light;
+                timeBetweenAttacks = Time.time - lastTime;
+                inputBuffer[inputBufferCount + 1] = timeBetweenAttacks;
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                inputBuffer[inputBufferCount] = (int) Utility.AttackCategory.heavy;
+                timeBetweenAttacks = Time.time - lastTime;
+                inputBuffer[inputBufferCount + 1] = timeBetweenAttacks;
+            }
+            inputBufferCount = (inputBufferCount >= 5) ? 0 : inputBufferCount++;
         }
 
+        protected override void Update()
+        {
+
+            CreateInputBuffer();
+            base.Update();
+        }
         protected virtual IEnumerator CheckForAttack()
         {
             //Constantly loops so you only have to call it once
             while (true)
             {
+
 
                 if (playerInputController != null && (playerInputController.IsSprinting || playerInputController.IsRunning))
                 {
@@ -58,7 +74,6 @@ namespace Player.PlayerController
                 //Checks if attacking and then starts of the combo
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("Entering here");
                     playerInputController.AttackID = Utility.AttackCategory.light;
 
                     ComboIncrease(Utility.AttackCategory.light);
@@ -128,7 +143,6 @@ namespace Player.PlayerController
             if (Input.GetMouseButtonDown(1))
             {
                 playerInputController.AttackID = Utility.AttackCategory.run;
-                Debug.Log("Setting to run attack " + (int)playerInputController.AttackID);
             }
         }
 
@@ -143,7 +157,6 @@ namespace Player.PlayerController
                 playerInputController.combo++;
             }
             lastTime = Time.time;
-            Debug.Log("Attack " + playerInputController.combo);
             if (attackType == Utility.AttackCategory.light)
             {
 

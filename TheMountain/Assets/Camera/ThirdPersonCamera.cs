@@ -1,11 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
+using UnityEngine;
+
 namespace Player
 {
     public class ThirdPersonCamera : MonoBehaviour
     {
         private static ThirdPersonCamera _instance;
+
         public static ThirdPersonCamera instance
         {
             get
@@ -22,50 +23,66 @@ namespace Player
             }
         }
 
-        #region inspector properties    
+        #region inspector properties
+
         public Transform target;
 
         [Tooltip("Lerp speed between Camera States")]
         public float smoothBetweenState = 6f;
+
         public float smoothCameraRotation = 6f;
         public float scrollSpeed = 10f;
 
         [Tooltip("What layer will be culled")]
         public LayerMask cullingLayer = 1 << 0;
+
         [Tooltip("Change this value If the camera pass through the wall")]
         public float clipPlaneMargin;
+
         public float checkHeightRadius;
         public bool showGizmos;
         public bool startUsingTargetRotation = true;
         public bool startSmooth = false;
+
         [Tooltip("Debug purposes, lock the camera behind the character for better align the states")]
         public bool lockCamera;
 
         public Vector2 offsetMouse;
 
-        #endregion
+        #endregion inspector properties
 
-        #region hide properties    
+        #region hide properties
+
         //[HideInInspector]
         public int indexList, indexLookPoint;
+
         //[HideInInspector]
-        [Range(0,10f)] public float offSetPlayerPivot;
+        [Range(0, 10f)] public float offSetPlayerPivot;
+
         //[HideInInspector]
         public float distance = 5f;
+
         //[HideInInspector]
         public string currentStateName;
+
         //[HideInInspector]
         public Transform currentTarget;
+
         //[HideInInspector]
         public ThirdPersonCameraState currentState;
+
         //[HideInInspector]
         public ThirdPersonCameraListData CameraStateList;
+
         //[HideInInspector]
         public Transform lockTarget;
+
         //[HideInInspector]
         public Vector2 movementSpeed;
+
         //[HideInInspector]
         public ThirdPersonCameraState transitionState;
+
         private Transform targetLookAt;
         private Vector3 currentTargetPos;
         private Vector3 lookPoint;
@@ -94,9 +111,10 @@ namespace Player
                 return cullingDistance;
             }
         }
-        #endregion
 
-        void OnDrawGizmos()
+        #endregion hide properties
+
+        private void OnDrawGizmos()
         {
             if (showGizmos)
             {
@@ -109,7 +127,7 @@ namespace Player
             }
         }
 
-        void Start()
+        private void Start()
         {
             Init();
         }
@@ -149,7 +167,7 @@ namespace Player
         }
 
         // Keep checking what camera mode we are in (freedirection, fixed angle, fixed point
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (target == null || targetLookAt == null || currentState == null || transitionState == null || !isInit) return;
 
@@ -158,9 +176,11 @@ namespace Player
                 case TPCameraMode.FreeDirectional:
                     CameraMovement();
                     break;
+
                 case TPCameraMode.FixedAngle:
                     CameraMovement();
                     break;
+
                 case TPCameraMode.FixedPoint:
                     CameraFixed();
                     break;
@@ -193,10 +213,10 @@ namespace Player
         {
             target = newTarget;
             currentTarget = newTarget;
-            if (!isInit) Init(); 
+            if (!isInit) Init();
         }
 
-        /// <summary>    
+        /// <summary>
         /// Convert a point in the screen in a Ray for the world
         /// </summary>
         /// <param name="Point"></param>
@@ -213,7 +233,7 @@ namespace Player
         /// <param name="Use smooth"></param>
         public void ChangeState(string desiredStateName, bool hasSmooth)
         {
-            useSmooth = (!firstStateIsInit || currentState != null && !currentState.Name.Equals(desiredStateName) || isInit ) ? startSmooth : hasSmooth;
+            useSmooth = (!firstStateIsInit || currentState != null && !currentState.Name.Equals(desiredStateName) || isInit) ? startSmooth : hasSmooth;
             // search for the camera state string name
             ThirdPersonCameraState state = CameraStateList != null ? CameraStateList.tpCameraStates.Find(obj => obj.Name.Equals(desiredStateName)) : new ThirdPersonCameraState("Default");
 
@@ -269,7 +289,7 @@ namespace Player
         }
 
         /// <summary>
-        /// Change State using look at point if the cameraMode is FixedPoint  
+        /// Change State using look at point if the cameraMode is FixedPoint
         /// </summary>
         /// <param name="stateName"></param>
         /// <param name="pointName"></param>
@@ -287,7 +307,7 @@ namespace Player
                     currentStateName = stateName;
                     currentState.cameraMode = state.cameraMode;
                     transitionState = state; // set the state of transition (lerpstate) to the state found on the list
-                                       // in case there is no smooth, a copy will be make without the transition values
+                                             // in case there is no smooth, a copy will be make without the transition values
                     if (currentState != null && !hasSmooth)
                         currentState.CopyState(state);
                 }
@@ -331,7 +351,7 @@ namespace Player
             }
         }
 
-        IEnumerator ResetFirstState()
+        private IEnumerator ResetFirstState()
         {
             yield return new WaitForEndOfFrame();
             firstStateIsInit = true;
@@ -348,8 +368,8 @@ namespace Player
             if (point != null) indexLookPoint = currentState.lookPoints.IndexOf(point); else indexLookPoint = 0;
         }
 
-        /// <summary>    
-        /// Zoom baheviour 
+        /// <summary>
+        /// Zoom baheviour
         /// </summary>
         /// <param name="scrollValue"></param>
         /// <param name="zoomSpeed"></param>
@@ -368,10 +388,10 @@ namespace Player
             if (currentState.cameraMode.Equals(TPCameraMode.FixedPoint)) return;
             if (!currentState.cameraMode.Equals(TPCameraMode.FixedAngle))
             {
-                // lock into a target            
+                // lock into a target
                 if (!lockTarget)
                 {
-                    // free rotation 
+                    // free rotation
                     mouseX += x * currentState.xMouseSensitivity;
                     mouseY -= y * currentState.yMouseSensitivity;
 
@@ -391,7 +411,7 @@ namespace Player
                     }
                 }
             }
-            else 
+            else
             {
                 // fixed rotation
                 var _x = transitionState.fixedAngle.x;
@@ -399,11 +419,10 @@ namespace Player
                 mouseX = useSmooth ? Mathf.LerpAngle(mouseX, _x, smoothBetweenState * Time.deltaTime) : _x;
                 mouseY = useSmooth ? Mathf.LerpAngle(mouseY, _y, smoothBetweenState * Time.deltaTime) : _y;
             }
-
         }
 
         /// <summary>
-        /// Switch Camera Right 
+        /// Switch Camera Right
         /// </summary>
         /// <param name="value"></param>
         public void SwitchRight(bool value = false)
@@ -411,9 +430,9 @@ namespace Player
             switchRight = value ? -1 : 1;
         }
 
-        void CalculateLockOnPoint()
+        private void CalculateLockOnPoint()
         {
-            if (currentState.cameraMode.Equals(TPCameraMode.FixedAngle) && lockTarget) return;   // check if angle of camera is fixed         
+            if (currentState.cameraMode.Equals(TPCameraMode.FixedAngle) && lockTarget) return;   // check if angle of camera is fixed
             var collider = lockTarget.GetComponent<Collider>();                                  // collider to get center of bounds
 
             if (collider == null)
@@ -439,7 +458,7 @@ namespace Player
             mouseX = Utility.ClampAngle(x, currentState.xMinLimit, currentState.xMaxLimit);
         }
 
-        void CameraMovement()
+        private void CameraMovement()
         {
             if (currentTarget == null || _camera == null)
                 return;
@@ -476,7 +495,7 @@ namespace Player
 
             Utility.ClipPlanePoints planePoints = _camera.NearClipPlanePoints(current_cPos + (camDir * (distance)), clipPlaneMargin);
             Utility.ClipPlanePoints oldPoints = _camera.NearClipPlanePoints(desired_cPos + (camDir * currentZoom), clipPlaneMargin);
-            //Check if Height is not blocked 
+            //Check if Height is not blocked
             if (Physics.SphereCast(targetPos, checkHeightRadius, currentTarget.transform.up, out hitInfo, currentState.cullingHeight + 0.2f, cullingLayer))
             {
                 var t = hitInfo.distance - 0.2f;
@@ -488,7 +507,7 @@ namespace Player
             {
                 cullingHeight = useSmooth ? Mathf.Lerp(cullingHeight, currentState.cullingHeight, smoothBetweenState * Time.deltaTime) : currentState.cullingHeight;
             }
-            //Check if desired target position is not blocked       
+            //Check if desired target position is not blocked
             if (CullingRayCast(desired_cPos, oldPoints, out hitInfo, currentZoom + 0.2f, cullingLayer, Color.blue))
             {
                 distance = hitInfo.distance - 0.2f;
@@ -555,7 +574,7 @@ namespace Player
             movementSpeed = Vector2.zero;
         }
 
-        void CameraFixed()
+        private void CameraFixed()
         {
             if (useSmooth) currentState.Slerp(transitionState, smoothBetweenState);
             else currentState.CopyState(transitionState);
@@ -579,7 +598,7 @@ namespace Player
             _camera.fieldOfView = currentState.fov;
         }
 
-        bool isValidFixedPoint
+        private bool isValidFixedPoint
         {
             get
             {
@@ -587,7 +606,7 @@ namespace Player
             }
         }
 
-        bool CullingRayCast(Vector3 from, Utility.ClipPlanePoints _to, out RaycastHit hitInfo, float distance, LayerMask cullingLayer, Color color)
+        private bool CullingRayCast(Vector3 from, Utility.ClipPlanePoints _to, out RaycastHit hitInfo, float distance, LayerMask cullingLayer, Color color)
         {
             bool value = false;
             if (showGizmos)

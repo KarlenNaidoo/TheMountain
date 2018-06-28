@@ -48,7 +48,6 @@ namespace Player.PlayerController
                 playerInputController.CalculatePhysicsMaterials();
                 StartCoroutine(CharacterInit());
             }
-            Debug.Log("Start being called");
         }
         protected virtual IEnumerator CharacterInit()
         {
