@@ -4,6 +4,7 @@ using System.Collections;
 /* This class is responsible for setting up the player input.
  * It will recive input and store it in a 2D vector.
  * It will move the character and tell the animator to move based on user input
+ * Any extension class to deal with player input will be added to this class
  */
 
 namespace Player.PlayerController

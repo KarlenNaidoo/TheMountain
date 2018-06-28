@@ -39,12 +39,14 @@ namespace Player.PlayerController
         public bool IsLightAttack { get; set; }
         public bool IsHeavyAttack { get; set; }
         public bool IsCrouching { get; set; }
+        public bool IsSprinting { get { return isSprinting; } }
+        public bool IsRunning {  get { return isRunning; } }
         public enum LocomotionType { Free, Strafe }
         public bool ResetAttackTriggers { get; set; }
         public float CurrentSprintStamina { get { return currentSprintStamina; } set { currentSprintStamina = value; } }
         public float MaxSprintStamina { get { return maxSprintStamina; } }
         public int WeakAttackCount { get; set; }
-       
+        public Utility.AttackCategory AttackID { get; set; }
 
         [HideInInspector]
         public Vector2 input;                               // generate input for the controller

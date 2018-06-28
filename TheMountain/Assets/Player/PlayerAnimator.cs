@@ -113,7 +113,10 @@ namespace Player.PlayerController
                 animator.ResetTrigger("LightAttack");
                 animator.ResetTrigger("HeavyAttack");
                 ResetAttackTriggers = false;
+                AttackID = 0;
             }
+            animator.SetInteger("AttackID", (int) AttackID);
+            Debug.Log("AttackID animator " + AttackID + " " + (int)AttackID);
         }
 
     }

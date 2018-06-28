@@ -37,6 +37,8 @@ namespace Player.Melee
             if (melee != null)
             {
                 melee.OnDisableAttack();
+                if(endOfCombo)
+                    melee.AttackID = 0;
             }
 
         }
