@@ -71,8 +71,8 @@ namespace Player.PlayerController
 
         public Quaternion TargetRotation { get { return targetRotation; } set { targetRotation = value; } }
 
-        public int WeakAttackCount { get; set; }
-
+        public bool CanLightAttackAgain { get; set; }
+        public bool CanHeavyAttackAgain { get; set; }
         public virtual void GetLocomotionType()
         {
             if (locomotionType.Equals(LocomotionType.Free))

@@ -23,10 +23,13 @@ namespace Player.PlayerController
         float oldTime;
         float[] inputBuffer;
         int inputBufferCount = 0;
+        int nextAttack = 0;
+        [Range(0, 1)] public float inputResponseTime;
+
         // Use this for initialization
         protected override void Start()
         {
-            inputBuffer = new float[6];
+            inputBuffer = new float[4];
 
             //Starts the looping coroutine
             StartCoroutine(CheckForAttack());
@@ -38,6 +41,7 @@ namespace Player.PlayerController
 
         protected virtual void CreateInputBuffer()
         {
+
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -51,7 +55,7 @@ namespace Player.PlayerController
                 timeBetweenAttacks = Time.time - lastTime;
                 inputBuffer[inputBufferCount + 1] = timeBetweenAttacks;
             }
-            inputBufferCount = (inputBufferCount >= 5) ? 0 : inputBufferCount++;
+            inputBufferCount = (inputBufferCount >= 3) ? 0 : inputBufferCount++;
         }
 
         protected override void Update()
@@ -60,17 +64,38 @@ namespace Player.PlayerController
             CreateInputBuffer();
             base.Update();
         }
+
+        protected virtual void LoopAttackBuffer()
+        {
+            for (int i = 0; i < inputBuffer.Length; i++)
+            {
+                Debug.Log("The value of i is " + inputBuffer[i]);
+                if (inputBuffer[i] == (int)Utility.AttackCategory.light)
+                {
+                    Debug.Log("This is a light attack");
+
+                }
+                if (inputBuffer[i] == (int)Utility.AttackCategory.heavy)
+                {
+                    Debug.Log("This is a heavy attack");
+                }
+                // Increment i again as we are saving the time in the next slot
+                i++;
+            }
+
+        }
         protected virtual IEnumerator CheckForAttack()
         {
+
             //Constantly loops so you only have to call it once
             while (true)
             {
-
-
+                
                 if (playerInputController != null && (playerInputController.IsSprinting || playerInputController.IsRunning))
                 {
                     CheckForRunningAttack();
                 }
+                
                 //Checks if attacking and then starts of the combo
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -88,12 +113,24 @@ namespace Player.PlayerController
                             playerInputController.AttackID = Utility.AttackCategory.light;
                             ComboIncrease(Utility.AttackCategory.light);
                         }
+                        else if (Input.GetMouseButtonDown(0) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        {
+                            playerInputController.CanLightAttackAgain = true;
+                            Debug.Log("Player can attack again");
+
+                        }
                         //Attacks if your cooldown has reset
                         if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > attackCooldown)
                         {
-                            //if (!(playerInputController.AttackID == Utility.AttackCategory.run))
-                              //  playerInputController.AttackID = Utility.AttackCategory.heavy;
+                            if (!(playerInputController.AttackID == Utility.AttackCategory.run))
+                                playerInputController.AttackID = Utility.AttackCategory.heavy;
                             ComboIncrease(Utility.AttackCategory.heavy);
+                        }
+                        else if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        {
+                            playerInputController.CanHeavyAttackAgain = true;
+                            Debug.Log("Player can attack again");
+
                         }
                         yield return null;
                     }
@@ -118,6 +155,11 @@ namespace Player.PlayerController
 
                             ComboIncrease(Utility.AttackCategory.light);
                         }
+                        else if (Input.GetMouseButtonDown(0) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        {
+                            playerInputController.CanLightAttackAgain = true;
+                            Debug.Log("Player can attack again");
+                        }
 
                         //Attacks if your cooldown has reset
                         if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > attackCooldown)
@@ -126,6 +168,12 @@ namespace Player.PlayerController
                                 playerInputController.AttackID = Utility.AttackCategory.heavy;
 
                             ComboIncrease(Utility.AttackCategory.heavy);
+                        }
+                        else if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        {
+                            playerInputController.CanHeavyAttackAgain = true;
+                            Debug.Log("Player can attack again");
+
                         }
                         yield return null;
                     }

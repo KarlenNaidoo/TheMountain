@@ -73,7 +73,7 @@ namespace Player.PlayerController
                 {
                     randomIdleCount = 0;
                     animator.SetTrigger(Utility.Constants.IdleRandomTrigger);
-                    animator.SetInteger(Utility.Constants.IdleRandom, Random.Range(0, 1));
+                    //animator.SetInteger(Utility.Constants.IdleRandom, Random.Range(0, 1));
                 }
             }
             else
@@ -99,7 +99,7 @@ namespace Player.PlayerController
             if (_isAttacking)
             {
                 if (IsLightAttack)
-                {
+                { 
                     animator.SetTrigger("LightAttack");
                 }
                 if (IsHeavyAttack)
@@ -114,6 +114,8 @@ namespace Player.PlayerController
                 animator.ResetTrigger("HeavyAttack");
                 ResetAttackTriggers = false;
                 AttackID = 0;
+                //CanLightAttackAgain = false;
+                //CanHeavyAttackAgain = false;
             }
             animator.SetInteger("AttackID", (int) AttackID);
         }

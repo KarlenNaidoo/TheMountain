@@ -30,6 +30,32 @@ namespace Player.Melee
 
         override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
+            if (melee != null)
+            {
+
+                if (melee.CanLightAttackAgain)
+                {
+                    if(stateInfo.normalizedTime >= 0.7f)
+                    {
+
+                        animator.SetBool("CanLightAttackAgain", melee.CanLightAttackAgain);
+                    }
+                }
+
+                if (melee.CanHeavyAttackAgain)
+                {
+                    if (stateInfo.normalizedTime >= 0.7f)
+                    {
+
+                        animator.SetBool("CanHeavyAttackAgain", melee.CanHeavyAttackAgain);
+                    }
+                }
+                if(stateInfo.normalizedTime >= 0.7f)
+                {
+
+                    animator.SetInteger("AttackID", (int)melee.AttackID);
+                }
+            }
         }
 
         override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -39,6 +65,13 @@ namespace Player.Melee
                 melee.OnDisableAttack();
                 if(endOfCombo)
                     melee.AttackID = 0;
+
+                animator.SetBool("CanLightAttackAgain", false);
+                animator.SetBool("CanHeavyAttackAgain", false);
+                melee.CanHeavyAttackAgain = false;
+                melee.CanLightAttackAgain = false;
+
+
             }
 
         }

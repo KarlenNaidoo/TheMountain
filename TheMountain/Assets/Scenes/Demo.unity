@@ -559,9 +559,30 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114220442606869476, guid: 099ab65ae36178944bd0f598a8326120,
+        type: 2}
+      propertyPath: tpCamera
+      value: 
+      objectReference: {fileID: 1308556931}
+    - target: {fileID: 114220442606869476, guid: 099ab65ae36178944bd0f598a8326120,
+        type: 2}
+      propertyPath: inputResponseTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114220442606869476, guid: 099ab65ae36178944bd0f598a8326120,
+        type: 2}
+      propertyPath: maxTimeBetweenAttacks
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 099ab65ae36178944bd0f598a8326120, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1308556931 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114780305508625190, guid: 026b3fc896170524a82e36967e7a66ee,
+    type: 2}
+  m_PrefabInternal: {fileID: 1668040919}
+  m_Script: {fileID: 11500000, guid: c3c970fe9c5d07d4aa0dfb1d7b617f82, type: 3}
 --- !u!1 &1572105071
 GameObject:
   m_ObjectHideFlags: 0

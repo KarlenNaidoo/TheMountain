@@ -2393,10 +2393,11 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  playerInputController: {fileID: 0}
+  playerInputController: {fileID: 114529814024474254}
   attackCooldown: 0.6
-  maxTimeBetweenAttacks: 1.6
+  maxTimeBetweenAttacks: 1.61
   maxCombo: 3
+  inputResponseTime: 0.3
 --- !u!114 &114529814024474254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2408,12 +2409,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4956af859dfe43346bddd60426657cdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locomotionType: 0
-  maxSprintStamina: 4
-  input: {x: 0, y: 0}
   freeSpeed:
     rotationSpeed: 10
     walkByDefault: 0
+  input: {x: 0, y: 0}
+  locomotionType: 0
+  maxSprintStamina: 4
 --- !u!114 &114664766075666418
 MonoBehaviour:
   m_ObjectHideFlags: 1
