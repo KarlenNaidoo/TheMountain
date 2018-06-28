@@ -127,11 +127,11 @@ namespace Player.PlayerController
 
         protected virtual void CheckForCrouch()
         {
-                if (Input.GetButtonDown(Utility.Constants.Crouch))
+                if (Input.GetButton(Utility.Constants.Crouch))
                 {
                     playerInputController.Crouch();
                 }
-                if (Input.GetKey(KeyCode.X)) // TODO: Fix crouch
+                else
                 {
                     playerInputController.IsCrouching = false;
                 }
