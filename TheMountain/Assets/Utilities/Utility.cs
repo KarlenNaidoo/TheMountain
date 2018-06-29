@@ -32,7 +32,7 @@ namespace Player
         }
 
 
-        public enum AttackCategory { none, light, heavy, run }
+        public enum AttackCategory { none, light, heavy, running_heavy, running_light }
 
         public static class Constants
         {

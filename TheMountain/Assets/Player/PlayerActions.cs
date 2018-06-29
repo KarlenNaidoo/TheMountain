@@ -51,10 +51,11 @@
             // playerActions.Back.AddDefaultBinding( Key.Shift, Key.Tab );
             // playerActions.Next.AddDefaultBinding( KeyCombo.With( Key.Tab ).AndNot( Key.Shift ) );
             
-            playerActions.LightAttack.AddDefaultBinding(InputControlType.Action1);
+            // Action 1 is X, Action 2 is O, Action 3 is [], Action 4 is /\
+            playerActions.LightAttack.AddDefaultBinding(InputControlType.Action3);
             playerActions.LightAttack.AddDefaultBinding(Mouse.LeftButton);
             
-            playerActions.HeavyAttack.AddDefaultBinding(InputControlType.Action2);
+            playerActions.HeavyAttack.AddDefaultBinding(InputControlType.Action4);
             playerActions.HeavyAttack.AddDefaultBinding(Mouse.RightButton);
 
             playerActions.Jump.AddDefaultBinding(Key.Space);
