@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Player.Input;
 /* This class is responsible for setting up the player input.
  * It will recive input and store it in a 2D vector.
  * It will move the character and tell the animator to move based on user input
@@ -13,9 +13,10 @@ namespace Player.PlayerController
     [RequireComponent(typeof(PlayerAnimator))]
     public class PlayerInput : MonoBehaviour
     {
+        protected PlayerActions playerActions;
+        string saveData;
 
-        
-        
+
         public bool ignoreCameraRotation;
         
         [Header("Camera Input")]
@@ -39,6 +40,24 @@ namespace Player.PlayerController
         [HideInInspector]
         public PlayerInputController playerInputController;
 
+
+        void OnEnable()
+        {
+            // See PlayerActions.cs for this setup.
+            playerActions = PlayerActions.CreateWithDefaultBindings();
+            //playerActions.Move.OnLastInputTypeChanged += ( lastInputType ) => Debug.Log( lastInputType );
+
+            LoadBindings();
+        }
+
+
+        void OnDisable()
+        {
+            // This properly disposes of the action set and unsubscribes it from
+            // update events so that it doesn't do additional processing unnecessarily.
+            playerActions.Destroy();
+        }
+
         protected virtual void Start()
         {
             playerInputController = GetComponent<PlayerInputController>();
@@ -58,6 +77,29 @@ namespace Player.PlayerController
                 if (tpCamera && tpCamera.target != transform) tpCamera.SetMainTarget(this.transform);
             }
         }
+
+        void SaveBindings()
+        {
+            saveData = playerActions.Save();
+            PlayerPrefs.SetString("Bindings", saveData);
+        }
+
+
+        void LoadBindings()
+        {
+            if (PlayerPrefs.HasKey("Bindings"))
+            {
+                saveData = PlayerPrefs.GetString("Bindings");
+                playerActions.Load(saveData);
+            }
+        }
+
+
+        void OnApplicationQuit()
+        {
+            PlayerPrefs.Save();
+        }
+
 
         protected virtual void FixedUpdate()
         {
@@ -90,9 +132,9 @@ namespace Player.PlayerController
 
         protected virtual void StoreMovement()
         {
-            
-                playerInputController.input.x = Input.GetAxisRaw(Utility.Constants.Horizontal);
-                playerInputController.input.y = Input.GetAxisRaw(Utility.Constants.Vertical);
+
+            playerInputController.input.x = playerActions.Move.X;
+            playerInputController.input.y = playerActions.Move.Y;
             
         }
 
@@ -114,7 +156,7 @@ namespace Player.PlayerController
 
         protected virtual void CheckForSprint()
         {
-            if (Input.GetButton(Utility.Constants.Sprint))
+            if (playerActions.Sprint.IsPressed)
             {
                 playerInputController.Sprint(true);
             }
@@ -127,7 +169,7 @@ namespace Player.PlayerController
 
         protected virtual void CheckForCrouch()
         {
-                if (Input.GetButton(Utility.Constants.Crouch))
+                if (playerActions.Crouch)
                 {
                     playerInputController.Crouch();
                 }
@@ -149,12 +191,12 @@ namespace Player.PlayerController
             if (tpCamera == null)
                 return;
 
-            var Y = Input.GetAxis("Mouse Y");
-            var X = Input.GetAxis("Mouse X");
-            var zoom = Input.GetAxis("Mouse ScrollWheel");
+            var Y = playerActions.MoveMouse.Y;
+            var X = playerActions.MoveMouse.X ;
+            //var zoom = Input.GetAxis("Mouse ScrollWheel");
 
             tpCamera.RotateCamera(X, Y);
-            tpCamera.Zoom(zoom);
+            //tpCamera.Zoom(zoom);
 
             // change keepDirection from input diference
             if (keepDirection && Vector2.Distance(playerInputController.input, oldInput) > 0.2f) keepDirection = false;

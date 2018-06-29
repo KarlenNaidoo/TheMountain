@@ -43,13 +43,13 @@ namespace Player.PlayerController
         {
 
 
-            if (Input.GetMouseButtonDown(0))
+            if (playerActions.LightAttack)
             {
                 inputBuffer[inputBufferCount] = (int) Utility.AttackCategory.light;
                 timeBetweenAttacks = Time.time - lastTime;
                 inputBuffer[inputBufferCount + 1] = timeBetweenAttacks;
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (playerActions.HeavyAttack.IsPressed)
             {
                 inputBuffer[inputBufferCount] = (int) Utility.AttackCategory.heavy;
                 timeBetweenAttacks = Time.time - lastTime;
@@ -97,7 +97,7 @@ namespace Player.PlayerController
                 }
                 
                 //Checks if attacking and then starts of the combo
-                if (Input.GetMouseButtonDown(0))
+                if (playerActions.LightAttack.IsPressed)
                 {
                     playerInputController.AttackID = Utility.AttackCategory.light;
 
@@ -106,27 +106,27 @@ namespace Player.PlayerController
                     //Combo loop that ends the combo if you reach the maxTime between attacks, or reach the end of the combo
                     while ((Time.time - lastTime) < maxTimeBetweenAttacks && playerInputController.combo < maxCombo)
                     {
-                        
+
                         //Attacks if your cooldown has reset
-                        if (Input.GetMouseButtonDown(0) && (Time.time - lastTime) > attackCooldown)
+                        if (playerActions.LightAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
                             playerInputController.AttackID = Utility.AttackCategory.light;
                             ComboIncrease(Utility.AttackCategory.light);
                         }
-                        else if (Input.GetMouseButtonDown(0) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        else if (playerActions.LightAttack.IsPressed && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
                         {
                             playerInputController.CanLightAttackAgain = true;
                             Debug.Log("Player can attack again");
 
                         }
                         //Attacks if your cooldown has reset
-                        if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > attackCooldown)
+                        if (playerActions.HeavyAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
                             if (!(playerInputController.AttackID == Utility.AttackCategory.run))
                                 playerInputController.AttackID = Utility.AttackCategory.heavy;
                             ComboIncrease(Utility.AttackCategory.heavy);
                         }
-                        else if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        else if (playerActions.HeavyAttack.IsPressed && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
                         {
                             playerInputController.CanHeavyAttackAgain = true;
                             Debug.Log("Player can attack again");
@@ -140,7 +140,7 @@ namespace Player.PlayerController
                     yield return new WaitForSeconds(attackCooldown - (Time.time - lastTime));
                 }
                 //Checks if attacking and then starts of the combo
-                if (Input.GetMouseButtonDown(1))
+                if (playerActions.HeavyAttack.IsPressed)
                 {
                     if(!(playerInputController.AttackID == Utility.AttackCategory.run))
                         playerInputController.AttackID = Utility.AttackCategory.heavy;
@@ -149,27 +149,27 @@ namespace Player.PlayerController
                     while ((Time.time - lastTime) < maxTimeBetweenAttacks && playerInputController.combo < maxCombo)
                     {
                         //Attacks if your cooldown has reset
-                        if (Input.GetMouseButtonDown(0) && (Time.time - lastTime) > attackCooldown)
+                        if (playerActions.LightAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
                             playerInputController.AttackID = Utility.AttackCategory.light;
 
                             ComboIncrease(Utility.AttackCategory.light);
                         }
-                        else if (Input.GetMouseButtonDown(0) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        else if (playerActions.LightAttack.IsPressed && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
                         {
                             playerInputController.CanLightAttackAgain = true;
                             Debug.Log("Player can attack again");
                         }
 
                         //Attacks if your cooldown has reset
-                        if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > attackCooldown)
+                        if (playerActions.HeavyAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
                             if (!(playerInputController.AttackID == Utility.AttackCategory.run))
                                 playerInputController.AttackID = Utility.AttackCategory.heavy;
 
                             ComboIncrease(Utility.AttackCategory.heavy);
                         }
-                        else if (Input.GetMouseButtonDown(1) && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
+                        else if (playerActions.HeavyAttack.IsPressed && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
                         {
                             playerInputController.CanHeavyAttackAgain = true;
                             Debug.Log("Player can attack again");
@@ -188,7 +188,7 @@ namespace Player.PlayerController
 
         private void CheckForRunningAttack()
         {
-            if (Input.GetMouseButtonDown(1))
+            if (playerActions.HeavyAttack.IsPressed)
             {
                 playerInputController.AttackID = Utility.AttackCategory.run;
             }

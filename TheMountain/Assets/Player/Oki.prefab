@@ -2395,9 +2395,9 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   playerInputController: {fileID: 114529814024474254}
   attackCooldown: 0.6
-  maxTimeBetweenAttacks: 1.61
+  maxTimeBetweenAttacks: 1.5
   maxCombo: 3
-  inputResponseTime: 0.3
+  inputResponseTime: 0.4
 --- !u!114 &114529814024474254
 MonoBehaviour:
   m_ObjectHideFlags: 1
