@@ -50,11 +50,11 @@ namespace Player.Melee
                         animator.SetBool("CanHeavyAttackAgain", melee.CanHeavyAttackAgain);
                     }
                 }
-                if(stateInfo.normalizedTime >= 0.7f)
-                {
+                //if(stateInfo.normalizedTime >= 0.7f)
+                //{
 
-                    animator.SetInteger("AttackID", (int)melee.AttackID);
-                }
+                    //animator.SetInteger("AttackID", (int)melee.AttackID);
+                //}
             }
         }
 
