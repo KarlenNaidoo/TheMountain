@@ -172,10 +172,12 @@ namespace Player.PlayerController
                 if (playerActions.Crouch)
                 {
                     playerInputController.Crouch();
-                }
+                    AudioManager.instance.Play("Crouch");
+            }
                 else
                 {
                     playerInputController.IsCrouching = false;
+                    AudioManager.instance.StopPlaying("Crouch");
                 }
         }
 

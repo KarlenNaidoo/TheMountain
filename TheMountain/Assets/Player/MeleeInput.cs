@@ -38,52 +38,8 @@ namespace Player.PlayerController
             
             
         }
-
-        protected virtual void CreateInputBuffer()
-        {
-
-
-            if (playerActions.LightAttack)
-            {
-                inputBuffer[inputBufferCount] = (int) Utility.AttackCategory.light;
-                timeBetweenAttacks = Time.time - lastTime;
-                inputBuffer[inputBufferCount + 1] = timeBetweenAttacks;
-            }
-            else if (playerActions.HeavyAttack.IsPressed)
-            {
-                inputBuffer[inputBufferCount] = (int) Utility.AttackCategory.heavy;
-                timeBetweenAttacks = Time.time - lastTime;
-                inputBuffer[inputBufferCount + 1] = timeBetweenAttacks;
-            }
-            inputBufferCount = (inputBufferCount >= 3) ? 0 : inputBufferCount++;
-        }
-
-        protected override void Update()
-        {
-
-            CreateInputBuffer();
-            base.Update();
-        }
-
-        protected virtual void LoopAttackBuffer()
-        {
-            for (int i = 0; i < inputBuffer.Length; i++)
-            {
-                Debug.Log("The value of i is " + inputBuffer[i]);
-                if (inputBuffer[i] == (int)Utility.AttackCategory.light)
-                {
-                    Debug.Log("This is a light attack");
-
-                }
-                if (inputBuffer[i] == (int)Utility.AttackCategory.heavy)
-                {
-                    Debug.Log("This is a heavy attack");
-                }
-                // Increment i again as we are saving the time in the next slot
-                i++;
-            }
-
-        }
+        
+        
         protected virtual IEnumerator CheckForAttack()
         {
 
@@ -99,7 +55,9 @@ namespace Player.PlayerController
                 //Checks if attacking and then starts of the combo
                 if (playerActions.LightAttack.IsPressed)
                 {
-                    if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy || playerInputController.AttackID == Utility.AttackCategory.running_light))
+                    Debug.Log("Attack pressed");
+                    if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy
+                        || playerInputController.AttackID == Utility.AttackCategory.running_light))
                         playerInputController.AttackID = Utility.AttackCategory.light;
 
                     ComboIncrease(Utility.AttackCategory.light);
@@ -111,7 +69,8 @@ namespace Player.PlayerController
                         //Attacks if your cooldown has reset
                         if (playerActions.LightAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
-                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy || playerInputController.AttackID == Utility.AttackCategory.running_light))
+                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy 
+                                || playerInputController.AttackID == Utility.AttackCategory.running_light))
                                 playerInputController.AttackID = Utility.AttackCategory.light;
                             ComboIncrease(Utility.AttackCategory.light);
                         }
@@ -124,7 +83,8 @@ namespace Player.PlayerController
                         //Attacks if your cooldown has reset
                         if (playerActions.HeavyAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
-                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy || playerInputController.AttackID == Utility.AttackCategory.running_light))
+                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy 
+                                || playerInputController.AttackID == Utility.AttackCategory.running_light))
                                 playerInputController.AttackID = Utility.AttackCategory.heavy;
                             ComboIncrease(Utility.AttackCategory.heavy);
                         }
@@ -144,7 +104,8 @@ namespace Player.PlayerController
                 //Checks if attacking and then starts of the combo
                 if (playerActions.HeavyAttack.IsPressed)
                 {
-                    if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy || playerInputController.AttackID == Utility.AttackCategory.running_light))
+                    if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy 
+                        || playerInputController.AttackID == Utility.AttackCategory.running_light))
                         playerInputController.AttackID = Utility.AttackCategory.heavy;
                     ComboIncrease(Utility.AttackCategory.heavy);
                     //Combo loop that ends the combo if you reach the maxTime between attacks, or reach the end of the combo
@@ -153,7 +114,8 @@ namespace Player.PlayerController
                         //Attacks if your cooldown has reset
                         if (playerActions.LightAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
-                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy || playerInputController.AttackID == Utility.AttackCategory.running_light))
+                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy 
+                                || playerInputController.AttackID == Utility.AttackCategory.running_light))
                                 playerInputController.AttackID = Utility.AttackCategory.light;
 
                             ComboIncrease(Utility.AttackCategory.light);
@@ -167,7 +129,8 @@ namespace Player.PlayerController
                         //Attacks if your cooldown has reset
                         if (playerActions.HeavyAttack.IsPressed && (Time.time - lastTime) > attackCooldown)
                         {
-                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy || playerInputController.AttackID == Utility.AttackCategory.running_light))
+                            if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy 
+                                || playerInputController.AttackID == Utility.AttackCategory.running_light))
                                 playerInputController.AttackID = Utility.AttackCategory.heavy;
 
                             ComboIncrease(Utility.AttackCategory.heavy);
