@@ -137,6 +137,15 @@ public abstract class AIStateMachine : MonoBehaviour {
             _currentState = null;
             Debug.LogWarning("Cannot find state");
         }
+        if (_animator)
+        {
+            AIStateMachineLink[] behaviourScripts = _animator.GetBehaviours<AIStateMachineLink>();
+            foreach (AIStateMachineLink script in behaviourScripts)
+            {
+                script.stateMachine = this;
+            }
+        }
+
     }
 
     // Sets the target and moves the target trigger to that location

@@ -6,19 +6,22 @@ using UnityEngine;
  */ 
 public class GameSceneManager : MonoBehaviour {
 
-    private static GameSceneManager _instance = null;
-
-    public static GameSceneManager instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = (GameSceneManager)FindObjectOfType(typeof(GameSceneManager));
-            return instance;
-        }
-    }
+    public static GameSceneManager instance = null;
+    
     private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>();
 
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            Debug.LogWarning("More than one game manager found in the scene");
+        }
+    }
     // stores the passed state machine in the dictionary with the supplied key
     public void RegisterAIStateMachine(int key, AIStateMachine stateMachine)
     {

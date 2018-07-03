@@ -37,12 +37,12 @@ TagManager:
   - 
   - PostProcessing
   - Player
-  - Enemy
-  - CompanionAI
-  - Triggers
-  - StopMove
-  - HeadTrack
-  - BodyPart
+  - NPC
+  - NPC_Trigger
+  - HostileTrigger
+  - 
+  - 
+  - 
   - 
   - 
   - 
