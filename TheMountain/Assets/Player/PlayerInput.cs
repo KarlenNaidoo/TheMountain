@@ -172,13 +172,19 @@ namespace Player.PlayerController
                 if (playerActions.Crouch)
                 {
                     playerInputController.Crouch();
+                    AudioManager.instance.Pause("Theme");
                     AudioManager.instance.Play("Crouch");
-            }
+                    //StartCoroutine(AudioManager.instance.FadeOutAndIn("Theme","Crouch",2f));
+                    //StopCoroutine(AudioManager.instance.FadeOutAndIn("Theme", "Crouch", 2f));
+                }
                 else
                 {
                     playerInputController.IsCrouching = false;
                     AudioManager.instance.StopPlaying("Crouch");
-                }
+                    AudioManager.instance.Play("Theme");
+                    //StartCoroutine(AudioManager.instance.FadeOutAndIn("Crouch", "Theme", 2f));
+                    //StopCoroutine(AudioManager.instance.FadeOutAndIn("Crouch", "Theme", 2f));
+            }
         }
 
         public virtual void CameraInput()
