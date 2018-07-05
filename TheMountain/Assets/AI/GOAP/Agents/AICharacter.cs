@@ -11,6 +11,8 @@ public abstract class AICharacter : MonoBehaviour, IGoap
 {
     public float moveSpeed = 2f;
     public bool isVisible = true;
+
+    public bool reachWayPoint = true;
     NavMeshAgent _navAgent;
     public void actionsFinished()
     {
@@ -25,7 +27,7 @@ public abstract class AICharacter : MonoBehaviour, IGoap
     {
         Dictionary<string, object> worldData = new Dictionary<string, object>();
         worldData.Add("visible", isVisible);
-        //worldData.Add("reachWayPoint", true);
+        worldData.Add("reachWayPoint", false);
         return worldData;
 
     }
@@ -36,8 +38,6 @@ public abstract class AICharacter : MonoBehaviour, IGoap
     }
     public bool MoveAgent(GoapAction nextAction)
     {
-        Debug.Log("Next Action " + nextAction);
-        Debug.Log("Next action target " + nextAction.target.transform.position);
         // move towards the Next actions target
         float step = moveSpeed * Time.deltaTime;
         _navAgent.SetDestination(nextAction.target.transform.position);
@@ -71,6 +71,6 @@ public abstract class AICharacter : MonoBehaviour, IGoap
 
     public void PlanFound(Dictionary<string, object> goal, Queue<GoapAction> actions)
     {
-        Debug.Log("PLAN FOUND");
+        Debug.Log("PLAN FOUND " + GoapAgent.prettyPrint(actions));
     }
 }

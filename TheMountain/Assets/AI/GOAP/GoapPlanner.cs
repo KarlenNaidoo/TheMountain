@@ -95,6 +95,7 @@ public class GoapPlanner
         // go through each action available at this node and see if we can use it here
         foreach (GoapAction action in usableActions)
         {
+            Debug.Log("action in use: " + action);
             //if the parent state has the conditions for this action's preconditions, we can use it here
             if (InState(action.preConditions, parent.state))
             {
@@ -150,7 +151,6 @@ public class GoapPlanner
             bool match = false;
             foreach (var obj in dic2)
             {
-                Debug.Log("Comparing " + item + " to " + obj);
                 if (item.Key.Equals(obj.Key) && item.Value.Equals(obj.Value))
                 {
                     match = true;

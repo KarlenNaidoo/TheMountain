@@ -8,6 +8,7 @@ public class GoToWaypointAction : GoapAction
     private bool _reached = false;
     private Waypoint _targetWaypoint;
 
+
     float _startTime = 0;
     
     public GoToWaypointAction()
@@ -18,7 +19,6 @@ public class GoToWaypointAction : GoapAction
 
     public override bool CheckProceduralPreCondtions(GameObject agent)
     {
-        Debug.Log("Reached here");
         //find the nearest waypoint
         List<Waypoint> waypointNetwork = new List<Waypoint>();
         foreach (Waypoint point in Resources.FindObjectsOfTypeAll<Waypoint>())
@@ -26,7 +26,6 @@ public class GoToWaypointAction : GoapAction
             waypointNetwork.Add(point);
         }
         
-        Debug.Log("Number of waypoints is " + waypointNetwork.Count);
         Waypoint _closest = null;
         float _closestDist = 0;
         foreach (Waypoint point in waypointNetwork)

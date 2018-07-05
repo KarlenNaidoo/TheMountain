@@ -160,7 +160,7 @@ public sealed class GoapAgent : MonoBehaviour
             GoapAction action = currentActions.Peek(); // returns the first item in the queue without removing it
             if (action.IsDone())
             {
-                Debug.Log("Action done, removing so we can perform the next one");
+                Debug.Log("Action done, removing action so we can perform the next one");
                 // the action is done. Remove it so we can perform the next one
                 currentActions.Dequeue();
             }
@@ -169,7 +169,6 @@ public sealed class GoapAgent : MonoBehaviour
             {
 
                 action = currentActions.Peek();
-                Debug.Log("This is a list of current actions: " + action);
                 bool inRange = action.RequiresInRange() ? action.inRange : true;
 
                 if (inRange)
@@ -224,8 +223,21 @@ public sealed class GoapAgent : MonoBehaviour
         foreach (GoapAction a in actions)
         {
             availableActions.Add(a);
+            Debug.Log("Load actions: " + a);
         }
-        Debug.Log("Load actions: " + actions);
+
+    }
+
+    public static string prettyPrint(Queue<GoapAction> actions)
+    {
+        String s = "";
+        foreach (GoapAction a in actions)
+        {
+            s += a.GetType().Name;
+            s += "-> ";
+        }
+        s += "GOAL";
+        return s;
     }
 
 }
