@@ -306,6 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4706024836241686}
   - component: {fileID: 135295149826223022}
+  - component: {fileID: 114943610192114508}
   m_Layer: 12
   m_Name: Sensor
   m_TagString: Untagged
@@ -366,11 +367,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4617906176870678}
-  - component: {fileID: 95189578444474620}
   - component: {fileID: 136569390878314896}
   - component: {fileID: 54936538318075162}
   - component: {fileID: 195774974910858408}
-  - component: {fileID: 114004364849528786}
+  - component: {fileID: 114874956701575350}
+  - component: {fileID: 114768780055053940}
+  - component: {fileID: 114507992840803252}
   m_Layer: 10
   m_Name: AI_Entity
   m_TagString: Untagged
@@ -2063,25 +2065,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!95 &95189578444474620
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1296513182266448}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 7f2a4085aaaabe442aedba6daae8c04d, type: 3}
-  m_Controller: {fileID: 9100000, guid: f833a54823a4b704492eeb71fae8a3ad, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114004364849528786
+--- !u!114 &114507992840803252
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2089,13 +2073,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 1296513182266448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8ffb4409a0656f4a94a1d343d855ee5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6bcc3a36015ad3b4483c4bb5b1623428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentStateType: 1
-  _targetTrigger: {fileID: 135815830727292158}
-  _sensorTrigger: {fileID: 135295149826223022}
-  _stoppingDistance: 1
+  moveSpeed: 1
+  isVisible: 1
+--- !u!114 &114768780055053940
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1296513182266448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0df25b62f380c894eb479705a735e006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cost: 1
+  target: {fileID: 0}
+--- !u!114 &114874956701575350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1296513182266448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7641653f2a94c8942bc6b0a120552845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114943610192114508
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1212194724799640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f614cba50c129e943b97a618255fe218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135295149826223022
 SphereCollider:
   m_ObjectHideFlags: 1
