@@ -10,9 +10,8 @@ using UnityEngine.AI;
 public abstract class AICharacter : MonoBehaviour, IGoap
 {
     public float moveSpeed = 2f;
-    public bool isVisible = true;
 
-    public bool reachWayPoint = true;
+    public bool reachedWayPoint = false;
     NavMeshAgent _navAgent;
     public void actionsFinished()
     {
@@ -26,8 +25,9 @@ public abstract class AICharacter : MonoBehaviour, IGoap
     public Dictionary<string, object> GetWorldState()
     {
         Dictionary<string, object> worldData = new Dictionary<string, object>();
-        worldData.Add("visible", isVisible);
-        worldData.Add("reachWayPoint", false);
+        worldData.Add("reachWayPoint1", false);
+        worldData.Add("reachWayPoint2", false);
+        worldData.Add("allWaypoints", false);
         return worldData;
 
     }

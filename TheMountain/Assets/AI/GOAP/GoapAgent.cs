@@ -187,8 +187,9 @@ public sealed class GoapAgent : MonoBehaviour
                 }
                 else
                 {
-                    
+
                     // we need to move there first
+                    Debug.Log("We are not in range");
                     // push moveTo state
                     fsm.PushState(moveToState);
                 }
@@ -223,8 +224,9 @@ public sealed class GoapAgent : MonoBehaviour
         foreach (GoapAction a in actions)
         {
             availableActions.Add(a);
-            Debug.Log("Load actions: " + a);
         }
+
+        Debug.Log("Load actions: " + prettyPrint(actions));
 
     }
 
@@ -237,6 +239,29 @@ public sealed class GoapAgent : MonoBehaviour
             s += "-> ";
         }
         s += "GOAL";
+        return s;
+    }
+
+    public static string prettyPrint(GoapAction[] actions)
+    {
+        String s = "";
+        foreach (GoapAction a in actions)
+        {
+            s += a.GetType().Name;
+            s += ", ";
+        }
+        return s;
+    }
+
+
+    public static string prettyPrint(Dictionary<string, object> state)
+    {
+        String s = "";
+        foreach (KeyValuePair<string, object> kvp in state)
+        {
+            s += kvp.Key + ":" + kvp.Value.ToString();
+            s += ", ";
+        }
         return s;
     }
 

@@ -7,7 +7,7 @@ public class Enemy : AICharacter
     public override Dictionary<string, object> CreateGoalState()
     {
         Dictionary<string, object> goal = new Dictionary<string, object>();
-        goal.Add("reachedDestination", true);
+        goal.Add("allWaypoints", true);
         return goal;
     }
 }
