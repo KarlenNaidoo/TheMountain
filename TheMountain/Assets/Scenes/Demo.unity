@@ -481,7 +481,7 @@ GameObject:
   - component: {fileID: 556922209}
   - component: {fileID: 556922213}
   m_Layer: 0
-  m_Name: Sphere (2)
+  m_Name: OtherDestination
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -494,7 +494,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 556922208}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -565,6 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f123e3b6979b7ef4c927781b0f9f9ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 569943663}
 --- !u!1 &569487312
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +579,7 @@ GameObject:
   - component: {fileID: 569487313}
   - component: {fileID: 569487317}
   m_Layer: 0
-  m_Name: Sphere (1)
+  m_Name: Destination
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -591,7 +592,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 569487312}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -662,6 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f123e3b6979b7ef4c927781b0f9f9ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 569943663}
 --- !u!1 &569943655
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,6 +679,8 @@ GameObject:
   - component: {fileID: 569943657}
   - component: {fileID: 569943658}
   - component: {fileID: 569943663}
+  - component: {fileID: 569943662}
+  - component: {fileID: 569943664}
   m_Layer: 10
   m_Name: AI_Entity
   m_TagString: Untagged
@@ -778,6 +782,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1.05, z: 0}
+--- !u!114 &569943662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 569943655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c36c9e7283b87449bf5a1364b6f8cd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cost: 1
+  target: {fileID: 569487312}
 --- !u!114 &569943663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,7 +808,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  isVisible: 1
+  reachedWayPoint: 1
+--- !u!114 &569943664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 569943655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b52d2d294a283a64881521dd92632f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cost: 1
+  target: {fileID: 0}
 --- !u!1001 &662101453
 Prefab:
   m_ObjectHideFlags: 0

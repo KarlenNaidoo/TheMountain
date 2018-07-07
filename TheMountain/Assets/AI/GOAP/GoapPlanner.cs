@@ -107,7 +107,6 @@ public class GoapPlanner
                 {
                     // we found a solution
                     leaves.Add(node);
-                    Debug.Log(GoapAgent.prettyPrint(currentState));
                     foundOne = true;
                 }
                 else
