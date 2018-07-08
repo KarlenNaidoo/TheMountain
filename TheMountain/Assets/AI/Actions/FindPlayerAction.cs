@@ -24,7 +24,7 @@ public class FindPlayerAction : ReGoapAction<string, object> {
     public override bool CheckProceduralCondition(GoapActionStackData<string, object> stackData)
     {
 
-        return base.CheckProceduralCondition(stackData) && stackData.agent.GetMemory().GetWorldState().HasKey("playerPosition");
+        return base.CheckProceduralCondition(stackData) && stackData.agent.GetMemory().GetWorldState().HasKey("objectivePosition");
     }
 
     protected virtual void OnFailureMovement()
@@ -41,9 +41,15 @@ public class FindPlayerAction : ReGoapAction<string, object> {
     {
         if (stackData.goalState.HasKey("isAtPosition"))
         {
-            settings.Set("objectivePosition", stackData.goalState.Get("isAtPosition"));
-            settings.Set("playerPosition", stackData.agent.GetMemory().GetWorldState().Get("playerPosition"));
+            //settings.Set("objectivePosition", stackData.goalState.Get("isAtPosition"));
+            settings.Set("isAtPosition", stackData.agent.GetMemory().GetWorldState().Get("objectivePosition"));
             return base.GetSettings(stackData);
+        }
+        else
+        {
+
+            Debug.Log("Does not have objectivePosition key");
+
         }
         return new List<ReGoapState<string, object>>();
 
@@ -51,7 +57,7 @@ public class FindPlayerAction : ReGoapAction<string, object> {
     
     public override ReGoapState<string, object> GetEffects(GoapActionStackData<string, object> stackData)
     {
-        effects.Set("isAtPosition", settings.Get("playerPosition"));
+        effects.Set("isAtPosition", stackData.agent.GetMemory().GetWorldState().Get("objectivePosition"));
         return base.GetEffects(stackData);
     }
 
@@ -60,12 +66,18 @@ public class FindPlayerAction : ReGoapAction<string, object> {
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
-         Debug.Log("Settings: " + settings);
-        if (settings.HasKey("objectivePosition"))
-            smsGoto.GoTo((Vector3)settings.Get("playerPosition"), OnDoneMovement, OnFailureMovement);
-           
+        if (settings.HasKey("isAtPosition"))
+        {
+            Debug.Log("here");
+            smsGoto.GoTo((Vector3)settings.Get("isAtPosition"), OnDoneMovement, OnFailureMovement);
+
+        }
+
         else
+        {
             failCallback(this);
-        
+
+        }
+
     }
 }
