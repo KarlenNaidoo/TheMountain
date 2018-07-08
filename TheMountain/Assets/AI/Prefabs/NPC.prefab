@@ -212,6 +212,8 @@ MonoBehaviour:
   Priority: 1
   ErrorDelay: 0.5
   WarnPossibleGoal: 1
+  targetName: 
+  target: {fileID: 0}
 --- !u!114 &114729737670630204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -269,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c12111063a0f15439f726883a23c28d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!136 &136464644057792554
 CapsuleCollider:
   m_ObjectHideFlags: 1

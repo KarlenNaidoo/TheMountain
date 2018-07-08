@@ -3,6 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReGoap.Unity;
 
-public class NPCMemory : ReGoapMemory<string, object> {
+public class NPCMemory : ReGoapMemoryAdvanced<string, object> {
     
 }
