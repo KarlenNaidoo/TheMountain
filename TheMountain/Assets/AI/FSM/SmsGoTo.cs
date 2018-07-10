@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReGoap.Unity.FSM;
 using ReGoap.Utilities;
 using UnityEngine;
@@ -151,6 +152,15 @@ using UnityEngine;
             GoTo(onDoneMovement, onFailureMovement);
         }
 
+        public void GoTo(List<Transform> transform, Action onDoneMovement, Action onFailureMovement)
+        {
+            foreach (Transform location in transform)
+            {
+                objective = location.position;
+            Debug.Log("Moving to position " + location.position);
+                GoTo(onDoneMovement, onFailureMovement);
+            }
+        }
         public void GoTo(Transform transform, Action onDoneMovement, Action onFailureMovement)
         {
             objectiveTransform = transform;
