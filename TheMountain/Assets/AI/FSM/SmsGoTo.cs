@@ -5,6 +5,7 @@ using ReGoap.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // generic goto state, can be used in most games, override Tick and Enter if you are using
@@ -38,7 +39,10 @@ public class SmsGoTo : SmState
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector2 velocity = Vector2.zero;
 
+
+    int waypointNumber = 0;
     Vector3 nextPosition;
+    
     Quaternion nextRotation;
     [SerializeField] [Range(0.1f, 3f)] float distanceToTargetReached = 0.5f; 
     public bool WorkInFixedUpdate;
@@ -47,7 +51,7 @@ public class SmsGoTo : SmState
     public float Speed;
 
 
-    bool targetReached = true;
+    bool searchForNewPath = true;
     // when the magnitude of the difference between the objective and self is <= of this then we're done
     public float MinPowDistanceToObjective = 0.5f;
 
@@ -105,44 +109,69 @@ public class SmsGoTo : SmState
     void OnAnimatorMove()
     {
         transform.position = anim.rootPosition;
-        ai.FinalizeMovement(transform.position, nextRotation);
+        //transform.rotation = nextRotation;
     }
     protected virtual void MoveTo()
     {
         // Calculate how the AI wants to move
         ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
-
+  
+        ai.FinalizeMovement(transform.position, nextRotation);
         Vector3 localDesiredVelocity = transform.InverseTransformVector(ai.desiredVelocity);
         float angle = Mathf.Atan2(localDesiredVelocity.x, localDesiredVelocity.z) * Mathf.Rad2Deg;
 
         bool shouldMove = ai.remainingDistance > distanceToTargetReached;
-        targetReached = shouldMove;
+        searchForNewPath = !shouldMove;
+        Debug.Log("Search: " + searchForNewPath);
         // Update animation parameters
         anim.SetBool("Move", shouldMove);
         anim.SetFloat("TurnAngle", angle);
         anim.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
   
- 
     }
 
 
 
     public virtual IEnumerator GoTo(List<Transform> transform, Action onDoneMovement, Action onFailureMovement)
     {
-        foreach (Transform location in transform)
+        while (true)
         {
-            Debug.Log("Going through location");
             if (!ai.hasPath && !ai.pathPending || ai.reachedEndOfPath) // if we don't have a path and one is not being calculated
             {
+
+                location = transform[waypointNumber];
                 ai.destination = location.position;
                 Debug.Log("Destination: " + ai.destination);
                 ai.SearchPath();
+                searchForNewPath = false;
+                if(waypointNumber < transform.Count - 1)
+                {
+                    waypointNumber++;
+                }
+                else
+                {
+                    waypointNumber = transform.Count - 1;
+                }
+            }
+            if (searchForNewPath)
+            {
+                location = transform[waypointNumber];
+                ai.destination = location.position;
+                Debug.Log("Destination: " + ai.destination);
+                ai.SearchPath();
+                if (waypointNumber < transform.Count -1)
+                {
+                    waypointNumber++;
+                }
+                else
+                {
+                    waypointNumber = transform.Count - 1;
+                }
+
             }
             yield return null;
-
+            GoTo(onDoneMovement, onFailureMovement);
         }
-
-        GoTo(onDoneMovement, onFailureMovement);
     }
 
     protected virtual void MoveTo(Vector3 position)
