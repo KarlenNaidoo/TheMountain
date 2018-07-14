@@ -3,6 +3,7 @@ using Pathfinding;
 using ReGoap.Unity.FSM;
 using ReGoap.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,6 +46,8 @@ public class SmsGoTo : SmState
     public bool UseRigidbodyVelocity;
     public float Speed;
 
+
+    bool targetReached = true;
     // when the magnitude of the difference between the objective and self is <= of this then we're done
     public float MinPowDistanceToObjective = 0.5f;
 
@@ -76,8 +79,7 @@ public class SmsGoTo : SmState
     {
         return Speed;
     }
-
-    #region Work
+    
 
     protected override void FixedUpdate()
     {
@@ -98,7 +100,6 @@ public class SmsGoTo : SmState
     protected virtual void Tick()
     {
         var objectivePosition = objectiveTransform != null ? objectiveTransform.position : objective.GetValueOrDefault();
-
         MoveTo();
     }
     void OnAnimatorMove()
@@ -115,8 +116,7 @@ public class SmsGoTo : SmState
         float angle = Mathf.Atan2(localDesiredVelocity.x, localDesiredVelocity.z) * Mathf.Rad2Deg;
 
         bool shouldMove = ai.remainingDistance > distanceToTargetReached;
-
-        //Debug.Log("angle " + angle);
+        targetReached = shouldMove;
         // Update animation parameters
         anim.SetBool("Move", shouldMove);
         anim.SetFloat("TurnAngle", angle);
@@ -127,14 +127,19 @@ public class SmsGoTo : SmState
 
 
 
-    public void GoTo(List<Transform> transform, Action onDoneMovement, Action onFailureMovement)
+    public virtual IEnumerator GoTo(List<Transform> transform, Action onDoneMovement, Action onFailureMovement)
     {
-        location = transform[0];
-        if (!ai.hasPath)
+        foreach (Transform location in transform)
         {
-            ai.destination = location.position;
-            Debug.Log("Destination: " + ai.destination);
-            ai.SearchPath();
+            Debug.Log("Going through location");
+            if (!ai.hasPath && !ai.pathPending || ai.reachedEndOfPath) // if we don't have a path and one is not being calculated
+            {
+                ai.destination = location.position;
+                Debug.Log("Destination: " + ai.destination);
+                ai.SearchPath();
+            }
+            yield return null;
+
         }
 
         GoTo(onDoneMovement, onFailureMovement);
@@ -183,9 +188,7 @@ public class SmsGoTo : SmState
         }
         return false;
     }
-
-    #endregion Work
-
+    
     #region StateHandler
 
     public override void Init(StateMachine stateMachine)
