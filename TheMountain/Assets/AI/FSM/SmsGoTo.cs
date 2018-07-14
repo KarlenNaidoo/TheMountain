@@ -69,7 +69,8 @@ public class SmsGoTo : SmState
         ai = GetComponent<RichAI>();
         if (UseRigidBody)
         {
-            body = GetComponent<Rigidbody>();
+
+            body = GetComponentInChildren<Rigidbody>();
         }
 
         // Disable the AIs own movement code
@@ -90,6 +91,7 @@ public class SmsGoTo : SmState
         base.FixedUpdate();
         if (!WorkInFixedUpdate) return;
         Tick();
+        
     }
 
     protected override void Update()
@@ -97,6 +99,7 @@ public class SmsGoTo : SmState
         base.Update();
         if (WorkInFixedUpdate) return;
         Tick();
+
     }
 
     // if you're using an animation just override this, call base function (base.Tick()) and then
@@ -106,19 +109,24 @@ public class SmsGoTo : SmState
         var objectivePosition = objectiveTransform != null ? objectiveTransform.position : objective.GetValueOrDefault();
         MoveTo();
     }
+    
     void OnAnimatorMove()
     {
-        transform.position = anim.rootPosition;
-        //transform.rotation = nextRotation;
+        transform.position = anim.rootPosition + anim.deltaPosition;
     }
+    
+    
     protected virtual void MoveTo()
     {
         // Calculate how the AI wants to move
         ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
-  
+        //transform.rotation = nextRotation;
         ai.FinalizeMovement(transform.position, nextRotation);
         Vector3 localDesiredVelocity = transform.InverseTransformVector(ai.desiredVelocity);
         float angle = Mathf.Atan2(localDesiredVelocity.x, localDesiredVelocity.z) * Mathf.Rad2Deg;
+        localDesiredVelocity.y = 0;
+        Quaternion lookRotation = Quaternion.LookRotation(localDesiredVelocity, Vector3.up);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
 
         bool shouldMove = ai.remainingDistance > distanceToTargetReached;
         searchForNewPath = !shouldMove;
@@ -126,7 +134,7 @@ public class SmsGoTo : SmState
         // Update animation parameters
         anim.SetBool("Move", shouldMove);
         anim.SetFloat("TurnAngle", angle);
-        anim.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
+        anim.SetFloat("Speed", 1);
   
     }
 

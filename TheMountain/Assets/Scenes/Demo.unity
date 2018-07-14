@@ -365,7 +365,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4040078984991630, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.94
       objectReference: {fileID: 0}
     - target: {fileID: 4040078984991630, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
       propertyPath: m_LocalPosition.y
@@ -373,7 +373,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4040078984991630, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 8.79
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: 4040078984991630, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
       propertyPath: m_LocalRotation.x
@@ -395,11 +395,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114390267214386836, guid: 61c48c58b45f66a42b73a1f3229fd403,
-        type: 2}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 317112068}
     - target: {fileID: 114985998446405498, guid: 61c48c58b45f66a42b73a1f3229fd403,
         type: 2}
       propertyPath: patrolPoints.Array.data[0]
@@ -410,72 +405,37 @@ Prefab:
       propertyPath: patrolPoints.Array.data[1]
       value: 
       objectReference: {fileID: 556922212}
-    - target: {fileID: 114665657136682358, guid: 61c48c58b45f66a42b73a1f3229fd403,
+    - target: {fileID: 114390267214386836, guid: 61c48c58b45f66a42b73a1f3229fd403,
         type: 2}
       propertyPath: target
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.273
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.002
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -0.074
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0.060969807
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0.03387312
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0.9770667
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: -0.20118645
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 5.2050004
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 6.0820003
-      objectReference: {fileID: 0}
-    - target: {fileID: 4814601466626796, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 157.007
-      objectReference: {fileID: 0}
-    - target: {fileID: 95354418077143778, guid: 61c48c58b45f66a42b73a1f3229fd403,
+      objectReference: {fileID: 317112068}
+    - target: {fileID: 114771481204540368, guid: 61c48c58b45f66a42b73a1f3229fd403,
         type: 2}
-      propertyPath: m_ApplyRootMotion
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 136722878599268182, guid: 61c48c58b45f66a42b73a1f3229fd403,
-        type: 2}
-      propertyPath: m_Height
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4040078984991630, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
+      propertyPath: WorkInFixedUpdate
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114771481204540368, guid: 61c48c58b45f66a42b73a1f3229fd403,
         type: 2}
-      propertyPath: distanceToTargetReached
-      value: 1.34
+      propertyPath: UseRigidbodyVelocity
+      value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114234207234711356, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
+    - target: {fileID: 114771481204540368, guid: 61c48c58b45f66a42b73a1f3229fd403,
+        type: 2}
+      propertyPath: UseRigidBody
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771481204540368, guid: 61c48c58b45f66a42b73a1f3229fd403,
+        type: 2}
+      propertyPath: Speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 95118543460874672, guid: 61c48c58b45f66a42b73a1f3229fd403,
+        type: 2}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &556922208
@@ -854,26 +814,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 099ab65ae36178944bd0f598a8326120, type: 2}
   m_IsPrefabAsset: 0
---- !u!1 &1205696731 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1737811765774968, guid: 61c48c58b45f66a42b73a1f3229fd403,
-    type: 2}
-  m_PrefabInternal: {fileID: 535380461}
---- !u!54 &1205696735
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1205696731}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
 --- !u!1 &1572105071
 GameObject:
   m_ObjectHideFlags: 0
