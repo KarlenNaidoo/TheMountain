@@ -8,6 +8,6 @@ public class Waypoint : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Reached " + gameObject.name);
+
     }
 }

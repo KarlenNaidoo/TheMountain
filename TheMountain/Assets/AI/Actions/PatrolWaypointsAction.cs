@@ -67,9 +67,9 @@ public class PatrolWaypointsAction : ReGoapAction<string, object>
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
-        Debug.Log(settings.Get("patrolDestination"));
         if (settings.HasKey("patrolDestination"))
         {
+            //StartCoroutine(smsGoto.GoTo((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement));
             smsGoto.GoTo((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement);
 
         }
