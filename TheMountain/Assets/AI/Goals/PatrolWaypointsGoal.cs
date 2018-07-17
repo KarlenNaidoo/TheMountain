@@ -9,7 +9,6 @@ public class PatrolWaypointsGoal : ReGoapGoalAdvanced<string, object>
     {
         base.Awake();
         goal.Set("patrol", true);
-        //goal.Set("visited", false);
     }
     
     public override string ToString()

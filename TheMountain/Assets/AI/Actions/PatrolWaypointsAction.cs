@@ -12,7 +12,7 @@ public class PatrolWaypointsAction : ReGoapAction<string, object>
     //  sometimes a Transform is better (moving target), sometimes you do not have one (last target position)
     //  but if you're using multi-thread approach you can't use a transform or any unity's API
     protected SmsGoTo smsGoto;
-
+    [SerializeField] bool loopWaypoints;
     protected override void Awake()
     {
         base.Awake();
@@ -69,8 +69,7 @@ public class PatrolWaypointsAction : ReGoapAction<string, object>
         base.Run(previous, next, settings, goalState, done, fail);
         if (settings.HasKey("patrolDestination"))
         {
-            StartCoroutine(smsGoto.GoTo((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement));
-            //smsGoto.GoTo((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement);
+            StartCoroutine(smsGoto.SetTargetPath((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement, loopWaypoints));
 
         }
 

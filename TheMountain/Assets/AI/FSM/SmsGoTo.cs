@@ -40,9 +40,12 @@ public class SmsGoTo : SmState
     Vector2 velocity = Vector2.zero;
 
 
-    int waypointNumber = 0;
+    int waypointIndex = 0;
     Vector3 nextPosition;
-    
+    [SerializeField] int numberOfLoops = 3;
+    int countLoops = 0;
+    bool shouldMove = true;
+
     Quaternion nextRotation;
     [SerializeField] [Range(0.1f, 3f)] float distanceToTargetReached = 0.5f; 
     public bool WorkInFixedUpdate;
@@ -51,7 +54,6 @@ public class SmsGoTo : SmState
     public float Speed;
 
 
-    bool searchForNewPath = true;
     // when the magnitude of the difference between the objective and self is <= of this then we're done
     public float MinPowDistanceToObjective = 0.5f;
 
@@ -107,7 +109,7 @@ public class SmsGoTo : SmState
     protected virtual void Tick()
     {
         var objectivePosition = objectiveTransform != null ? objectiveTransform.position : objective.GetValueOrDefault();
-        MoveTo();
+        MoveToPosition();
     }
     
     void OnAnimatorMove()
@@ -116,70 +118,83 @@ public class SmsGoTo : SmState
     }
     
     
-    protected virtual void MoveTo()
+    protected virtual void MoveToPosition()
     {
+
         // Calculate how the AI wants to move
         ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
-        //transform.rotation = nextRotation;
-        ai.FinalizeMovement(transform.position, nextRotation);
-        Vector3 localDesiredVelocity = transform.InverseTransformVector(ai.desiredVelocity);
-        float angle = Mathf.Atan2(localDesiredVelocity.x, localDesiredVelocity.z) * Mathf.Rad2Deg;
-        localDesiredVelocity.y = 0;
-        Quaternion lookRotation = Quaternion.LookRotation(localDesiredVelocity, Vector3.up);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
 
-        bool shouldMove = ai.remainingDistance > distanceToTargetReached;
-        searchForNewPath = !shouldMove;
-        Debug.Log("Search: " + searchForNewPath);
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walking") || anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            transform.rotation = nextRotation;
+            ai.FinalizeMovement(transform.position, nextRotation);
+        }
+        else
+        {
+            transform.rotation = anim.rootRotation * anim.deltaRotation;
+        }
+
+        Vector3 localDesiredVelocity = transform.InverseTransformVector(ai.desiredVelocity);
+      
+        localDesiredVelocity.y = 0;
+        float angle = FindDegree(localDesiredVelocity.x, localDesiredVelocity.z);
+        //Debug.Log("Angle: " + angle);
+        //Debug.Log("steering: " + ai.steeringTarget);
+        Quaternion lookRotation = Quaternion.LookRotation(localDesiredVelocity, Vector3.up);
+        shouldMove = ai.remainingDistance > distanceToTargetReached;
+       
         // Update animation parameters
+        UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
+
+    }
+
+    private float FindDegree(float x, float y)
+    {
+
+        float angleBetweenTwoPoints = (float)((Mathf.Atan2(x, y) / Math.PI) * 180f);
+        //if (angleBetweenTwoPoints < 0) angleBetweenTwoPoints += 360f;
+
+        return angleBetweenTwoPoints;
+    }
+
+    private void UpdateMoveAnimations(Vector3 localDesiredVelocity, float angle, bool shouldMove)
+    {
         anim.SetBool("Move", shouldMove);
         anim.SetFloat("TurnAngle", angle);
-        anim.SetFloat("Speed", 1);
-  
+        anim.SetFloat("Speed", localDesiredVelocity.magnitude);
     }
 
 
-
-    public virtual IEnumerator GoTo(List<Transform> transform, Action onDoneMovement, Action onFailureMovement)
+    public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, bool loopWaypoints = true )
     {
-        while (true)
+        for (int i = 0; i < numberOfLoops; i++)
         {
-            if (!ai.hasPath && !ai.pathPending || ai.reachedEndOfPath) // if we don't have a path and one is not being calculated
+            if (!ai.hasPath || !ai.pathPending)  // if we don't have a path and one is not being calculated or if we reached the end and we need to loop back
             {
 
-                location = transform[waypointNumber];
+                location = transform[waypointIndex];
                 ai.destination = location.position;
-                Debug.Log("Destination: " + ai.destination);
-                ai.SearchPath();
-                searchForNewPath = false;
-                if(waypointNumber < transform.Count - 1)
-                {
-                    waypointNumber++;
-                }
-                else
-                {
-                    waypointNumber = transform.Count - 1;
-                }
             }
-            if (searchForNewPath)
+
+            if (ai.reachedEndOfPath && loopWaypoints)
             {
-                location = transform[waypointNumber];
-                ai.destination = location.position;
-                Debug.Log("Destination: " + ai.destination);
-                ai.SearchPath();
-                if (waypointNumber < transform.Count -1)
+                if (waypointIndex < (transform.Count - 1))
                 {
-                    waypointNumber++;
+                    waypointIndex++;
                 }
                 else
                 {
-                    waypointNumber = transform.Count - 1;
+                    countLoops++;
+                    waypointIndex = 0;
                 }
-
             }
             yield return null;
-            GoTo(onDoneMovement, onFailureMovement);
         }
+        Debug.Log("Player went around " + countLoops + " times"); // TODO: Not looping correctly, we will go in an infinite loop and never Complete this movement
+        if(!loopWaypoints)
+            GoTo(onDoneMovement, onFailureMovement);
+
+
     }
 
     protected virtual void MoveTo(Vector3 position)
