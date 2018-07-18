@@ -67,6 +67,17 @@ namespace Player
             return false;
         }
 
+        // Returns the signed angle in degress
+        public static float FindSignedAngle(Vector3 fromVector, Vector3 toVector)
+        {
+            if (fromVector == toVector)
+                return 0.0f;
+            float angle = Vector3.Angle(fromVector, toVector);
+            Vector3 cross = Vector3.Cross(fromVector, toVector);
+            angle *= Mathf.Sign(cross.y);
+            return angle;
+        }
+
         public static float Angle(this Transform transform, Vector3 hitpoint, bool normalized = true)
         {
             var localTarget = transform.InverseTransformPoint(hitpoint);

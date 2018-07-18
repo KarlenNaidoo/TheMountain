@@ -142,7 +142,7 @@ public abstract class AIStateMachine : MonoBehaviour {
             AIStateMachineLink[] behaviourScripts = _animator.GetBehaviours<AIStateMachineLink>();
             foreach (AIStateMachineLink script in behaviourScripts)
             {
-                script.stateMachine = this;
+                //script.stateMachine = this;
             }
         }
 

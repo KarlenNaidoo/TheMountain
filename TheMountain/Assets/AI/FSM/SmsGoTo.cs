@@ -24,6 +24,11 @@ public class SmsGoTo : SmState
 
     // Pathfinding
     private RichAI ai;
+    protected int _rootPositionRefCount;
+    protected int _rootRotationRefCount;
+
+    public bool useRootPosition { get { return _rootPositionRefCount > 0; } }
+    public bool useRootRotation { get { return _rootRotationRefCount > 0; } }
 
     private float smoothAngle;
 
@@ -38,7 +43,8 @@ public class SmsGoTo : SmState
     private Transform location;
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector2 velocity = Vector2.zero;
-
+    [SerializeField] float _slerpSpeed = 5f;
+    
 
     int waypointIndex = 0;
     Vector3 nextPosition;
@@ -81,12 +87,20 @@ public class SmsGoTo : SmState
         anim = GetComponent<Animator>();
     }
 
-    // if your games handle the speed from something else (ex. stats class) you can override this function
-    protected virtual float GetSpeed()
+    protected override void Start()
     {
-        return Speed;
+        base.Start();
+
+        if (anim)
+        {
+            Debug.Log("setting up animator to references ");
+            RootMotionConfigurator[] behaviourScripts = anim.GetBehaviours<RootMotionConfigurator>();
+            foreach (RootMotionConfigurator script in behaviourScripts)
+            {
+                script.smsGoTo = this;
+            }
+        }
     }
-    
 
     protected override void FixedUpdate()
     {
@@ -112,10 +126,6 @@ public class SmsGoTo : SmState
         MoveToPosition();
     }
     
-    void OnAnimatorMove()
-    {
-        transform.position = anim.rootPosition + anim.deltaPosition;
-    }
     
     
     protected virtual void MoveToPosition()
@@ -124,39 +134,39 @@ public class SmsGoTo : SmState
         // Calculate how the AI wants to move
         ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
 
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walking") || anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        Vector3 localDesiredVelocity = transform.InverseTransformDirection(ai.desiredVelocity);
+
+        localDesiredVelocity.y = 0;
+        if (!useRootPosition)
         {
-            transform.rotation = nextRotation;
             ai.FinalizeMovement(transform.position, nextRotation);
         }
         else
         {
-            transform.rotation = anim.rootRotation * anim.deltaRotation;
+            transform.position = anim.rootPosition;
+        }
+        if (!useRootRotation)
+        {
+            //Debug.Log("Not using root motion");
+            Quaternion lookRotation = Quaternion.LookRotation(localDesiredVelocity, Vector3.up);
+           
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _slerpSpeed);
+        }
+        else
+        {
+            Debug.Log("Using root rotation");
+            transform.rotation = anim.rootRotation;
         }
 
-        Vector3 localDesiredVelocity = transform.InverseTransformVector(ai.desiredVelocity);
-      
-        localDesiredVelocity.y = 0;
-        float angle = FindDegree(localDesiredVelocity.x, localDesiredVelocity.z);
+        float angle = Player.Utility.FindSignedAngle(transform.forward, (ai.steeringTarget - transform.position));
         //Debug.Log("Angle: " + angle);
-        //Debug.Log("steering: " + ai.steeringTarget);
-        Quaternion lookRotation = Quaternion.LookRotation(localDesiredVelocity, Vector3.up);
         shouldMove = ai.remainingDistance > distanceToTargetReached;
        
         // Update animation parameters
         UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
 
     }
-
-    private float FindDegree(float x, float y)
-    {
-
-        float angleBetweenTwoPoints = (float)((Mathf.Atan2(x, y) / Math.PI) * 180f);
-        //if (angleBetweenTwoPoints < 0) angleBetweenTwoPoints += 360f;
-
-        return angleBetweenTwoPoints;
-    }
-
+    
     private void UpdateMoveAnimations(Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {
         anim.SetBool("Move", shouldMove);
@@ -187,20 +197,34 @@ public class SmsGoTo : SmState
                     countLoops++;
                     waypointIndex = 0;
                 }
+
             }
+
             yield return null;
+            GoTo(onDoneMovement, onFailureMovement); // For some reason, NPC will only move when this is here
+
         }
-        Debug.Log("Player went around " + countLoops + " times"); // TODO: Not looping correctly, we will go in an infinite loop and never Complete this movement
+        //Debug.Log("Player went around " + countLoops + " times"); // TODO: Not looping correctly, we will go in an infinite loop and never Complete this movement
         if(!loopWaypoints)
             GoTo(onDoneMovement, onFailureMovement);
 
 
     }
 
+
+
+    public void AddRootMotionRequest(int rootPosition, int rootRotation)
+    {
+
+        _rootPositionRefCount += rootPosition;
+        _rootRotationRefCount += rootRotation;
+        Debug.Log("Rotation: " + _rootRotationRefCount);
+    }
+
     protected virtual void MoveTo(Vector3 position)
     {
         var delta = position - transform.position;
-        var movement = delta.normalized * GetSpeed();
+        var movement = delta.normalized * Speed;
         if (UseRigidBody)
         {
             if (UseRigidbodyVelocity)

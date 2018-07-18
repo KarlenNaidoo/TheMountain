@@ -48,7 +48,7 @@ public class ChasePlayerAction : ReGoapAction<string, object> {
         else
         {
 
-            Debug.Log("Does not have isAtPosition key");
+           // Debug.Log("Does not have isAtPosition key");
 
         }
         return new List<ReGoapState<string, object>>();

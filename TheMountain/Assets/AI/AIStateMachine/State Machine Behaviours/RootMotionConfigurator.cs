@@ -2,24 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RootMotionConfigurator : AIStateMachineLink
+public class RootMotionConfigurator : StateMachineBehaviour
 {
     [SerializeField] private int _rootPosition = 0;
     [SerializeField] private int _rootRotation = 0;
 
+    protected SmsGoTo _smsGoTo;
+    public SmsGoTo smsGoTo { set { _smsGoTo = value; } }
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_stateMachine)
+        Debug.Log("Entering state");
+        if (_smsGoTo)
         {
-
-            Debug.Log(_stateMachine.GetType().ToString());
-            _stateMachine.AddRootMotionRequest(_rootPosition, _rootRotation);
+            
+            _smsGoTo.AddRootMotionRequest(_rootPosition, _rootRotation);
         }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (_stateMachine)
-            _stateMachine.AddRootMotionRequest(-_rootPosition, -_rootRotation);
+        Debug.Log("Exiting state");
+        if (_smsGoTo)
+            _smsGoTo.AddRootMotionRequest(-_rootPosition, -_rootRotation);
     }
 }
