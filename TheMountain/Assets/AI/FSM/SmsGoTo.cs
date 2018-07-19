@@ -136,9 +136,11 @@ public class SmsGoTo : SmState
 
         Vector3 localDesiredVelocity = transform.InverseTransformDirection(ai.desiredVelocity);
 
-        localDesiredVelocity.y = 0;
+        localDesiredVelocity.y = 0; // we don't want our player floating so ignore y axis
+
         if (!useRootPosition)
         {
+            // if no root position
             ai.FinalizeMovement(transform.position, nextRotation);
         }
         else
@@ -147,19 +149,16 @@ public class SmsGoTo : SmState
         }
         if (!useRootRotation)
         {
-            //Debug.Log("Not using root motion");
             Quaternion lookRotation = Quaternion.LookRotation(localDesiredVelocity, Vector3.up);
-           
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _slerpSpeed);
+            transform.rotation = nextRotation;//Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _slerpSpeed);
         }
         else
         {
-            Debug.Log("Using root rotation");
             transform.rotation = anim.rootRotation;
         }
 
         float angle = Player.Utility.FindSignedAngle(transform.forward, (ai.steeringTarget - transform.position));
-        //Debug.Log("Angle: " + angle);
+        Debug.Log("Angle: " + angle);
         shouldMove = ai.remainingDistance > distanceToTargetReached;
        
         // Update animation parameters
