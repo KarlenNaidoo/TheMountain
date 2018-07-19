@@ -180,7 +180,7 @@ public class SmsGoTo : SmState
 
     public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, bool loopWaypoints = true )
     {
-        while(circuitComplete < numberOfLoops)
+        while(circuitComplete < numberOfLoops || loopWaypoints)
         {
             if (Vector3.Distance(this.transform.position, ai.destination) < ai.endReachedDistance)
             {
@@ -214,7 +214,6 @@ public class SmsGoTo : SmState
         }
         if(!loopWaypoints || circuitComplete >= numberOfLoops)
         {
-            Debug.Log("Movement should be done");
             DisableMovement();
             UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
             GoTo(onDoneMovement, onFailureMovement);
