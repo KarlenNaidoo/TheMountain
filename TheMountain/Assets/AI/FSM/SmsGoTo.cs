@@ -75,25 +75,27 @@ public class SmsGoTo : SmState
     {
         base.Awake();
         ai = GetComponent<RichAI>();
+        anim = GetComponent<Animator>();
+
         if (UseRigidBody)
         {
 
             body = GetComponentInChildren<Rigidbody>();
         }
 
-        // Disable the AIs own movement code
-        ai.updatePosition = false;
-        ai.canMove = false;
-        anim = GetComponent<Animator>();
     }
 
     protected override void Start()
     {
         base.Start();
 
+
+        // Disable the AIs own movement code
+        ai.updatePosition = false;
+        ai.canMove = false;
+
         if (anim)
         {
-            Debug.Log("setting up animator to references ");
             RootMotionConfigurator[] behaviourScripts = anim.GetBehaviours<RootMotionConfigurator>();
             foreach (RootMotionConfigurator script in behaviourScripts)
             {
@@ -140,7 +142,6 @@ public class SmsGoTo : SmState
 
         if (!useRootPosition)
         {
-            // if no root position
             ai.FinalizeMovement(transform.position, nextRotation);
         }
         else
@@ -149,8 +150,7 @@ public class SmsGoTo : SmState
         }
         if (!useRootRotation)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(localDesiredVelocity, Vector3.up);
-            transform.rotation = nextRotation;//Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _slerpSpeed);
+            transform.rotation = nextRotation;
         }
         else
         {
@@ -177,25 +177,25 @@ public class SmsGoTo : SmState
     {
         for (int i = 0; i < numberOfLoops; i++)
         {
-            if (!ai.hasPath || !ai.pathPending)  // if we don't have a path and one is not being calculated or if we reached the end and we need to loop back
-            {
 
-                location = transform[waypointIndex];
-                ai.destination = location.position;
-            }
-
-            if (ai.reachedEndOfPath && loopWaypoints)
+            if (Vector3.Distance(this.transform.position, ai.destination) < ai.endReachedDistance)
             {
+                Debug.Log("Destination reached");
                 if (waypointIndex < (transform.Count - 1))
                 {
                     waypointIndex++;
                 }
                 else
                 {
-                    countLoops++;
                     waypointIndex = 0;
                 }
+            }
 
+            if (!ai.hasPath || !ai.pathPending)  // if we don't have a path and one is not being calculated or if we reached the end and we need to loop back
+            {
+
+                location = transform[waypointIndex];
+                ai.destination = location.position;
             }
 
             yield return null;
@@ -206,7 +206,6 @@ public class SmsGoTo : SmState
         if(!loopWaypoints)
             GoTo(onDoneMovement, onFailureMovement);
 
-
     }
 
 
@@ -216,7 +215,6 @@ public class SmsGoTo : SmState
 
         _rootPositionRefCount += rootPosition;
         _rootRotationRefCount += rootRotation;
-        Debug.Log("Rotation: " + _rootRotationRefCount);
     }
 
     protected virtual void MoveTo(Vector3 position)

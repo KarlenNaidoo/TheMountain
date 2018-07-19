@@ -25,7 +25,7 @@ public class PatrolWaypointsAction : ReGoapAction<string, object>
     {
 
         List<Transform> patrolPoints = (List<Transform>)stackData.agent.GetMemory().GetWorldState().Get("patrolDestinations");
-        return base.CheckProceduralCondition(stackData) && (patrolPoints.Count > 0); // Don't proceed if we dont have at least one waypoint
+        return base.CheckProceduralCondition(stackData) && (patrolPoints.Count > 0); // Proceed only if we have at least one waypoint
     }
 
     protected virtual void OnFailureMovement()
@@ -53,7 +53,6 @@ public class PatrolWaypointsAction : ReGoapAction<string, object>
 
     public override ReGoapState<string, object> GetPreconditions(GoapActionStackData<string, object> stackData)
     {
-        //preconditions.Set("visited", false);
         return base.GetPreconditions(stackData);
     }
 
@@ -68,16 +67,15 @@ public class PatrolWaypointsAction : ReGoapAction<string, object>
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
+        
         if (settings.HasKey("patrolDestination"))
         {
             StartCoroutine(smsGoto.SetTargetPath((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement, loopWaypoints));
-
+            //OnDoneMovement();
         }
-
         else
         {
-            failCallback(this);
-
+            OnFailureMovement();
         }
 
     }

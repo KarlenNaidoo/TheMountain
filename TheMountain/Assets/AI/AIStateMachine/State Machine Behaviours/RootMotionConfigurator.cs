@@ -12,7 +12,6 @@ public class RootMotionConfigurator : StateMachineBehaviour
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("Entering state");
         if (_smsGoTo)
         {
             
@@ -22,7 +21,6 @@ public class RootMotionConfigurator : StateMachineBehaviour
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("Exiting state");
         if (_smsGoTo)
             _smsGoTo.AddRootMotionRequest(-_rootPosition, -_rootRotation);
     }
