@@ -158,7 +158,6 @@ public class SmsGoTo : SmState
         }
 
         float angle = Player.Utility.FindSignedAngle(transform.forward, (ai.steeringTarget - transform.position));
-        Debug.Log("Angle: " + angle);
         shouldMove = ai.remainingDistance > distanceToTargetReached;
        
         // Update animation parameters

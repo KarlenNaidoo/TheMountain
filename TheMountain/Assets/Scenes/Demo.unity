@@ -363,6 +363,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114985998446405498, guid: 61c48c58b45f66a42b73a1f3229fd403,
+        type: 2}
+      propertyPath: patrolPoints.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4040078984991630, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
       propertyPath: m_LocalPosition.x
       value: 6.2
@@ -409,7 +414,7 @@ Prefab:
         type: 2}
       propertyPath: patrolPoints.Array.data[1]
       value: 
-      objectReference: {fileID: 556922212}
+      objectReference: {fileID: 0}
     - target: {fileID: 114179860685123192, guid: 61c48c58b45f66a42b73a1f3229fd403,
         type: 2}
       propertyPath: endReachedDistance
@@ -427,6 +432,8 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114725679683187276, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
+    - {fileID: 114390267214386836, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
+    - {fileID: 114728608757178214, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &556922208

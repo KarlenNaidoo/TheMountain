@@ -23,8 +23,9 @@ public class PatrolWaypointsAction : ReGoapAction<string, object>
 
     public override bool CheckProceduralCondition(GoapActionStackData<string, object> stackData)
     {
-        
-        return base.CheckProceduralCondition(stackData); // Don't proceed if we dont have at least one waypoint
+
+        List<Transform> patrolPoints = (List<Transform>)stackData.agent.GetMemory().GetWorldState().Get("patrolDestinations");
+        return base.CheckProceduralCondition(stackData) && (patrolPoints.Count > 0); // Don't proceed if we dont have at least one waypoint
     }
 
     protected virtual void OnFailureMovement()
