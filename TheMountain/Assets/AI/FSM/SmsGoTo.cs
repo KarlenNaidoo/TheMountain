@@ -49,11 +49,11 @@ public class SmsGoTo : SmState
     int waypointIndex = 0;
     Vector3 nextPosition;
     [SerializeField] int numberOfLoops = 3;
-    int countLoops = 0;
+    int waypointsVisited = 0;
+    int circuitComplete = 0;
     bool shouldMove = true;
 
     Quaternion nextRotation;
-    [SerializeField] [Range(0.1f, 3f)] float distanceToTargetReached = 0.5f; 
     public bool WorkInFixedUpdate;
     public bool UseRigidBody;
     public bool UseRigidbodyVelocity;
@@ -70,6 +70,8 @@ public class SmsGoTo : SmState
     public bool CheckForStuck;
     public float StuckCheckDelay = 1f;
     public float MaxStuckDistance = 0.1f;
+    private Vector3 localDesiredVelocity;
+    private float angle;
 
     protected override void Awake()
     {
@@ -125,7 +127,7 @@ public class SmsGoTo : SmState
     protected virtual void Tick()
     {
         var objectivePosition = objectiveTransform != null ? objectiveTransform.position : objective.GetValueOrDefault();
-        MoveToPosition();
+        //MoveToPosition();
     }
     
     
@@ -133,10 +135,11 @@ public class SmsGoTo : SmState
     protected virtual void MoveToPosition()
     {
 
+
         // Calculate how the AI wants to move
         ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
 
-        Vector3 localDesiredVelocity = transform.InverseTransformDirection(ai.desiredVelocity);
+        localDesiredVelocity = transform.InverseTransformDirection(ai.desiredVelocity);
 
         localDesiredVelocity.y = 0; // we don't want our player floating so ignore y axis
 
@@ -157,14 +160,16 @@ public class SmsGoTo : SmState
             transform.rotation = anim.rootRotation;
         }
 
-        float angle = Player.Utility.FindSignedAngle(transform.forward, (ai.steeringTarget - transform.position));
-        shouldMove = ai.remainingDistance > distanceToTargetReached;
-       
+        angle = Player.Utility.FindSignedAngle(transform.forward, (ai.steeringTarget - transform.position));
+
+
+        EnableMovement();
         // Update animation parameters
         UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
 
     }
-    
+
+
     private void UpdateMoveAnimations(Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {
         anim.SetBool("Move", shouldMove);
@@ -175,12 +180,12 @@ public class SmsGoTo : SmState
 
     public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, bool loopWaypoints = true )
     {
-        for (int i = 0; i < numberOfLoops; i++)
+        while(circuitComplete < numberOfLoops)
         {
-
             if (Vector3.Distance(this.transform.position, ai.destination) < ai.endReachedDistance)
             {
-                Debug.Log("Destination reached");
+                waypointsVisited++;
+                Debug.Log("Waypoints visited: " + waypointsVisited);
                 if (waypointIndex < (transform.Count - 1))
                 {
                     waypointIndex++;
@@ -196,18 +201,36 @@ public class SmsGoTo : SmState
 
                 location = transform[waypointIndex];
                 ai.destination = location.position;
+                MoveToPosition();
             }
-
+            if(waypointsVisited == transform.Count)
+            {
+                circuitComplete++;
+                Debug.Log("Circuit completed " + circuitComplete + " times");
+                waypointsVisited = 0;
+            }
             yield return null;
-            GoTo(onDoneMovement, onFailureMovement); // For some reason, NPC will only move when this is here
-
+           
         }
-        //Debug.Log("Player went around " + countLoops + " times"); // TODO: Not looping correctly, we will go in an infinite loop and never Complete this movement
-        if(!loopWaypoints)
+        if(!loopWaypoints || circuitComplete >= numberOfLoops)
+        {
+            Debug.Log("Movement should be done");
+            DisableMovement();
+            UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
             GoTo(onDoneMovement, onFailureMovement);
-
+            
+        }
     }
 
+    private void DisableMovement()
+    {
+        shouldMove = false;
+    }
+
+    private void EnableMovement()
+    {
+        shouldMove = true;
+    }
 
 
     public void AddRootMotionRequest(int rootPosition, int rootRotation)

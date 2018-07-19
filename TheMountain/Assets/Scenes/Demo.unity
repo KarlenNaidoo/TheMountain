@@ -418,7 +418,7 @@ Prefab:
     - target: {fileID: 114179860685123192, guid: 61c48c58b45f66a42b73a1f3229fd403,
         type: 2}
       propertyPath: endReachedDistance
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114725679683187276, guid: 61c48c58b45f66a42b73a1f3229fd403,
         type: 2}
@@ -429,6 +429,11 @@ Prefab:
         type: 2}
       propertyPath: _slerpSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771481204540368, guid: 61c48c58b45f66a42b73a1f3229fd403,
+        type: 2}
+      propertyPath: numberOfLoops
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114725679683187276, guid: 61c48c58b45f66a42b73a1f3229fd403, type: 2}
