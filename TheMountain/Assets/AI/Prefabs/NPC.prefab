@@ -367,19 +367,19 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4040078984991630}
-  - component: {fileID: 114390267214386836}
   - component: {fileID: 114266409768995680}
   - component: {fileID: 114771481204540368}
   - component: {fileID: 114103503303252408}
   - component: {fileID: 114800427225391316}
-  - component: {fileID: 114728608757178214}
-  - component: {fileID: 114725679683187276}
   - component: {fileID: 114672203491201448}
   - component: {fileID: 114985998446405498}
   - component: {fileID: 114172924597497940}
   - component: {fileID: 114179860685123192}
   - component: {fileID: 95118543460874672}
   - component: {fileID: 114985343047211382}
+  - component: {fileID: 114490580936356374}
+  - component: {fileID: 114472208235228542}
+  - component: {fileID: 114736295941986110}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -1211,7 +1211,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331890422917486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.1, y: 0, z: 6.53}
+  m_LocalPosition: {x: -3.28, y: 0, z: 0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4753869027393110}
@@ -2364,7 +2364,7 @@ MonoBehaviour:
   acceleration: 5
   rotationSpeed: 360
   slowdownTime: 0.5
-  endReachedDistance: 1
+  endReachedDistance: 5
   wallForce: 3
   wallDist: 1
   funnelSimplification: 0
@@ -2382,7 +2382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
---- !u!114 &114390267214386836
+--- !u!114 &114472208235228542
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2390,15 +2390,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1331890422917486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 566395e12063f744db1a35fb98e418db, type: 3}
+  m_Script: {fileID: 11500000, guid: a1cf1559a23b15943bb5f98f878a1071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: InRange
-  Priority: 1
-  ErrorDelay: 0.5
-  WarnPossibleGoal: 1
-  WarnDelay: 2
-  target: {fileID: 0}
+  Name: FindPlayer
+  Cost: 1
+--- !u!114 &114490580936356374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331890422917486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4b97c8528d3b07419aac3a3650a4c5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: PatrolWaypoints
+  Cost: 1
+  continuouslyLoopWaypoints: 0
+  numberOfLoops: 2
 --- !u!114 &114672203491201448
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2415,7 +2426,7 @@ MonoBehaviour:
   ErrorDelay: 0.5
   WarnPossibleGoal: 1
   WarnDelay: 2
---- !u!114 &114725679683187276
+--- !u!114 &114736295941986110
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2423,25 +2434,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1331890422917486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4b97c8528d3b07419aac3a3650a4c5e, type: 3}
+  m_Script: {fileID: 11500000, guid: 566395e12063f744db1a35fb98e418db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: PatrolWaypointsAction
-  Cost: 1
-  loopWaypoints: 1
---- !u!114 &114728608757178214
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331890422917486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6961cd1991110fa4f9fd7b9a61a976c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: ChasePlayerAction
-  Cost: 1
+  Name: GenericGoal
+  Priority: 1
+  ErrorDelay: 0.5
+  WarnPossibleGoal: 1
+  WarnDelay: 2
 --- !u!114 &114771481204540368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2454,7 +2454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  distanceToTargetReached: 1.34
+  _slerpSpeed: 10
   WorkInFixedUpdate: 0
   UseRigidBody: 1
   UseRigidbodyVelocity: 1
@@ -2489,6 +2489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c12111063a0f15439f726883a23c28d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalFieldOfView: 70
 --- !u!114 &114985343047211382
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2514,9 +2515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensorsUpdateDelay: 0.3
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  patrolPoints: []
 --- !u!135 &135714880341280370
 SphereCollider:
   m_ObjectHideFlags: 1

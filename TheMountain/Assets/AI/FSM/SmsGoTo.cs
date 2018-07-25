@@ -48,7 +48,6 @@ public class SmsGoTo : SmState
 
     int waypointIndex = 0;
     Vector3 nextPosition;
-    [SerializeField] int numberOfLoops = 3;
     int waypointsVisited = 0;
     int circuitComplete = 0;
     bool shouldMove = true;
@@ -127,7 +126,6 @@ public class SmsGoTo : SmState
     protected virtual void Tick()
     {
         var objectivePosition = objectiveTransform != null ? objectiveTransform.position : objective.GetValueOrDefault();
-        //MoveToPosition();
     }
     
     
@@ -177,15 +175,25 @@ public class SmsGoTo : SmState
         anim.SetFloat("Speed", localDesiredVelocity.magnitude);
     }
 
-
-    public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, bool loopWaypoints = true )
+    public virtual void SetTargetPath(Vector3 position, Action onDoneMovement, Action onFailureMovement)
     {
-        while(circuitComplete < numberOfLoops || loopWaypoints)
+        if (!ai.hasPath || !ai.pathPending)  // if we don't have a path or one is not being calculated 
         {
+            // Set destination and move to it
+            ai.destination = position;
+            MoveToPosition();
+        }
+    }
+
+    public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, int numberOfLoops, bool loopWaypoints = true )
+    {
+        while(circuitComplete < numberOfLoops || loopWaypoints) // If we set a predefined loop this will run or if we want it to run forever
+        {
+            // Is the distance from us to the destination less than the Target End distance? If yes we have reached/visited our waypoint
             if (Vector3.Distance(this.transform.position, ai.destination) < ai.endReachedDistance)
             {
                 waypointsVisited++;
-                Debug.Log("Waypoints visited: " + waypointsVisited);
+                // If we are still less than the total number of waypoints then increase the count, if not, loop back around
                 if (waypointIndex < (transform.Count - 1))
                 {
                     waypointIndex++;
@@ -196,17 +204,17 @@ public class SmsGoTo : SmState
                 }
             }
 
-            if (!ai.hasPath || !ai.pathPending)  // if we don't have a path and one is not being calculated or if we reached the end and we need to loop back
+            if (!ai.hasPath || !ai.pathPending)  // if we don't have a path or one is not being calculated 
             {
-
+                // Set destination and move to it
                 location = transform[waypointIndex];
                 ai.destination = location.position;
                 MoveToPosition();
             }
+            // if we reached the last waypoint we have completed one loop around the circuit. Last waypoint found by comparing to length of waypoint array
             if(waypointsVisited == transform.Count)
             {
                 circuitComplete++;
-                Debug.Log("Circuit completed " + circuitComplete + " times");
                 waypointsVisited = 0;
             }
             yield return null;
@@ -283,7 +291,6 @@ public class SmsGoTo : SmState
         return false;
     }
     
-    #region StateHandler
 
     public override void Init(StateMachine stateMachine)
     {
@@ -341,6 +348,5 @@ public class SmsGoTo : SmState
         else
             onFailureMovementCallback();
     }
-
-    #endregion StateHandler
+    
 }
