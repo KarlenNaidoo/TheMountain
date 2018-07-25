@@ -34,7 +34,6 @@ public class ActionChasePlayer : ReGoapAction<string, object>
     protected virtual void OnDoneMovement()
     {
         doneCallback(this);
-
     }
 
 
@@ -49,7 +48,6 @@ public class ActionChasePlayer : ReGoapAction<string, object>
         }
         results.Add(settings.Clone());
         return results;
-        //return base.GetSettings(stackData);
 
     }
 
@@ -65,13 +63,21 @@ public class ActionChasePlayer : ReGoapAction<string, object>
         return base.GetEffects(stackData);
     }
 
-
+    
     public override void Run(IReGoapAction<string, object> previous, IReGoapAction<string, object> next, ReGoapState<string, object> settings, ReGoapState<string, object> goalState, Action<IReGoapAction<string, object>> done, Action<IReGoapAction<string, object>> fail)
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
-        smsGoto.SetTargetPath(lastKnownPlayerPosition, OnDoneMovement, OnFailureMovement);
-        OnDoneMovement();
+        Vector3 inRangePosition = lastKnownPlayerPosition * .5f;
+        smsGoto.SetTargetPath(inRangePosition, OnDoneMovement, OnFailureMovement);
+      
+    }
 
+    protected void Update()
+    {
+        if (smsGoto.MoveToPosition())
+        {
+            OnDoneMovement();
+        }
     }
 }

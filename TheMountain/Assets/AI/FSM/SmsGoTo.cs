@@ -118,6 +118,7 @@ public class SmsGoTo : SmState
         base.Update();
         if (WorkInFixedUpdate) return;
         Tick();
+        Debug.Log("WHy am i not running?");
 
     }
 
@@ -126,14 +127,15 @@ public class SmsGoTo : SmState
     protected virtual void Tick()
     {
         var objectivePosition = objectiveTransform != null ? objectiveTransform.position : objective.GetValueOrDefault();
+       // MoveToPosition();
     }
     
     
     
-    protected virtual void MoveToPosition()
+    public virtual bool MoveToPosition()
     {
 
-
+        Debug.Log("Moving to position");
         // Calculate how the AI wants to move
         ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
 
@@ -164,6 +166,15 @@ public class SmsGoTo : SmState
         EnableMovement();
         // Update animation parameters
         UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
+        if (Vector3.Distance(ai.destination, transform.position) <= ai.endReachedDistance)
+        {
+            DisableMovement();
+            Debug.Log("Disabling movement");
+            return true;
+        }
+
+        return false;
+
 
     }
 
@@ -181,8 +192,15 @@ public class SmsGoTo : SmState
         {
             // Set destination and move to it
             ai.destination = position;
+            Debug.Log("Setting destination");
             MoveToPosition();
         }
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, ai.destination);
     }
 
     public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, int numberOfLoops, bool loopWaypoints = true )
@@ -232,6 +250,10 @@ public class SmsGoTo : SmState
     private void DisableMovement()
     {
         shouldMove = false;
+        angle = 0f;
+        localDesiredVelocity = Vector3.zero;
+
+        UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
     }
 
     private void EnableMovement()
