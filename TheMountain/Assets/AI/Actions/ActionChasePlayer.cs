@@ -11,29 +11,34 @@ public class ActionChasePlayer : ReGoapAction<string, object>
 {
     protected SmsGoTo smsGoto;
     Vector3 lastKnownPlayerPosition;
-
+    bool playerVisible;
+    public Transform playerLocation;
     protected override void Awake()
     {
         base.Awake();
 
         smsGoto = GetComponent<SmsGoTo>();
+        
 
     }
 
     public override bool CheckProceduralCondition(GoapActionStackData<string, object> stackData)
     {
+        // We should not set precondition to whther the player is visible. We should check that we have confidence of the players last known location
 
-        return base.CheckProceduralCondition(stackData);
+        return base.CheckProceduralCondition(stackData) && stackData.agent.GetMemory().GetWorldState().HasKey("lastKnownPlayerPosition");
     }
 
     protected virtual void OnFailureMovement()
     {
         failCallback(this);
+        Debug.Log("Failed action");
     }
 
     protected virtual void OnDoneMovement()
     {
         doneCallback(this);
+        Debug.Log("Done action");
     }
 
 
@@ -46,6 +51,7 @@ public class ActionChasePlayer : ReGoapAction<string, object>
             lastKnownPlayerPosition = (Vector3)stackData.agent.GetMemory().GetWorldState().Get("lastKnownPlayerPosition");
 
         }
+        playerVisible = (bool) stackData.agent.GetMemory().GetWorldState().Get("PlayerVisible");
         results.Add(settings.Clone());
         return results;
 
@@ -53,7 +59,6 @@ public class ActionChasePlayer : ReGoapAction<string, object>
 
     public override ReGoapState<string, object> GetPreconditions(GoapActionStackData<string, object> stackData)
     {
-        preconditions.Set("PlayerVisible", true);
         return base.GetPreconditions(stackData);
     }
 
@@ -69,16 +74,24 @@ public class ActionChasePlayer : ReGoapAction<string, object>
 
         base.Run(previous, next, settings, goalState, done, fail);
         Vector3 inRangePosition = lastKnownPlayerPosition * .5f;
-        smsGoto.SetTargetPath(inRangePosition, OnDoneMovement, OnFailureMovement);
-      
+        smsGoto.SetTargetPath(lastKnownPlayerPosition, OnDoneMovement, OnFailureMovement);
+        Debug.Log("Run chase");
+        if (smsGoto.MoveToPosition() && playerVisible && Vector3.Distance(transform.position, playerLocation.position) < 4f) // TODO use a raycast to player position
+        {
+            Debug.Log("Setting chase action to done");
+            done(this);
+        }
+        else // If we get to that position and player is not there we have failed to chase
+        {
+            fail(this);
+            Debug.Log("Failing chase action");
+        }
     }
 
     protected void Update()
     {
         // Move to position will only return true if it is within the destination range, then we can consider this movement done
-        if (smsGoto.MoveToPosition())
-        {
-            OnDoneMovement();
-        }
+        smsGoto.MoveToPosition();
+     
     }
 }

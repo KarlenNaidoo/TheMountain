@@ -92,7 +92,6 @@ public class SmsGoTo : SmState
 
 
         // Disable the AIs own movement code
-        //ai.updatePosition = false;
         ai.canMove = false;
 
         if (anim)
@@ -167,13 +166,12 @@ public class SmsGoTo : SmState
         if (Vector3.Distance(ai.destination, transform.position) <= ai.endReachedDistance)
         {
             DisableMovement();
-            Debug.Log("Disabling movement");
+            Debug.Log("Reached Objective");
             return true;
         }
 
         return false;
-
-
+        
     }
 
 
@@ -190,7 +188,7 @@ public class SmsGoTo : SmState
         {
             // Set destination and move to it
             ai.destination = position;
-            MoveToPosition();
+
         }
     }
 
@@ -209,7 +207,6 @@ public class SmsGoTo : SmState
             {
                 // Set destination and move to it
                 location = transform[waypointIndex];
-                Debug.Log("Moving to next location: " + location.position);
                 ai.destination = location.position;
          
             }
@@ -218,8 +215,9 @@ public class SmsGoTo : SmState
 
                 MoveToPosition();
             }
-            
-            // Is the distance from us to the destination less than the Target End distance? If yes we have reached/visited our waypoint
+
+
+            //We've reached our waypoint, time to move on
             if (Vector3.Distance(this.transform.position, ai.destination) < ai.endReachedDistance)
             {
                 
@@ -233,7 +231,6 @@ public class SmsGoTo : SmState
                 {
                     waypointIndex = 0;
                 }
-                Debug.Log("We've reached our waypoint, time to move on");
                 location = transform[waypointIndex];
                 ai.destination = location.position;
 

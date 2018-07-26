@@ -31,7 +31,7 @@ public class VisualSensor : ReGoapSensor<string, object> {
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;
-        float rayRange = 10f;
+        float rayRange = 30f;
         Quaternion leftRayRotation = Quaternion.AngleAxis(-halfFOV, Vector3.up);
         Quaternion rightRayRotation = Quaternion.AngleAxis(halfFOV, Vector3.up);
         Vector3 leftRayDirection = leftRayRotation * transform.forward;
@@ -54,7 +54,6 @@ public class VisualSensor : ReGoapSensor<string, object> {
         if (other.gameObject.tag.Equals("Player"))
         {
             lastKnownPlayerPosition = other.gameObject.transform.position;
-
             // Get the direction to the target
             // We do not need to take into account which direction we are facing i.e transform.forward because we will next calculate the angle between our forward direction and this distance
             dirToPlayer =  lastKnownPlayerPosition - transform.position;

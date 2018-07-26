@@ -16,7 +16,7 @@ public class RootMotionConfigurator : StateMachineBehaviour
         {
             
             _smsGoTo.AddRootMotionRequest(_rootPosition, _rootRotation);
-            Debug.Log("Root rotation enter: " + _rootRotation);
+            //Debug.Log("Root rotation enter: " + _rootRotation);
         }
     }
 
@@ -26,7 +26,7 @@ public class RootMotionConfigurator : StateMachineBehaviour
         {
 
             _smsGoTo.AddRootMotionRequest(-_rootPosition, -_rootRotation);
-            Debug.Log("Root rotation exit: " + _rootRotation);
+            //Debug.Log("Root rotation exit: " + _rootRotation);
         }
     }
 }

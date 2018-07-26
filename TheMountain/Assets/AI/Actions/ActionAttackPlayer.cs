@@ -35,7 +35,7 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
     
     public override ReGoapState<string, object> GetPreconditions(GoapActionStackData<string, object> stackData)
     {
-        //preconditions.Set("PlayerVisible", true); // maybe this can be a procedural condition?
+        preconditions.Set("PlayerVisible", true); 
         preconditions.Set("PlayerInRange", true);
         return base.GetPreconditions(stackData);
     }
@@ -52,7 +52,10 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
 
         base.Run(previous, next, settings, goalState, done, fail);
         anim.SetTrigger("Attack");
+        anim.SetInteger("AttackID", 1);
+        anim.SetInteger("AttackType", 1);
         Debug.Log("Attacking Player");
+        fail(this);
 
     }
 }
