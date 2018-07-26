@@ -55,7 +55,7 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
         anim.SetInteger("AttackID", 1);
         anim.SetInteger("AttackType", 1);
         Debug.Log("Attacking Player");
-        fail(this);
+        done(this);
 
     }
 }
