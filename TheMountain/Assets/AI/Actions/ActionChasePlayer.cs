@@ -75,6 +75,7 @@ public class ActionChasePlayer : ReGoapAction<string, object>
 
     protected void Update()
     {
+        // Move to position will only return true if it is within the destination range, then we can consider this movement done
         if (smsGoto.MoveToPosition())
         {
             OnDoneMovement();

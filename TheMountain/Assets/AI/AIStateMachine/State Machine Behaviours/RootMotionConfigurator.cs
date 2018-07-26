@@ -16,12 +16,17 @@ public class RootMotionConfigurator : StateMachineBehaviour
         {
             
             _smsGoTo.AddRootMotionRequest(_rootPosition, _rootRotation);
+            Debug.Log("Root rotation enter: " + _rootRotation);
         }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (_smsGoTo)
+        {
+
             _smsGoTo.AddRootMotionRequest(-_rootPosition, -_rootRotation);
+            Debug.Log("Root rotation exit: " + _rootRotation);
+        }
     }
 }

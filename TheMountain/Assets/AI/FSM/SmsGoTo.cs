@@ -24,8 +24,8 @@ public class SmsGoTo : SmState
 
     // Pathfinding
     private RichAI ai;
-    protected int _rootPositionRefCount;
-    protected int _rootRotationRefCount;
+    protected int _rootPositionRefCount = 0;
+    protected int _rootRotationRefCount = 0;
 
     public bool useRootPosition { get { return _rootPositionRefCount > 0; } }
     public bool useRootRotation { get { return _rootRotationRefCount > 0; } }
@@ -92,7 +92,7 @@ public class SmsGoTo : SmState
 
 
         // Disable the AIs own movement code
-        ai.updatePosition = false;
+        //ai.updatePosition = false;
         ai.canMove = false;
 
         if (anim)
@@ -118,7 +118,6 @@ public class SmsGoTo : SmState
         base.Update();
         if (WorkInFixedUpdate) return;
         Tick();
-        Debug.Log("WHy am i not running?");
 
     }
 
@@ -135,7 +134,6 @@ public class SmsGoTo : SmState
     public virtual bool MoveToPosition()
     {
 
-        Debug.Log("Moving to position");
         // Calculate how the AI wants to move
         ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
 
@@ -146,6 +144,7 @@ public class SmsGoTo : SmState
         if (!useRootPosition)
         {
             ai.FinalizeMovement(transform.position, nextRotation);
+       
         }
         else
         {
@@ -161,8 +160,7 @@ public class SmsGoTo : SmState
         }
 
         angle = Player.Utility.FindSignedAngle(transform.forward, (ai.steeringTarget - transform.position));
-
-
+        
         EnableMovement();
         // Update animation parameters
         UpdateMoveAnimations(localDesiredVelocity, angle, shouldMove);
@@ -192,7 +190,6 @@ public class SmsGoTo : SmState
         {
             // Set destination and move to it
             ai.destination = position;
-            Debug.Log("Setting destination");
             MoveToPosition();
         }
     }
@@ -207,9 +204,25 @@ public class SmsGoTo : SmState
     {
         while(circuitComplete < numberOfLoops || loopWaypoints) // If we set a predefined loop this will run or if we want it to run forever
         {
+
+            if (!ai.hasPath || !ai.hasPath)  // if we don't have a path or one is not being calculated 
+            {
+                // Set destination and move to it
+                location = transform[waypointIndex];
+                Debug.Log("Moving to next location: " + location.position);
+                ai.destination = location.position;
+         
+            }
+            if (ai.hasPath)
+            {
+
+                MoveToPosition();
+            }
+            
             // Is the distance from us to the destination less than the Target End distance? If yes we have reached/visited our waypoint
             if (Vector3.Distance(this.transform.position, ai.destination) < ai.endReachedDistance)
             {
+                
                 waypointsVisited++;
                 // If we are still less than the total number of waypoints then increase the count, if not, loop back around
                 if (waypointIndex < (transform.Count - 1))
@@ -220,17 +233,14 @@ public class SmsGoTo : SmState
                 {
                     waypointIndex = 0;
                 }
-            }
-
-            if (!ai.hasPath || !ai.pathPending)  // if we don't have a path or one is not being calculated 
-            {
-                // Set destination and move to it
+                Debug.Log("We've reached our waypoint, time to move on");
                 location = transform[waypointIndex];
                 ai.destination = location.position;
-                MoveToPosition();
+
             }
+
             // if we reached the last waypoint we have completed one loop around the circuit. Last waypoint found by comparing to length of waypoint array
-            if(waypointsVisited == transform.Count)
+            if (waypointsVisited == transform.Count)
             {
                 circuitComplete++;
                 waypointsVisited = 0;
@@ -265,8 +275,8 @@ public class SmsGoTo : SmState
     public void AddRootMotionRequest(int rootPosition, int rootRotation)
     {
 
-        _rootPositionRefCount += rootPosition;
-        _rootRotationRefCount += rootRotation;
+        _rootPositionRefCount = rootPosition;
+        _rootRotationRefCount = rootRotation;
     }
 
     protected virtual void MoveTo(Vector3 position)

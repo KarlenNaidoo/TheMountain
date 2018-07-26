@@ -1838,15 +1838,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331890422917486}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.32, y: 0, z: -9.37}
+  m_LocalRotation: {x: -0, y: 0.9982655, z: -0, w: 0.05887341}
+  m_LocalPosition: {x: -0.3200005, y: 0, z: 6.8500013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4753869027393110}
   - {fileID: 4199443226557348}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 173.25002, z: 0}
 --- !u!4 &4045223683932138
 Transform:
   m_ObjectHideFlags: 1
@@ -3426,7 +3426,7 @@ MonoBehaviour:
   Name: GoalPatrolWaypoints
   Priority: 1
   ErrorDelay: 0.5
-  WarnPossibleGoal: 0
+  WarnPossibleGoal: 1
   WarnDelay: 2
 --- !u!114 &114172924597497940
 MonoBehaviour:
@@ -3576,7 +3576,7 @@ MonoBehaviour:
   Name: AttackPlayer
   Priority: 2
   ErrorDelay: 0.5
-  WarnPossibleGoal: 1
+  WarnPossibleGoal: 0
   WarnDelay: 2
 --- !u!114 &114904856861037250
 MonoBehaviour:
