@@ -8,7 +8,7 @@ using System;
 public class VisualSensor : ReGoapSensor<string, object> {
 
     ReGoapState<string, object> worldState;
-    private Vector3 lastKnownPlayerPosition;
+    private Transform lastKnownPlayerPosition;
     private Vector3 dirToPlayer;
     [SerializeField][Range(0,1)] float totalFieldOfView = 70f;
     float halfFOV;
@@ -42,7 +42,7 @@ public class VisualSensor : ReGoapSensor<string, object> {
 
     public override void UpdateSensor()
     {
-        worldState.Set("objectivePosition", lastKnownPlayerPosition != null ? lastKnownPlayerPosition : transform.position);
+        worldState.Set("objectivePosition", lastKnownPlayerPosition.position != null ? lastKnownPlayerPosition.position : transform.position);
         base.UpdateSensor();
     }
 
@@ -50,10 +50,10 @@ public class VisualSensor : ReGoapSensor<string, object> {
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            lastKnownPlayerPosition = other.gameObject.transform.position;
+            lastKnownPlayerPosition = other.gameObject.transform;
             // Get the direction to the target
             // We do not need to take into account which direction we are facing i.e transform.forward because we will next calculate the angle between our forward direction and this distance
-            dirToPlayer =  lastKnownPlayerPosition - transform.position;
+            dirToPlayer =  lastKnownPlayerPosition.position - transform.position;
             //Debug.Log("Angle is " + Vector3.Angle(transform.forward, dirToPlayer));
             // We do not care about -ve values, we just need to know whether we are within the half field of view
             if (Mathf.Abs(Vector3.Angle(transform.forward, dirToPlayer)) < halfFOV)
@@ -72,11 +72,11 @@ public class VisualSensor : ReGoapSensor<string, object> {
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            lastKnownPlayerPosition = other.gameObject.transform.position;
+            lastKnownPlayerPosition = other.gameObject.transform;
 
             // Get the direction to the target
             // We do not need to take into account which direction we are facing i.e transform.forward because we will next calculate the angle between our forward direction and this distance
-            dirToPlayer = lastKnownPlayerPosition - transform.position;            
+            dirToPlayer = lastKnownPlayerPosition.position - transform.position;            
             if (Mathf.Abs(Vector3.Angle(transform.forward, dirToPlayer)) < halfFOV)
             {
                 worldState.Set("PlayerVisible", true);

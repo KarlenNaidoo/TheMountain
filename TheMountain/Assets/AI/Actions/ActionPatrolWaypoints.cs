@@ -14,21 +14,27 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
     //  sometimes a Transform is better (moving target), sometimes you do not have one (last target position)
     //  but if you're using multi-thread approach you can't use a transform or any unity's API
     protected NavigationManager navManager;
+    protected Blackboard blackboard;
     [SerializeField] bool continuouslyLoopWaypoints;
     [SerializeField] [Range(0,20)] int numberOfLoops = 3;
+
+    private int _waypointIndex = 0;
+    private int _waypointsVisited = 0;
+    private int _circuitComplete = 0;
+    private Transform _location;
 
     protected override void Awake()
     {
         base.Awake();
-
         navManager = GetComponent<NavigationManager>();
+        blackboard = GetComponent<Blackboard>();
 
     }
 
     public override bool CheckProceduralCondition(GoapActionStackData<string, object> stackData)
     {
 
-        List<Transform> patrolPoints = (List<Transform>)stackData.agent.GetMemory().GetWorldState().Get("patrolDestinations");
+        List<Transform> patrolPoints = (List<Transform>)blackboard.worldState.Get("patrolDestinations");
         return base.CheckProceduralCondition(stackData) && (patrolPoints.Count > 0); // Proceed only if we have at least one waypoint
     }
 
@@ -40,7 +46,6 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
     protected virtual void OnDoneMovement()
     {
         settings.Set("VisitedAllWaypoints", true);
-        Debug.Log("Setting visited all waypoints");
         doneCallback(this);
 
     }
@@ -48,7 +53,7 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
 
     public override List<ReGoapState<string, object>> GetSettings(GoapActionStackData<string, object> stackData)
     {
-        List<Transform> patrolPoints = (List<Transform>) stackData.agent.GetMemory().GetWorldState().Get("patrolDestinations");
+        List<Transform> patrolPoints = (List<Transform>) blackboard.worldState.Get("patrolDestinations");
         Vector3 destination = patrolPoints.First().position;
         settings.Set("patrolDestination", patrolPoints);
 
@@ -72,11 +77,40 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
-        
+        List<Transform> patrolDestinations = (List<Transform>)settings.Get("patrolDestination");
         if (settings.HasKey("patrolDestination"))
         {
-            StartCoroutine(navManager.SetTargetPath((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement, numberOfLoops, continuouslyLoopWaypoints));
+            blackboard.onDoneMovement = OnDoneMovement;
+            blackboard.onFailureMovement = OnFailureMovement;
+            blackboard.numberOfLoops = numberOfLoops;
+            blackboard.continuouslyLoopWaypoints = continuouslyLoopWaypoints;
+            //StartCoroutine(navManager.SetTargetPath((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement, numberOfLoops, continuouslyLoopWaypoints));
             //OnDoneMovement();
+
+            while (_circuitComplete < numberOfLoops ) //|| continuouslyLoopWaypoints) // If we set a predefined loop this will run or if we want it to run forever
+            {
+
+
+                blackboard.currentTarget = patrolDestinations[_waypointIndex];
+                Debug.Log("Setting currentTarget to: " + blackboard.currentTarget.position);
+
+                if (_waypointIndex < (patrolDestinations.Count - 1))
+                {
+                    _waypointIndex++;
+                }
+                else
+                {
+                    _waypointIndex = 0;
+                }
+
+                if (blackboard.targetVisitedStatus)
+                {
+
+                    _circuitComplete++;
+                }
+
+            }
+            done(this);
         }
         else
         {

@@ -9,6 +9,7 @@ public class NavigationManager : MonoBehaviour
 {
     private RichAI _ai;
     private Animator _anim;
+    private Blackboard _blackboard;
     private Vector3 _nextPosition;
     private Quaternion _nextRotation;
     private Vector3 _localDesiredVelocity;
@@ -20,7 +21,7 @@ public class NavigationManager : MonoBehaviour
     private Transform _location;
     private Action _onDoneMovementCallback;
     private Action _onFailureMovementCallback;
-
+   
     protected int _rootPositionRefCount = 0;
     protected int _rootRotationRefCount = 0;
 
@@ -32,6 +33,7 @@ public class NavigationManager : MonoBehaviour
     {
         _ai = GetComponent<RichAI>();
         _anim = GetComponent<Animator>();
+        _blackboard = GetComponent<Blackboard>();
     }
 
     protected void Start()
@@ -49,6 +51,17 @@ public class NavigationManager : MonoBehaviour
         }
     }
 
+
+    protected void Update()
+    {
+        if (_blackboard.currentTarget)
+        {
+            SetTargetPath(_blackboard.currentTarget.position, _blackboard.onDoneMovement, _blackboard.onFailureMovement);
+        }
+        //StartCoroutine(SetTargetPath(_blackboard.listOfTargets, _blackboard.onDoneMovement, _blackboard.onFailureMovement, _blackboard.numberOfLoops, _blackboard.continuouslyLoopWaypoints));
+     
+        MoveToPosition();
+    }
     public void AddRootMotionRequest(int rootPosition, int rootRotation)
     {
 
@@ -60,7 +73,7 @@ public class NavigationManager : MonoBehaviour
 
     public virtual bool MoveToPosition()
     {
-        Debug.Log("Im being called");
+        _blackboard.targetVisitedStatus = false;
         // Calculate how the _ai wants to move
         _ai.MovementUpdate(Time.deltaTime, out _nextPosition, out _nextRotation);
 
@@ -93,6 +106,7 @@ public class NavigationManager : MonoBehaviour
         UpdateMoveAnimations(_localDesiredVelocity, _angle, _shouldMove);
         if (Vector3.Distance(_ai.destination, transform.position) <= _ai.endReachedDistance)
         {
+            _blackboard.targetVisitedStatus = true;
             DisableMovement();
             Debug.Log("Reached Objective");
             return true;
@@ -105,7 +119,7 @@ public class NavigationManager : MonoBehaviour
 
     public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, int numberOfLoops, bool loopWaypoints = true)
     {
-        Debug.Log("Im being set");
+
         while (_circuitComplete < numberOfLoops || loopWaypoints) // If we set a predefined loop this will run or if we want it to run forever
         {
 

@@ -524,18 +524,17 @@ GameObject:
   m_Component:
   - component: {fileID: 4040078984991630}
   - component: {fileID: 95118543460874672}
-  - component: {fileID: 114103503303252408}
   - component: {fileID: 114179860685123192}
   - component: {fileID: 114172924597497940}
-  - component: {fileID: 114266409768995680}
-  - component: {fileID: 114771481204540368}
-  - component: {fileID: 114985998446405498}
   - component: {fileID: 114800427225391316}
+  - component: {fileID: 114080552216511134}
+  - component: {fileID: 114254419175262326}
+  - component: {fileID: 114105283917802448}
+  - component: {fileID: 114888748974994208}
   - component: {fileID: 114426947278756172}
   - component: {fileID: 114925422809396794}
-  - component: {fileID: 114105283917802448}
   - component: {fileID: 114295044448269028}
-  - component: {fileID: 114888748974994208}
+  - component: {fileID: 114270130642733070}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -1343,7 +1342,7 @@ GameObject:
   - component: {fileID: 4753869027393110}
   - component: {fileID: 33277149662303486}
   - component: {fileID: 135714880341280370}
-  - component: {fileID: 114904856861037250}
+  - component: {fileID: 114011260182210948}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -1838,7 +1837,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331890422917486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16, y: 0, z: -0}
+  m_LocalPosition: {x: 14.62, y: 0, z: -24.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4753869027393110}
@@ -2185,7 +2184,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1594417230654230}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.13, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4168089721612806}
@@ -3396,7 +3395,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114103503303252408
+--- !u!114 &114011260182210948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1778236968092418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2494869c6d75e4b8d0b8e0fba2a2b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalFieldOfView: 70
+--- !u!114 &114080552216511134
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3404,13 +3415,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1331890422917486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ba45453f8f799b4988059b1116e8132, type: 3}
+  m_Script: {fileID: 11500000, guid: 67edfacef66cf9f4aa4c6fae73e0ddd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableStackedStates: 0
-  initialState: {fileID: 114266409768995680}
-  permitLoopTransition: 1
-  orderTransitions: 0
+  SensorsUpdateDelay: 0.3
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114105283917802448
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3479,13 +3490,13 @@ MonoBehaviour:
   acceleration: 5
   rotationSpeed: 360
   slowdownTime: 0.5
-  endReachedDistance: 4
+  endReachedDistance: 2.5
   wallForce: 3
   wallDist: 1
   funnelSimplification: 0
   slowWhenNotFacingTarget: 1
   animCompatibility: {fileID: 0}
---- !u!114 &114266409768995680
+--- !u!114 &114254419175262326
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3493,10 +3504,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1331890422917486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 376a0151ceae6a046a535d01c7ba6f02, type: 3}
+  m_Script: {fileID: 11500000, guid: c4bf3c01d57efca4297e6b9bda10b6ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 0
+--- !u!114 &114270130642733070
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331890422917486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 320b5874f7e7161459189c472668e18c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114295044448269028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3523,29 +3544,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: PatrolWaypoints
   Cost: 1
-  continuouslyLoopWaypoints: 0
+  continuouslyLoopWaypoints: 1
   numberOfLoops: 1
---- !u!114 &114771481204540368
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331890422917486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 331125422a7cd5f4192702771ed4835e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  priority: 0
-  _slerpSpeed: 10
-  WorkInFixedUpdate: 0
-  UseRigidBody: 1
-  UseRigidbodyVelocity: 1
-  Speed: 10
-  MinPowDistanceToObjective: 0.5
-  CheckForStuck: 0
-  StuckCheckDelay: 1
-  MaxStuckDistance: 0.1
 --- !u!114 &114800427225391316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3577,18 +3577,6 @@ MonoBehaviour:
   ErrorDelay: 0.5
   WarnPossibleGoal: 1
   WarnDelay: 2
---- !u!114 &114904856861037250
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1778236968092418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c12111063a0f15439f726883a23c28d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalFieldOfView: 70
 --- !u!114 &114925422809396794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3602,21 +3590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: ChasePlayer
   Cost: 1
---- !u!114 &114985998446405498
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331890422917486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9d604bc611d79744949c1c040a3ffb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SensorsUpdateDelay: 0.3
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  playerLocation: {fileID: 0}
 --- !u!135 &135714880341280370
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReGoap.Unity;
 
-public class NPCMemory : ReGoapMemoryAdvanced<string, object> {
+public class WorkingMemory : ReGoapMemoryAdvanced<string, object> {
     [SerializeField] List<Transform> patrolPoints;
 
     protected override void Start()
