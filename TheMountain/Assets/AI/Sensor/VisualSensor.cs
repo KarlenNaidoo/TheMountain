@@ -22,9 +22,6 @@ public class VisualSensor : ReGoapSensor<string, object> {
     public override void Init(IReGoapMemory<string, object> memory)
     {
         base.Init(memory);
-        //worldState.Set("objectivePosition", objectivePosition != null ? objectivePosition : transform.position);
-        //worldState.Set("objectivePosition", objectivePosition != null ? objectivePosition : transform.position);
-
     }
 
     // is called only if the object the script is attached to is selected

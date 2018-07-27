@@ -190,6 +190,7 @@ public class SmsGoTo : SmState
             ai.destination = position;
 
         }
+        //GoTo(onDoneMovement, onFailureMovement); // will always default to failure because we are not calling the Exit function. Not making use of the GOTO statemachine
     }
 
     public void OnDrawGizmosSelected()

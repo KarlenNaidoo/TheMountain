@@ -32,13 +32,13 @@ public class ActionChasePlayer : ReGoapAction<string, object>
     protected virtual void OnFailureMovement()
     {
         failCallback(this);
-        Debug.Log("Failed action");
+        Debug.Log("Failed action callback");
     }
 
     protected virtual void OnDoneMovement()
     {
         doneCallback(this);
-        Debug.Log("Done action");
+        Debug.Log("Done action callback");
     }
 
 
@@ -78,13 +78,11 @@ public class ActionChasePlayer : ReGoapAction<string, object>
         Debug.Log("Run chase");
         if (smsGoto.MoveToPosition() && playerVisible && Vector3.Distance(transform.position, playerLocation.position) < 4f) // TODO use a raycast to player position
         {
-            Debug.Log("Setting chase action to done");
             done(this);
         }
         else // If we get to that position and player is not there we have failed to chase
         {
             fail(this);
-            Debug.Log("Failing chase action");
         }
     }
 
