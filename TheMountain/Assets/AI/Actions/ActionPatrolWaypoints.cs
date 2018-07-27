@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+
+[RequireComponent(typeof(NavigationManager))]
 public class ActionPatrolWaypoints : ReGoapAction<string, object>
 {
 
     //  sometimes a Transform is better (moving target), sometimes you do not have one (last target position)
     //  but if you're using multi-thread approach you can't use a transform or any unity's API
-    protected SmsGoTo smsGoto;
+    protected NavigationManager navManager;
     [SerializeField] bool continuouslyLoopWaypoints;
     [SerializeField] [Range(0,20)] int numberOfLoops = 3;
 
@@ -19,7 +21,7 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
     {
         base.Awake();
 
-        smsGoto = GetComponent<SmsGoTo>();
+        navManager = GetComponent<NavigationManager>();
 
     }
 
@@ -73,7 +75,7 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
         
         if (settings.HasKey("patrolDestination"))
         {
-            StartCoroutine(smsGoto.SetTargetPath((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement, numberOfLoops, continuouslyLoopWaypoints));
+            StartCoroutine(navManager.SetTargetPath((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement, numberOfLoops, continuouslyLoopWaypoints));
             //OnDoneMovement();
         }
         else

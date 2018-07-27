@@ -55,7 +55,7 @@ namespace Player.PlayerController
                 //Checks if attacking and then starts of the combo
                 if (playerActions.LightAttack.IsPressed)
                 {
-                    Debug.Log("Attack pressed");
+                    //Debug.Log("Attack pressed");
                     if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy
                         || playerInputController.AttackID == Utility.AttackCategory.running_light))
                         playerInputController.AttackID = Utility.AttackCategory.light;
@@ -77,7 +77,7 @@ namespace Player.PlayerController
                         else if (playerActions.LightAttack.IsPressed && (Time.time - lastTime) > inputResponseTime && (Time.time - lastTime) < attackCooldown)
                         {
                             playerInputController.CanLightAttackAgain = true;
-                            Debug.Log("Player can attack again");
+                            //Debug.Log("Player can attack again");
 
                         }
                         //Attacks if your cooldown has reset

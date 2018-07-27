@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-
+[RequireComponent(typeof(NavigationManager))]
 public class ActionChasePlayer : ReGoapAction<string, object>
 {
-    protected SmsGoTo smsGoto;
+    protected NavigationManager navManager;
     Vector3 lastKnownPlayerPosition;
     bool playerVisible;
     public Transform playerLocation;
@@ -17,7 +17,7 @@ public class ActionChasePlayer : ReGoapAction<string, object>
     {
         base.Awake();
 
-        smsGoto = GetComponent<SmsGoTo>();
+        navManager = GetComponent<NavigationManager>();
         
 
     }
@@ -74,9 +74,9 @@ public class ActionChasePlayer : ReGoapAction<string, object>
 
         base.Run(previous, next, settings, goalState, done, fail);
         Vector3 inRangePosition = lastKnownPlayerPosition * .5f;
-        smsGoto.SetTargetPath(lastKnownPlayerPosition, OnDoneMovement, OnFailureMovement);
+        navManager.SetTargetPath(lastKnownPlayerPosition, OnDoneMovement, OnFailureMovement);
         Debug.Log("Run chase");
-        if (smsGoto.MoveToPosition() && playerVisible && Vector3.Distance(transform.position, playerLocation.position) < 4f) // TODO use a raycast to player position
+        if (navManager.MoveToPosition() && playerVisible && Vector3.Distance(transform.position, playerLocation.position) < 4f) // TODO use a raycast to player position
         {
             done(this);
         }
@@ -89,7 +89,7 @@ public class ActionChasePlayer : ReGoapAction<string, object>
     protected void Update()
     {
         // Move to position will only return true if it is within the destination range, then we can consider this movement done
-        smsGoto.MoveToPosition();
+        navManager.MoveToPosition();
      
     }
 }
