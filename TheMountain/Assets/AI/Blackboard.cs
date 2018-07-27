@@ -3,6 +3,7 @@ using System.Collections;
 using ReGoap.Core;
 using System.Collections.Generic;
 using System;
+using Pathfinding;
 
 public class Blackboard : MonoBehaviour
 {
@@ -15,14 +16,13 @@ public class Blackboard : MonoBehaviour
     public List<Transform> listOfTargets { get; set; }
     public Action onDoneMovement { get; set; }
     public Action onFailureMovement { get; set; }
-    public bool continuouslyLoopWaypoints { get; set; }
-    public int numberOfLoops { get; set; }
-    public bool targetVisitedStatus { get; set; }
-
+    public bool targetReachedStatus { get; set; }
+    public RichAI ai { get; private set; }
     private void Awake()
     {
         _workingMemory = GetComponent<WorkingMemory>();
         _navManager = GetComponent<NavigationManager>();
+        ai = GetComponent<RichAI>();
     }
 
     // Use this for initialization

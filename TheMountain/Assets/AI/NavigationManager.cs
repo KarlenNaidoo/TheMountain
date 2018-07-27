@@ -56,7 +56,7 @@ public class NavigationManager : MonoBehaviour
     {
         if (_blackboard.currentTarget)
         {
-            SetTargetPath(_blackboard.currentTarget.position, _blackboard.onDoneMovement, _blackboard.onFailureMovement);
+            SetTarget(_blackboard.currentTarget.position, _blackboard.onDoneMovement, _blackboard.onFailureMovement);
         }
         //StartCoroutine(SetTargetPath(_blackboard.listOfTargets, _blackboard.onDoneMovement, _blackboard.onFailureMovement, _blackboard.numberOfLoops, _blackboard.continuouslyLoopWaypoints));
      
@@ -73,7 +73,7 @@ public class NavigationManager : MonoBehaviour
 
     public virtual bool MoveToPosition()
     {
-        _blackboard.targetVisitedStatus = false;
+        _blackboard.targetReachedStatus = false;
         // Calculate how the _ai wants to move
         _ai.MovementUpdate(Time.deltaTime, out _nextPosition, out _nextRotation);
 
@@ -106,9 +106,8 @@ public class NavigationManager : MonoBehaviour
         UpdateMoveAnimations(_localDesiredVelocity, _angle, _shouldMove);
         if (Vector3.Distance(_ai.destination, transform.position) <= _ai.endReachedDistance)
         {
-            _blackboard.targetVisitedStatus = true;
+            _blackboard.targetReachedStatus = true;
             DisableMovement();
-            Debug.Log("Reached Objective");
             return true;
         }
 
@@ -116,65 +115,7 @@ public class NavigationManager : MonoBehaviour
 
     }
 
-
-    public virtual IEnumerator SetTargetPath(List<Transform> transform, Action onDoneMovement, Action onFailureMovement, int numberOfLoops, bool loopWaypoints = true)
-    {
-
-        while (_circuitComplete < numberOfLoops || loopWaypoints) // If we set a predefined loop this will run or if we want it to run forever
-        {
-
-            if (!_ai.hasPath || !_ai.hasPath)  // if we don't have a path or one is not being calculated 
-            {
-                // Set destination and move to it
-                _location = transform[_waypointIndex];
-                _ai.destination = _location.position;
-
-            }
-            if (_ai.hasPath)
-            {
-
-                MoveToPosition();
-            }
-
-
-            //We've reached our waypoint, time to move on
-            if (Vector3.Distance(this.transform.position, _ai.destination) < _ai.endReachedDistance)
-            {
-
-                _waypointsVisited++;
-                // If we are still less than the total number of waypoints then increase the count, if not, loop back around
-                if (_waypointIndex < (transform.Count - 1))
-                {
-                    _waypointIndex++;
-                }
-                else
-                {
-                    _waypointIndex = 0;
-                }
-                _location = transform[_waypointIndex];
-                _ai.destination = _location.position;
-
-            }
-
-            // if we reached the last waypoint we have completed one loop around the circuit. Last waypoint found by comparing to length of waypoint array
-            if (_waypointsVisited == transform.Count)
-            {
-                _circuitComplete++;
-                _waypointsVisited = 0;
-            }
-            yield return null;
-
-        }
-        if (!loopWaypoints || _circuitComplete >= numberOfLoops)
-        {
-            DisableMovement();
-            UpdateMoveAnimations(_localDesiredVelocity, _angle, _shouldMove);
-            GoTo(onDoneMovement, onFailureMovement);
-
-        }
-    }
-
-    public virtual void SetTargetPath(Vector3 position, Action onDoneMovement, Action onFailureMovement)
+    public virtual void SetTarget(Vector3 position, Action onDoneMovement, Action onFailureMovement)
     {
         if (!_ai.hasPath || !_ai.pathPending)  // if we don't have a path or one is not being calculated 
         {

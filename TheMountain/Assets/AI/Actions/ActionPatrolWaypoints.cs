@@ -22,7 +22,7 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
     private int _waypointsVisited = 0;
     private int _circuitComplete = 0;
     private Transform _location;
-
+    private bool _doneOnce = true;
     protected override void Awake()
     {
         base.Awake();
@@ -82,18 +82,15 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
         {
             blackboard.onDoneMovement = OnDoneMovement;
             blackboard.onFailureMovement = OnFailureMovement;
-            blackboard.numberOfLoops = numberOfLoops;
-            blackboard.continuouslyLoopWaypoints = continuouslyLoopWaypoints;
-            //StartCoroutine(navManager.SetTargetPath((List<Transform>)settings.Get("patrolDestination"), OnDoneMovement, OnFailureMovement, numberOfLoops, continuouslyLoopWaypoints));
-            //OnDoneMovement();
+            
+            blackboard.currentTarget = patrolDestinations[_waypointIndex];
 
-            while (_circuitComplete < numberOfLoops ) //|| continuouslyLoopWaypoints) // If we set a predefined loop this will run or if we want it to run forever
+            Debug.Log("Setting currentTarget to: " + blackboard.currentTarget.position);
+
+            if (blackboard.targetReachedStatus && _doneOnce)
             {
 
-
-                blackboard.currentTarget = patrolDestinations[_waypointIndex];
-                Debug.Log("Setting currentTarget to: " + blackboard.currentTarget.position);
-
+                Debug.Log("Reached waypoint, time to plot another");
                 if (_waypointIndex < (patrolDestinations.Count - 1))
                 {
                     _waypointIndex++;
@@ -102,15 +99,14 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
                 {
                     _waypointIndex = 0;
                 }
-
-                if (blackboard.targetVisitedStatus)
-                {
-
-                    _circuitComplete++;
-                }
-
+                _doneOnce = false;
             }
-            done(this);
+            else
+            {
+                fail(this);
+                _doneOnce = true;
+            }
+           // done(this);
         }
         else
         {
@@ -118,4 +114,5 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
         }
 
     }
+
 }
