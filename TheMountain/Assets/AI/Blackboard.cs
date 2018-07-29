@@ -26,7 +26,9 @@ public class Blackboard : MonoBehaviour
     public int attackType { get; private set; }
     public bool shouldAttack { get; private set; }
     public enum AIAttackType { NoWeapon, MeleeWeapon, RangeWeapon }
-
+    
+    public float aggression { get; set; }
+    public float intelligence { get; set; }
 
     public void SetMoveParameters (Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {

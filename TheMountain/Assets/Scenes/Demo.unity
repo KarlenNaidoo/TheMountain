@@ -3895,11 +3895,12 @@ GameObject:
   - component: {fileID: 1433440712}
   - component: {fileID: 1433440713}
   - component: {fileID: 1433440711}
-  - component: {fileID: 1433440710}
   - component: {fileID: 1433440709}
   - component: {fileID: 1433440708}
   - component: {fileID: 1433440707}
   - component: {fileID: 1433440706}
+  - component: {fileID: 1433440721}
+  - component: {fileID: 1433440710}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -3967,16 +3968,15 @@ MonoBehaviour:
 --- !u!114 &1433440710
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114888748974994208, guid: 61c48c58b45f66a42b73a1f3229fd403,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1433440705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e770bc756ee016f4fa72513911b12b8e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7dc3bef31d239674284a9b6f89376c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: AttackPlayer
+  Name: KillPlayer
   Priority: 2
   ErrorDelay: 0.5
   WarnPossibleGoal: 1
@@ -4159,6 +4159,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 496ea9cf1f8faa442b3c7f093d6e287b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1433440721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433440705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 554772b1b18f5f344b444d67cb83f3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggression: 0
+  intelligence: 10
 --- !u!1 &1454788177
 GameObject:
   m_ObjectHideFlags: 0

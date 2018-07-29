@@ -50,7 +50,11 @@ public class ActionChasePlayer : ReGoapAction<string, object>
             lastKnownPlayerPosition =  (Transform) blackboard.worldState.Get("lastKnownPlayerPosition");
 
         }
-        playerVisible = false; // (bool) blackboard.worldState.Get("PlayerVisible");
+        if (blackboard.worldState.HasKey("playerVisible"))
+        {
+
+            playerVisible = (bool)blackboard.worldState.Get("playerVisible");
+        }
         results.Add(settings.Clone());
         return results;
 
@@ -63,7 +67,8 @@ public class ActionChasePlayer : ReGoapAction<string, object>
 
     public override ReGoapState<string, object> GetEffects(GoapActionStackData<string, object> stackData)
     {
-        effects.Set("PlayerInRange", true);
+        effects.Set("inMeleeRange", true);
+        effects.Set("inShootingRange", true);
         return base.GetEffects(stackData);
     }
 
@@ -74,8 +79,10 @@ public class ActionChasePlayer : ReGoapAction<string, object>
         base.Run(previous, next, settings, goalState, done, fail);
         Vector3 inRangePosition = lastKnownPlayerPosition.position * .5f;
         blackboard.currentTarget.position = inRangePosition;
+        Debug.Log("Going to " + inRangePosition);
         if (blackboard.targetReachedStatus)
         {
+            Debug.Log("Chase success");
             done(this);
         }
     }

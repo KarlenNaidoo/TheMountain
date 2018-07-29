@@ -58,12 +58,12 @@ public class VisualSensor : ReGoapSensor<string, object> {
             // We do not care about -ve values, we just need to know whether we are within the half field of view
             if (Mathf.Abs(Vector3.Angle(transform.forward, dirToPlayer)) < halfFOV)
             {
-                worldState.Set("PlayerVisible", true);
+                worldState.Set("playerVisible", true);
                 worldState.Set("lastKnownPlayerPosition", lastKnownPlayerPosition);
             }
             else
             {
-                worldState.Set("PlayerVisible", false);
+                worldState.Set("playerVisible", false);
             }
         }
     }
@@ -79,12 +79,12 @@ public class VisualSensor : ReGoapSensor<string, object> {
             dirToPlayer = lastKnownPlayerPosition.position - transform.position;            
             if (Mathf.Abs(Vector3.Angle(transform.forward, dirToPlayer)) < halfFOV)
             {
-                worldState.Set("PlayerVisible", true);
+                worldState.Set("playerVisible", true);
                 worldState.Set("lastKnownPlayerPosition", lastKnownPlayerPosition);
             }
             else
             {
-                worldState.Set("PlayerVisible", false);
+                worldState.Set("playerVisible", false);
             }
         }
     }

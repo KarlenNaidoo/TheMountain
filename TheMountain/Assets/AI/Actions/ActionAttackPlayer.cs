@@ -11,6 +11,7 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
 
     Animator _anim;
     Blackboard _blackboard;
+    const int AGGRESSION_THRESHOLD = 4;
     protected override void Awake()
     {
         base.Awake();
@@ -21,12 +22,14 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
     public override bool CheckProceduralCondition(GoapActionStackData<string, object> stackData)
     {
 
-        return base.CheckProceduralCondition(stackData);
+        return base.CheckProceduralCondition(stackData) && (_blackboard.aggression < AGGRESSION_THRESHOLD);
     }
 
     protected virtual void OnFailureMovement()
     {
         failCallback(this);
+        Debug.Log("Running fail for attack player");
+        _blackboard.aggression++;
     }
 
     protected virtual void OnDoneMovement()
@@ -38,14 +41,16 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
     
     public override ReGoapState<string, object> GetPreconditions(GoapActionStackData<string, object> stackData)
     {
-        preconditions.Set("PlayerVisible", true); 
-        preconditions.Set("PlayerInRange", true);
+        preconditions.Set("inMeleeRange", true);
+        preconditions.Set("meleeWeaponEquipped", false);
+        preconditions.Set("shootingWeaponEquipped", false);
+        //preconditions.Set("isCharging", true);
         return base.GetPreconditions(stackData);
     }
 
     public override ReGoapState<string, object> GetEffects(GoapActionStackData<string, object> stackData)
     {
-        effects.Set("Attack", true);
+        effects.Set("playerDead", true);
         return base.GetEffects(stackData);
     }
 
