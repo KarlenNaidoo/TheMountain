@@ -213,6 +213,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rootPosition: 1
   _rootRotation: 1
+--- !u!114 &114632917994416272
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43efa64471c9a349ba3bad559dbff62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startDamage: 0.05
+  endDamage: 0.9
+  allowMovementAt: 0.9
+  damageMultiplier: 0
+  attackName: Punch
+  resetAttackTrigger: 0
+  debug: 1
 --- !u!114 &114914118738016832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1575,6 +1593,7 @@ AnimatorState:
   - {fileID: 1101097471325828618}
   m_StateMachineBehaviours:
   - {fileID: 114932578898372140}
+  - {fileID: 114632917994416272}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

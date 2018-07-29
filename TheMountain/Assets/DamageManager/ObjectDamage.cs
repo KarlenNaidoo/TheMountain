@@ -24,36 +24,36 @@ public class ObjectDamage : MonoBehaviour
     }
 }
 
-    [System.Serializable]
-    public class Damage
+[System.Serializable]
+public class Damage
+{
+    public int damageValue = 15;
+    public bool ignoreDefense;
+    [HideInInspector]
+    public Transform sender;
+    [HideInInspector]
+    public Transform receiver;
+    [HideInInspector]
+    public Vector3 hitPosition;
+    public bool hitReaction = true;
+    public string attackName;
+
+    public Damage(int value)
     {
-        public int damageValue = 15;
-        public bool ignoreDefense;
-        [HideInInspector]
-        public Transform sender;
-        [HideInInspector]
-        public Transform receiver;
-        [HideInInspector]
-        public Vector3 hitPosition;
-        public bool hitReaction = true;
-        public string attackName;
-
-        public Damage(int value)
-        {
-            this.damageValue = value;
-            this.hitReaction = true;
-        }
-
-        public Damage(Damage damage)
-        {
-
-            this.damageValue = damage.damageValue;
-            this.ignoreDefense = damage.ignoreDefense;
-            this.sender = damage.sender;
-            this.receiver = damage.receiver;
-            this.attackName = damage.attackName;
-            this.hitPosition = damage.hitPosition;
-        }
-
+        this.damageValue = value;
+        this.hitReaction = true;
     }
+
+    public Damage(Damage damage)
+    {
+
+        this.damageValue = damage.damageValue;
+        this.ignoreDefense = damage.ignoreDefense;
+        this.sender = damage.sender;
+        this.receiver = damage.receiver;
+        this.attackName = damage.attackName;
+        this.hitPosition = damage.hitPosition;
+    }
+
 }
+

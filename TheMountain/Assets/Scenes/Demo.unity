@@ -2255,6 +2255,91 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b83c27a8eb3aae24a8eed15f4da560f5, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &676013425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 676013426}
+  - component: {fileID: 676013429}
+  - component: {fileID: 676013428}
+  - component: {fileID: 676013427}
+  m_Layer: 9
+  m_Name: SwordHitBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &676013426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676013425}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1.1}
+  m_Children: []
+  m_Father: {fileID: 1117589153}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &676013427
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676013425}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &676013428
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676013425}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &676013429
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676013425}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &680594583
 GameObject:
   m_ObjectHideFlags: 0
@@ -3049,6 +3134,11 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 099ab65ae36178944bd0f598a8326120, type: 2}
   m_IsPrefabAsset: 0
+--- !u!4 &1117589153 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4120355225234590, guid: 099ab65ae36178944bd0f598a8326120,
+    type: 2}
+  m_PrefabInternal: {fileID: 1117589152}
 --- !u!1 &1144778051
 GameObject:
   m_ObjectHideFlags: 0
@@ -3887,6 +3977,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1433440718}
   - component: {fileID: 1433440717}
+  - component: {fileID: 1433440721}
   - component: {fileID: 1433440716}
   - component: {fileID: 1433440715}
   - component: {fileID: 1433440714}
@@ -3894,13 +3985,12 @@ GameObject:
   - component: {fileID: 1433440719}
   - component: {fileID: 1433440712}
   - component: {fileID: 1433440713}
+  - component: {fileID: 1433440706}
   - component: {fileID: 1433440711}
+  - component: {fileID: 1433440710}
   - component: {fileID: 1433440709}
   - component: {fileID: 1433440708}
   - component: {fileID: 1433440707}
-  - component: {fileID: 1433440706}
-  - component: {fileID: 1433440721}
-  - component: {fileID: 1433440710}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -4170,8 +4260,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554772b1b18f5f344b444d67cb83f3e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggression: 0
-  intelligence: 10
+  _currentHealth: 0
+  _isDead: 0
+  maxHealth: 100
+  healthRecovery: 0
+  healthRecoveryDelay: 0
+  currentHealthRecoveryDelay: 0
+  _aggression: 0
+  _intelligence: 0
 --- !u!1 &1454788177
 GameObject:
   m_ObjectHideFlags: 0
