@@ -8,7 +8,11 @@ public class HitBox : MonoBehaviour
     private bool _canHit;
     [HideInInspector]
     public MeleeAttackObject attackObject;
-    private void OnDrawGizmosSelected()
+
+    public LayerMask mask;
+    private Vector3 boxSize;
+
+    private void OnDrawGizmos()
     {
         trigger = gameObject.GetComponent<Collider>();
         if (!trigger) trigger = gameObject.AddComponent<BoxCollider>();
@@ -34,23 +38,37 @@ public class HitBox : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("Intialising box");
         trigger = GetComponent<Collider>();
         if (!trigger) trigger = gameObject.AddComponent<BoxCollider>();
         if (trigger)
         {
             trigger.isTrigger = true;
-            trigger.enabled = false;
+            //trigger.enabled = false;
         }
         _canHit = true;
+
+
+        BoxCollider box = trigger as BoxCollider;
+
+        var sizeX = transform.lossyScale.x * box.size.x;
+        var sizeY = transform.lossyScale.y * box.size.y;
+        var sizeZ = transform.lossyScale.z * box.size.z;
+        boxSize = new Vector3(sizeX, sizeY, sizeZ);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-       if (attackObject != null)
+        //if (attackObject != null)
+        // {
+        //     attackObject.OnHit(this, other);
+        // }
+        Debug.Log("Trigger being called on hitboxes");
+        Collider[] colliders = Physics.OverlapBox(transform.position, boxSize, transform.rotation, mask);
+
+        if (colliders.Length > 0)
         {
-            attackObject.OnHit(this, other);
+            Debug.Log("We hit something");
         }
-        
     }
-    
 }

@@ -217,6 +217,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endOfCombo: 1
   combo: 0
+--- !u!114 &114406630383724854
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43efa64471c9a349ba3bad559dbff62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startDamage: 0.05
+  endDamage: 0.9
+  allowMovementAt: 0.9
+  damageMultiplier: 1
+  attackName: LightAttack2
+  resetAttackTrigger: 0
+  debug: 1
 --- !u!114 &114703835042104192
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -230,6 +248,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endOfCombo: 1
   combo: 1
+--- !u!114 &114709491671877012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43efa64471c9a349ba3bad559dbff62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startDamage: 0.05
+  endDamage: 0.9
+  allowMovementAt: 0.9
+  damageMultiplier: 1
+  attackName: LightAttack1
+  resetAttackTrigger: 0
+  debug: 1
 --- !u!114 &114792466499838318
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -256,6 +292,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endOfCombo: 0
   combo: 0
+--- !u!114 &114898820856433870
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43efa64471c9a349ba3bad559dbff62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startDamage: 0.05
+  endDamage: 0.9
+  allowMovementAt: 0.9
+  damageMultiplier: 1
+  attackName: LightAttack3
+  resetAttackTrigger: 0
+  debug: 1
 --- !u!206 &206059022250286552
 BlendTree:
   m_ObjectHideFlags: 3
@@ -3672,6 +3726,7 @@ AnimatorState:
   - {fileID: 1101836086020670090}
   m_StateMachineBehaviours:
   - {fileID: 114333656436713324}
+  - {fileID: 114406630383724854}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -3752,6 +3807,7 @@ AnimatorState:
   - {fileID: 1101490252370915252}
   m_StateMachineBehaviours:
   - {fileID: 114703835042104192}
+  - {fileID: 114898820856433870}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -3781,6 +3837,7 @@ AnimatorState:
   - {fileID: 1101444677848692776}
   m_StateMachineBehaviours:
   - {fileID: 114792466499838318}
+  - {fileID: 114709491671877012}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

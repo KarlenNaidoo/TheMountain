@@ -12,8 +12,9 @@ namespace Player.PlayerController
 
         public static PlayerInputController instance;
         // Use this for initialization
-        public void Start()
+        protected override void Start()
         {
+            base.Start();
             if (instance != null)
             {
                 Debug.LogWarning("There is more than one movement controller in the scene");

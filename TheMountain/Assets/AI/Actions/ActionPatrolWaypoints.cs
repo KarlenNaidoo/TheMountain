@@ -85,12 +85,12 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
             
             blackboard.currentTarget = patrolDestinations[_waypointIndex];
 
-            Debug.Log("Setting currentTarget to: " + blackboard.currentTarget.position);
+            //Debug.Log("Setting currentTarget to: " + blackboard.currentTarget.position);
 
             if (blackboard.targetReachedStatus && _setOncePerUpdate)
             {
 
-                Debug.Log("Reached waypoint, time to plot another");
+                //Debug.Log("Reached waypoint, time to plot another");
                 if (_waypointIndex < (patrolDestinations.Count - 1))
                 {
                     _waypointIndex++;

@@ -17,7 +17,7 @@ public class MeleeAttackControl : StateMachineBehaviour {
     public bool debug;
     private IAttackListener mFighter;
     private bool _isAttacking;
-
+    private HitBox _hitbox;
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         mFighter = animator.GetComponent<IAttackListener>();
@@ -26,22 +26,26 @@ public class MeleeAttackControl : StateMachineBehaviour {
         {
             mFighter.OnEnableAttack();
         }
+        _hitbox = animator.GetComponentInChildren<HitBox>();
+        
 	}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(stateInfo.normalizedTime % 1 >= startDamage && stateInfo.normalizedTime % 1 <= endDamage && !_isActive)
+        if(stateInfo.normalizedTime % 1 >= startDamage && stateInfo.normalizedTime % 1 <= endDamage && !_isActive && _hitbox)
         {
             _isActive = true;
+            _hitbox.enabled = true;
             if (debug)
-                Debug.Log(animator.name + " attack " + attackName + "enable damage in " + System.Math.Round(stateInfo.normalizedTime % 1, 2));
+                Debug.Log(animator.name + " attack " + attackName + "enable damage in " + System.Math.Round(stateInfo.normalizedTime % 1, 2)  + " Enabling hitbox");
         }
-        else if (stateInfo.normalizedTime % 1 > endDamage && _isActive)
+        else if (stateInfo.normalizedTime % 1 > endDamage && _isActive && _hitbox)
         {
             _isActive = false;
+            _hitbox.enabled = false;
             if (debug)
-                Debug.Log(animator.name + " attack " + attackName + "disable damage in " + System.Math.Round(stateInfo.normalizedTime % 1, 2));
+                Debug.Log(animator.name + " attack " + attackName + "disable damage in " + System.Math.Round(stateInfo.normalizedTime % 1, 2) + " Disabling hitbox");
         }
         if(stateInfo.normalizedTime % 1 > allowMovementAt && _isAttacking)
         {
@@ -59,6 +63,7 @@ public class MeleeAttackControl : StateMachineBehaviour {
         if (_isActive)
         {
             _isActive = false;
+            _hitbox.enabled = false;
         }
         _isAttacking = false;
         if (mFighter != null)
