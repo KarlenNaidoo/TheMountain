@@ -5,10 +5,8 @@
  * Every humanoid or AI can inherit from this class
  */
 
-namespace Thirdperson.Generic
-{
-    [RequireComponent(typeof(Animator))]
-    public abstract class Character : MonoBehaviour
+ [RequireComponent(typeof(Animator))]
+    public abstract class Character : HealthController
     {
         // get the animator component of character
         protected Animator animator { get; private set; }
@@ -74,19 +72,12 @@ namespace Thirdperson.Generic
                 Physics.IgnoreCollision(thisCollider, AllColliders[i]);
             }
         }
-
-        /// <summary>
-        /// Disables rigibody gravity, turn the capsule collider trigger and reset all input from the animator.
-        /// </summary>
-        public void DisableGravityAndCollision()
-        {
-            animator.SetFloat("InputHorizontal", 0f);
-            animator.SetFloat("InputVertical", 0f);
-            animator.SetFloat("VerticalVelocity", 0f);
-            _rigidbody.useGravity = false;
-            _capsuleCollider.isTrigger = true;
-        }
-
+    
         #endregion Physics Material
+
+        public override void TakeDamage(Damage damage)
+        {
+            base.TakeDamage(damage);
+            //TriggerDamageReaction(damage);
+        }
     }
-}

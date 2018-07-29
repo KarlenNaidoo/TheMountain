@@ -1,4 +1,4 @@
-﻿using Thirdperson.Generic;
+﻿
 using UnityEngine;
 
 /* Calculates the movement around the world and passes this onto the player animator
@@ -193,6 +193,19 @@ namespace Player.PlayerController
 
             if (!isSprinting && !isRunning || freeSpeed.walkByDefault)
                 speed = Mathf.Clamp(speed, 0f, 1f);
+        }
+
+
+        /// <summary>
+        /// Disables rigibody gravity, turn the capsule collider trigger and reset all input from the animator.
+        /// </summary>
+        public void DisableGravityAndCollision()
+        {
+            animator.SetFloat("InputHorizontal", 0f);
+            animator.SetFloat("InputVertical", 0f);
+            animator.SetFloat("VerticalVelocity", 0f);
+            _rigidbody.useGravity = false;
+            _capsuleCollider.isTrigger = true;
         }
 
         [System.Serializable]
