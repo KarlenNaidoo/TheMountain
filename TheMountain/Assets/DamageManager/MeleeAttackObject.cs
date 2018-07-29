@@ -45,7 +45,7 @@ public class MeleeAttackObject : MonoBehaviour
         for (int i = 0; i < hitBoxes.Count; i++)
         {
             var hitCollider = hitBoxes[i];
-            hitCollider.trigger.enabled = value;
+            hitCollider.hitBoxTrigger.enabled = value;
             if (value == false && targetColliders != null)
                 targetColliders[hitCollider].Clear();
         }

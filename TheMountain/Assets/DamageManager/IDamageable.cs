@@ -15,6 +15,13 @@ public interface IHealthController: IDamageReceiver
     void ChangeMaxHealth(int value);
 }
 
+public interface IHitboxResponder
+{
+
+    void collisionedWith(Collider collider);
+
+}
+
 public static class DamageHelper
 {
     public static void ApplyDamage(this GameObject receiver, Damage damage)
