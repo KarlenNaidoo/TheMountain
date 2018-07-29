@@ -15,9 +15,6 @@ public class NavigationManager : MonoBehaviour
     private Vector3 _localDesiredVelocity;
     private float _angle;
     private bool _shouldMove = true;
-    private int _waypointIndex = 0;
-    private int _waypointsVisited = 0;
-    private int _circuitComplete = 0;
     private Transform _location;
     private Action _onDoneMovementCallback;
     private Action _onFailureMovementCallback;
@@ -51,26 +48,23 @@ public class NavigationManager : MonoBehaviour
         }
     }
 
-
     protected void Update()
     {
         if (_blackboard.currentTarget)
         {
             SetTarget(_blackboard.currentTarget.position, _blackboard.onDoneMovement, _blackboard.onFailureMovement);
         }
-        //StartCoroutine(SetTargetPath(_blackboard.listOfTargets, _blackboard.onDoneMovement, _blackboard.onFailureMovement, _blackboard.numberOfLoops, _blackboard.continuouslyLoopWaypoints));
-     
+
         MoveToPosition();
     }
+
     public void AddRootMotionRequest(int rootPosition, int rootRotation)
     {
 
         _rootPositionRefCount = rootPosition;
         _rootRotationRefCount = rootRotation;
     }
-
-
-
+    
     public virtual bool MoveToPosition()
     {
         _blackboard.targetReachedStatus = false;
@@ -103,7 +97,8 @@ public class NavigationManager : MonoBehaviour
 
         EnableMovement();
         // Update animation parameters
-        UpdateMoveAnimations(_localDesiredVelocity, _angle, _shouldMove);
+        _blackboard.SetMoveParameters(_localDesiredVelocity, _angle, _shouldMove);
+        //UpdateMoveAnimations(_localDesiredVelocity, _angle, _shouldMove);
         if (Vector3.Distance(_ai.destination, transform.position) <= _ai.endReachedDistance)
         {
             _blackboard.targetReachedStatus = true;
@@ -140,7 +135,8 @@ public class NavigationManager : MonoBehaviour
         _angle = 0f;
         _localDesiredVelocity = Vector3.zero;
 
-        UpdateMoveAnimations(_localDesiredVelocity, _angle, _shouldMove);
+        _blackboard.SetMoveParameters(_localDesiredVelocity, _angle, _shouldMove);
+        //UpdateMoveAnimations(_localDesiredVelocity, _angle, _shouldMove);
     }
 
     private void EnableMovement()

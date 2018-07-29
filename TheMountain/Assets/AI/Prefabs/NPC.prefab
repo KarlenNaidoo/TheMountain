@@ -527,6 +527,7 @@ GameObject:
   - component: {fileID: 114179860685123192}
   - component: {fileID: 114172924597497940}
   - component: {fileID: 114800427225391316}
+  - component: {fileID: 114709583338930376}
   - component: {fileID: 114080552216511134}
   - component: {fileID: 114254419175262326}
   - component: {fileID: 114105283917802448}
@@ -3422,6 +3423,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114105283917802448
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3546,6 +3548,17 @@ MonoBehaviour:
   Cost: 1
   continuouslyLoopWaypoints: 1
   numberOfLoops: 1
+--- !u!114 &114709583338930376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331890422917486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc97ed704404204eaf399aca261d29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114800427225391316
 MonoBehaviour:
   m_ObjectHideFlags: 1
