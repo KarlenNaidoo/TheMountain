@@ -68,7 +68,7 @@ namespace Player.PlayerController
                 StartCoroutine(CharacterInit());
             }
         }
-        protected virtual IEnumerator CharacterInit()
+        protected virtual IEnumerator CharacterInit() // TODO: Performance issues on this function
         {
             yield return new WaitForEndOfFrame();
             if (tpCamera == null)

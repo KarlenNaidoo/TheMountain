@@ -99,7 +99,7 @@ public class SmsGoTo : SmState
             RootMotionConfigurator[] behaviourScripts = anim.GetBehaviours<RootMotionConfigurator>();
             foreach (RootMotionConfigurator script in behaviourScripts)
             {
-                script.smsGoTo = this;
+                //script.smsGoTo = this;
             }
         }
     }
@@ -190,7 +190,7 @@ public class SmsGoTo : SmState
             ai.destination = position;
 
         }
-        //GoTo(onDoneMovement, onFailureMovement); // will always default to failure because we are not calling the Exit function. Not making use of the GOTO statemachine
+        GoTo(onDoneMovement, onFailureMovement); // will always default to failure because we are not calling the Exit function. Not making use of the GOTO statemachine
     }
 
     public void OnDrawGizmosSelected()
