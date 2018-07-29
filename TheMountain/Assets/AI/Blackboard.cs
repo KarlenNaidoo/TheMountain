@@ -24,8 +24,8 @@ public class Blackboard : MonoBehaviour
     public bool shouldMove { get; private set; }
     public int attackID { get; private set; }
     public int attackType { get; private set; }
-
-    public enum AIAttackType { Melee, MeleeWeapon, RangeWeapon }
+    public bool shouldAttack { get; private set; }
+    public enum AIAttackType { NoWeapon, MeleeWeapon, RangeWeapon }
 
 
     public void SetMoveParameters (Vector3 localDesiredVelocity, float angle, bool shouldMove)
@@ -35,8 +35,9 @@ public class Blackboard : MonoBehaviour
         this.shouldMove = shouldMove;
     }
 
-    public void SetAttackParameters(int attackID, int attackType)
+    public void SetAttackParameters(int attackID, int attackType, bool shouldAttack)
     {
+        this.shouldAttack = shouldAttack;
         this.attackID = attackID;
         this.attackType = attackType;
     }

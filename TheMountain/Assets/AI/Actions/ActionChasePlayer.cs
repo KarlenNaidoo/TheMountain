@@ -73,22 +73,11 @@ public class ActionChasePlayer : ReGoapAction<string, object>
 
         base.Run(previous, next, settings, goalState, done, fail);
         Vector3 inRangePosition = lastKnownPlayerPosition.position * .5f;
-        blackboard.currentTarget = lastKnownPlayerPosition;
-        //blackboard.navManager.SetTargetPath(lastKnownPlayerPosition, OnDoneMovement, OnFailureMovement);
-        //if (blackboard.navManager.MoveToPosition() && playerVisible && Vector3.Distance(transform.position, playerLocation.position) < 4f) // TODO use a raycast to player position
-        //{
-        //    done(this);
-        //}
-        //else // If we get to that position and player is not there we have failed to chase
-        //{
-        //    fail(this);
-        //}
+        blackboard.currentTarget.position = inRangePosition;
+        if (blackboard.targetReachedStatus)
+        {
+            done(this);
+        }
     }
-
-    //protected void Update()
-    //{
-    //    // Move to position will only return true if it is within the destination range, then we can consider this movement done
-    //    blackboard.navManager.MoveToPosition();
-     
-    //}
+    
 }

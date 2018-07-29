@@ -9,11 +9,14 @@ using System.Linq;
 public class ActionAttackPlayer : ReGoapAction<string, object>
 {
 
-    Animator anim;
+    Animator _anim;
+    Blackboard _blackboard;
     protected override void Awake()
     {
         base.Awake();
-        anim = GetComponent<Animator>();
+        _anim = GetComponent<Animator>();
+        _blackboard = GetComponent<Blackboard>();
+
     }
     public override bool CheckProceduralCondition(GoapActionStackData<string, object> stackData)
     {
@@ -51,9 +54,7 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
-        anim.SetTrigger("Attack");
-        anim.SetInteger("AttackID", 1);
-        anim.SetInteger("AttackType", 1);
+        _blackboard.SetAttackParameters(1, (int) Blackboard.AIAttackType.NoWeapon, true);
         Debug.Log("Attacking Player");
         done(this);
 

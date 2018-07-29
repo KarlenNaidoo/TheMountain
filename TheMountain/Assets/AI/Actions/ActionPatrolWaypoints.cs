@@ -22,7 +22,7 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
     private int _waypointsVisited = 0;
     private int _circuitComplete = 0;
     private Transform _location;
-    private bool _doneOnce = true;
+    private bool _setOncePerUpdate = true;
     protected override void Awake()
     {
         base.Awake();
@@ -87,7 +87,7 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
 
             Debug.Log("Setting currentTarget to: " + blackboard.currentTarget.position);
 
-            if (blackboard.targetReachedStatus && _doneOnce)
+            if (blackboard.targetReachedStatus && _setOncePerUpdate)
             {
 
                 Debug.Log("Reached waypoint, time to plot another");
@@ -99,12 +99,12 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
                 {
                     _waypointIndex = 0;
                 }
-                _doneOnce = false;
+                _setOncePerUpdate = false;
             }
             else
             {
                 fail(this);
-                _doneOnce = true;
+                _setOncePerUpdate = true;
             }
            // done(this);
         }
