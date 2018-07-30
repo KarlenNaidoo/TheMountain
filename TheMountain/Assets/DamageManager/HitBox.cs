@@ -4,41 +4,54 @@ using System.Collections;
 public class HitBox : MonoBehaviour
 {
     private IHitboxResponder _responder = null;
-    public Collider hitBoxTrigger;
-    public int damagePercentage = 100;
-    private bool _canHit;
-    [HideInInspector]
-    public MeleeAttackObject attackObject;
+    private Collider _hitBoxTrigger;
     private ColliderState _state;
-    public enum ColliderState
+    private Vector3 _hitBoxSize;
+    private AnimEvents _animEvents;
+    
+    public enum ColliderState { Closed, Open, Colliding }
+
+    private void Awake()
     {
+        _hitBoxTrigger = GetComponent<Collider>();
+        _animEvents = GetComponentInParent<AnimEvents>();
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        _animEvents.currentHitBoxTrigger = _hitBoxTrigger;
+        _responder?.CollidedWith(other);
+        _state = ColliderState.Open;
+    }
 
-        Closed,
+    private void OnTriggerStay(Collider other)
+    {
+        _state = ColliderState.Colliding;
+    }
 
-        Open,
+    private void OnTriggerExit(Collider other)
+    {
+        _state = ColliderState.Closed;
+    }
+    
 
-        Colliding
+    public void setResponder(IHitboxResponder responder)
+    {
+        _responder = responder;
 
     }
 
 
-    public LayerMask mask;
-    private Vector3 hitBoxSize;
-
     private void OnDrawGizmos()
     {
-        hitBoxTrigger = gameObject.GetComponent<Collider>();
-        if (!hitBoxTrigger) hitBoxTrigger = gameObject.AddComponent<BoxCollider>();
+        //_hitBoxTrigger = gameObject.GetComponent<Collider>();
         checkGizmoColor();
-        if (!Application.isPlaying && hitBoxTrigger && !hitBoxTrigger.enabled)
-            hitBoxTrigger.enabled = true;
-        if (hitBoxTrigger && hitBoxTrigger.enabled)
+        if (_hitBoxTrigger && _hitBoxTrigger.enabled)
         {
-            if (hitBoxTrigger as BoxCollider)
+            if (_hitBoxTrigger as BoxCollider)
             {
 
-                BoxCollider box = hitBoxTrigger as BoxCollider;
-
+                BoxCollider box = _hitBoxTrigger as BoxCollider;
                 var sizeX = transform.lossyScale.x * box.size.x;
                 var sizeY = transform.lossyScale.y * box.size.y;
                 var sizeZ = transform.lossyScale.z * box.size.z;
@@ -49,21 +62,6 @@ public class HitBox : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Debug.Log("Intialising box");
-        hitBoxTrigger = GetComponent<Collider>();
-        _canHit = true;
-
-
-        BoxCollider hitBox = hitBoxTrigger as BoxCollider;
-
-        var sizeX = transform.lossyScale.x * hitBox.size.x;
-        var sizeY = transform.lossyScale.y * hitBox.size.y;
-        var sizeZ = transform.lossyScale.z * hitBox.size.z;
-        hitBoxSize = new Vector3(sizeX, sizeY, sizeZ);
-    }
-
     private void checkGizmoColor()
     {
         switch (_state)
@@ -71,7 +69,7 @@ public class HitBox : MonoBehaviour
 
             case ColliderState.Closed:
 
-                Gizmos.color = Color.gray;
+                Gizmos.color = Color.blue;
 
                 break;
 
@@ -88,81 +86,6 @@ public class HitBox : MonoBehaviour
                 break;
 
         }
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Trigger being called on hitboxes");
-        Collider[] colliders = Physics.OverlapBox(transform.position, hitBoxSize, transform.rotation, mask);
-
-        if (colliders.Length > 0)
-        {
-            Debug.Log("We hit something");
-        }
-    }
-
-    public void startCheckingCollision()
-    {
-        _state = ColliderState.Open;
-
-    }
-
-    public void stopCheckingCollision()
-    {
-        _state = ColliderState.Closed;
-
-    }
-
-    private void Update()
-    {
-        if (_state == ColliderState.Closed) { return; }
-
-        Collider[] colliders = Physics.OverlapBox(transform.position, hitBoxSize, transform.rotation, mask);
-
-
-        if (colliders.Length > 0)
-        {
-
-            _state = ColliderState.Colliding;
-
-            // We should do something with the colliders
-
-        }
-        else
-        {
-
-            _state = ColliderState.Open;
-
-        }
-    }
-
-    public void hitboxUpdate()
-    {
-        if (_state == ColliderState.Closed) { return; }
-
-
-        Collider[] colliders = Physics.OverlapBox(transform.position, hitBoxSize, transform.rotation, mask);
-
-
-        for (int i = 0; i < colliders.Length; i++)
-        {
-
-            Collider aCollider = colliders[i];
-
-            _responder?.collisionedWith(aCollider);
-
-        }
-
-
-        _state = colliders.Length > 0 ? ColliderState.Colliding : ColliderState.Open;
-
-
-    }
-
-    public void useResponder(IHitboxResponder responder)
-    {
-        _responder = responder;
 
     }
 

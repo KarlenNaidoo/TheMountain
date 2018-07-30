@@ -18,8 +18,12 @@ public class MeleeAttackControl : StateMachineBehaviour {
     private IAttackListener mFighter;
     private bool _isAttacking;
     private HitBox _hitbox;
-	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+    private Collider _hitboxCollider;
+
+    public enum ColliderState { Closed, Open, Colliding }
+    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        
         mFighter = animator.GetComponent<IAttackListener>();
         _isAttacking = true;
         if (mFighter != null)
@@ -27,23 +31,21 @@ public class MeleeAttackControl : StateMachineBehaviour {
             mFighter.OnEnableAttack();
         }
         _hitbox = animator.GetComponentInChildren<HitBox>();
-        
+        _hitboxCollider = _hitbox.GetComponent<Collider>();    
 	}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(stateInfo.normalizedTime % 1 >= startDamage && stateInfo.normalizedTime % 1 <= endDamage && !_isActive && _hitbox)
+        if(stateInfo.normalizedTime % 1 >= startDamage && stateInfo.normalizedTime % 1 <= endDamage && !_isActive)
         {
             _isActive = true;
-            _hitbox.enabled = true;
             if (debug)
                 Debug.Log(animator.name + " attack " + attackName + "enable damage in " + System.Math.Round(stateInfo.normalizedTime % 1, 2)  + " Enabling hitbox");
         }
-        else if (stateInfo.normalizedTime % 1 > endDamage && _isActive && _hitbox)
+        else if (stateInfo.normalizedTime % 1 > endDamage && _isActive)
         {
             _isActive = false;
-            _hitbox.enabled = false;
             if (debug)
                 Debug.Log(animator.name + " attack " + attackName + "disable damage in " + System.Math.Round(stateInfo.normalizedTime % 1, 2) + " Disabling hitbox");
         }
@@ -63,7 +65,6 @@ public class MeleeAttackControl : StateMachineBehaviour {
         if (_isActive)
         {
             _isActive = false;
-            _hitbox.enabled = false;
         }
         _isAttacking = false;
         if (mFighter != null)

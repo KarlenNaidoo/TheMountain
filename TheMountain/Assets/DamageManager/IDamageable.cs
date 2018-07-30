@@ -18,7 +18,7 @@ public interface IHealthController: IDamageReceiver
 public interface IHitboxResponder
 {
 
-    void collisionedWith(Collider collider);
+    void CollidedWith(Collider collider);
 
 }
 

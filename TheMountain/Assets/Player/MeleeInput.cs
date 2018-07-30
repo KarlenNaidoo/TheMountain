@@ -6,7 +6,7 @@ using System;
 namespace Player.PlayerController
 {
 
-    public class MeleeInput : PlayerInput
+    public class MeleeInput : PlayerInput, IHitboxResponder
     {
     
         //Cooldown time between attacks (in seconds)
@@ -25,12 +25,12 @@ namespace Player.PlayerController
         int inputBufferCount = 0;
         int nextAttack = 0;
         [Range(0, 1)] public float inputResponseTime;
-
+        HitBox hitbox;
         // Use this for initialization
         protected override void Start()
         {
             inputBuffer = new float[4];
-
+            hitbox = GetComponentInChildren<HitBox>();
             //Starts the looping coroutine
             StartCoroutine(CheckForAttack());
             base.Start();
@@ -55,6 +55,7 @@ namespace Player.PlayerController
                 //Checks if attacking and then starts of the combo
                 if (playerActions.LightAttack.IsPressed)
                 {
+                    Attack();
                     //Debug.Log("Attack pressed");
                     if (!(playerInputController.AttackID == Utility.AttackCategory.running_heavy
                         || playerInputController.AttackID == Utility.AttackCategory.running_light))
@@ -150,7 +151,7 @@ namespace Player.PlayerController
                 yield return null;
             }
         }
-        
+
 
         private void CheckForRunningAttack()
         {
@@ -184,6 +185,19 @@ namespace Player.PlayerController
             {
                 playerInputController.HeavyAttack();
             }
+        }
+
+        public void CollidedWith(Collider collider)
+        {
+            Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
+
+            hurtbox?.ReceiveDamage();
+        }
+
+
+        private void Attack()
+        {
+            hitbox.setResponder(this);
         }
     }
 
