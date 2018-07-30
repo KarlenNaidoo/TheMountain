@@ -5,7 +5,7 @@ using System;
 
 namespace Player.PlayerController
 {
-
+    // TODO: Simplify combat inputs
     public class MeleeInput : PlayerInput, IHitboxResponder
     {
     
@@ -26,11 +26,14 @@ namespace Player.PlayerController
         int nextAttack = 0;
         [Range(0, 1)] public float inputResponseTime;
         HitBox hitbox;
+        AnimEvents animEvents;
         // Use this for initialization
         protected override void Start()
         {
             inputBuffer = new float[4];
             hitbox = GetComponentInChildren<HitBox>();
+            Debug.Log(hitbox.gameObject.name + " hitbox being used. Make sure it is the right one");
+            animEvents = GetComponent<AnimEvents>();
             //Starts the looping coroutine
             StartCoroutine(CheckForAttack());
             base.Start();
@@ -190,14 +193,16 @@ namespace Player.PlayerController
         public void CollidedWith(Collider collider)
         {
             Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
-
-            hurtbox?.ReceiveDamage();
+            if (animEvents.OpenHitBox())
+            {
+                hurtbox?.ReceiveDamage();
+            }
         }
 
 
         private void Attack()
         {
-            hitbox.setResponder(this);
+            hitbox.SetResponder(this);
         }
     }
 

@@ -35,7 +35,7 @@ public class HitBox : MonoBehaviour
     }
     
 
-    public void setResponder(IHitboxResponder responder)
+    public void SetResponder(IHitboxResponder responder)
     {
         _responder = responder;
 

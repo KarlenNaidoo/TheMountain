@@ -69,7 +69,7 @@ public class MeleeAttackObject : MonoBehaviour
     {
         Damage _damage = new Damage(damage);
         _damage.receiver = other.transform;
-        _damage.damageValue = (int)Mathf.RoundToInt(((float)(damage.damageValue + damageModifier) * (((float)hitBox.damagePercentage) * 0.01f)));
+      //  _damage.damageValue = (int)Mathf.RoundToInt(((float)(damage.damageValue + damageModifier) * (((float)hitBox.damagePercentage) * 0.01f)));
         _damage.sender = transform;
         _damage.hitPosition = hitBox.transform.position;
         other.gameObject.ApplyDamage(_damage);

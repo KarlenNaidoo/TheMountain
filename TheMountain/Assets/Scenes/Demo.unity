@@ -1528,6 +1528,7 @@ GameObject:
   - component: {fileID: 414245475}
   - component: {fileID: 414245474}
   - component: {fileID: 414245473}
+  - component: {fileID: 414245472}
   m_Layer: 13
   m_Name: MeleeHitBox
   m_TagString: Untagged
@@ -1548,6 +1549,17 @@ Transform:
   m_Father: {fileID: 602443663}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &414245472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 414245470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339170c3ef42a7842a356e0356240fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &414245473
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2438,12 +2450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 339170c3ef42a7842a356e0356240fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trigger: {fileID: 676013427}
-  damagePercentage: 100
-  attackObject: {fileID: 0}
-  mask:
-    serializedVersion: 2
-    m_Bits: 32768
 --- !u!1 &680594583
 GameObject:
   m_ObjectHideFlags: 0
@@ -2941,6 +2947,7 @@ GameObject:
   - component: {fileID: 966147870}
   - component: {fileID: 966147869}
   - component: {fileID: 966147868}
+  - component: {fileID: 966147871}
   m_Layer: 15
   m_Name: Hurtbox
   m_TagString: Untagged
@@ -3015,6 +3022,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 966147866}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &966147871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 966147866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2519ec78f0f15c4d98da830837bd2e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &981373999
 GameObject:
   m_ObjectHideFlags: 0
@@ -3320,6 +3338,11 @@ Prefab:
     - target: {fileID: 4107934793718588, guid: 099ab65ae36178944bd0f598a8326120, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 54723748339431228, guid: 099ab65ae36178944bd0f598a8326120,
+        type: 2}
+      propertyPath: m_AngularDrag
+      value: 999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 099ab65ae36178944bd0f598a8326120, type: 2}
@@ -4106,6 +4129,7 @@ GameObject:
   - component: {fileID: 1413633897}
   - component: {fileID: 1413633896}
   - component: {fileID: 1413633895}
+  - component: {fileID: 1413633894}
   m_Layer: 13
   m_Name: MeleeHitBox
   m_TagString: Untagged
@@ -4126,6 +4150,17 @@ Transform:
   m_Father: {fileID: 929276734}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1413633894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1413633892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339170c3ef42a7842a356e0356240fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &1413633895
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4266,6 +4301,7 @@ GameObject:
   - component: {fileID: 1433440709}
   - component: {fileID: 1433440708}
   - component: {fileID: 1433440707}
+  - component: {fileID: 1433440722}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -4544,6 +4580,23 @@ MonoBehaviour:
   currentHealthRecoveryDelay: 0
   _aggression: 0
   _intelligence: 0
+--- !u!114 &1433440722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433440705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f319df7349d678846a16e7312537bc7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentHealth: 100
+  _isDead: 0
+  maxHealth: 100
+  healthRecovery: 0
+  healthRecoveryDelay: 0
+  currentHealthRecoveryDelay: 0
 --- !u!1 &1454788177
 GameObject:
   m_ObjectHideFlags: 0
@@ -6327,6 +6380,39 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.42770544, y: -0.041570634, z: -0.1218338}
     m_Extent: {x: 0.39507148, y: 0.3421786, z: 0.33123899}
   m_DirtyAABB: 0
+--- !u!1 &2028678853 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1280973156635140, guid: 099ab65ae36178944bd0f598a8326120,
+    type: 2}
+  m_PrefabInternal: {fileID: 1117589152}
+--- !u!114 &2028678860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028678853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c88bec111414c479762a3fa837bb01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2028678861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028678853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f319df7349d678846a16e7312537bc7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentHealth: 100
+  _isDead: 0
+  maxHealth: 100
+  healthRecovery: 0
+  healthRecoveryDelay: 0
+  currentHealthRecoveryDelay: 0
 --- !u!1 &2054811779
 GameObject:
   m_ObjectHideFlags: 0
