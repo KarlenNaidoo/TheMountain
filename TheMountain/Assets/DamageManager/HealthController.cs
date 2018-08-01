@@ -30,7 +30,8 @@ public class HealthController : MonoBehaviour, IHealthController
             if (!_isDead && _currentHealth <= 0)
             {
                 _isDead = true;
-                onDead();
+                Debug.Log("Is Dead");
+                //onDead();
             }
         }
     }
@@ -40,7 +41,8 @@ public class HealthController : MonoBehaviour, IHealthController
             if ( !_isDead && currentHealth <= 0)
             {
                 _isDead = true;
-                onDead();
+                Debug.Log("Is Dead");
+                //onDead();
             }
             return _isDead;
         }
@@ -65,7 +67,7 @@ public class HealthController : MonoBehaviour, IHealthController
         }
     }
 
-    protected virtual IEnumerator RecoverHealth()
+    protected virtual IEnumerator RecoverHealthOverTime()
     {
         inHealthRecovery = true;
         while(canRecoverHealth)
@@ -104,7 +106,7 @@ public class HealthController : MonoBehaviour, IHealthController
         if (!isDead && currentHealth <= 0)
         {
             isDead = true;
-            onDead();
+            //onDead();
         }
     }
 
@@ -117,20 +119,50 @@ public class HealthController : MonoBehaviour, IHealthController
         }
     }
 
-    public virtual void TakeDamage(Damage damage)
+    public virtual void ReceiveDamage(Damage damage)
     {
         if (damage != null)
         {
             currentHealthRecoveryDelay = currentHealth <= 0 ? 0 : healthRecoveryDelay;
             if (damage.damageValue > 0 && !inHealthRecovery)
             {
-                StartCoroutine(RecoverHealth());
+                StartCoroutine(RecoverHealthOverTime());
             }
-            onReceiveDamage();
             if (currentHealth > 0)
             {
                 currentHealth -= damage.damageValue;
+
+                Debug.Log("Current Health: " + currentHealth);
             }
         }
+        if (damage.hitReaction)
+        {
+            Debug.Log("Find hit position. Play hurt animation");
+        }
     }
+}
+
+
+[System.Serializable]
+public class Damage
+{
+    public int damageValue;
+    public bool ignoreDefense;
+    public Vector3 hitPosition;
+    public bool hitReaction = true;
+
+    public Damage(int value)
+    {
+        this.damageValue = value;
+        this.hitReaction = true;
+    }
+
+    public Damage(Damage damage)
+    {
+
+        this.damageValue = damage.damageValue;
+        this.ignoreDefense = damage.ignoreDefense;
+        this.hitPosition = damage.hitPosition;
+    }
+
 }

@@ -195,7 +195,8 @@ namespace Player.PlayerController
             Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
             if (animEvents.OpenHitBox())
             {
-                hurtbox?.ReceiveDamage();
+                Damage attackDamage = new Damage(15);
+                hurtbox?.ReceiveDamage(attackDamage);
             }
         }
 

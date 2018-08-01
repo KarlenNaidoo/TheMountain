@@ -75,9 +75,9 @@
     
         #endregion Physics Material
 
-        public override void TakeDamage(Damage damage)
+        public override void ReceiveDamage(Damage damage)
         {
-            base.TakeDamage(damage);
+            base.ReceiveDamage(damage);
             //TriggerDamageReaction(damage);
         }
     }

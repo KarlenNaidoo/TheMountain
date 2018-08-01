@@ -4,7 +4,7 @@ public interface IDamageReceiver
 {
     Transform transform { get; }
     GameObject gameObject { get; }
-    void TakeDamage(Damage damage);
+    void ReceiveDamage(Damage damage);
 }
 
 public interface IHealthController: IDamageReceiver
@@ -31,7 +31,7 @@ public static class DamageHelper
         {
             for (int i = 0; i < receivers.Length; i++)
             {
-                receivers[i].TakeDamage(damage);
+                receivers[i].ReceiveDamage(damage);
             }
         }
     }

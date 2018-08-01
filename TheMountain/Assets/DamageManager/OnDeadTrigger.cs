@@ -3,18 +3,18 @@ using System.Collections;
 
 public class OnDeadTrigger : MonoBehaviour
 {
-
+    public HealthController healthController;
+    public HealthController.OnDead onDead;
     // Use this for initialization
     void Start()
     {
-        Character character = GetComponent<Character>();
-        //if (character)
-            //character.on
+        healthController = GetComponent<HealthController>();
+        onDead = OnDeadHandle;
     }
 
 
-    public void OnDeadHandle(GameObject target)
+    public void OnDeadHandle()
     {
-        //OnDead.Invoke();
+        Debug.Log("I've been called to die");
     }
 }
