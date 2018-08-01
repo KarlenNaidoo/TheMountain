@@ -55,7 +55,6 @@ namespace Player.PlayerController
         public void LayerControl()
         {
             baseLayerInfo = animator.GetCurrentAnimatorStateInfo(baseLayer);
-            underBodyInfo = animator.GetCurrentAnimatorStateInfo(underBodyLayer);
             rightArmInfo = animator.GetCurrentAnimatorStateInfo(rightArmLayer);
             leftArmInfo = animator.GetCurrentAnimatorStateInfo(leftArmLayer);
             upperBodyInfo = animator.GetCurrentAnimatorStateInfo(upperBodyLayer);

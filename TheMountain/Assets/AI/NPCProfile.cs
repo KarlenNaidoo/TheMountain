@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Blackboard))]
-public class NPCProfile : MonoBehaviour {
+public class NPCProfile : Character {
 
     [SerializeField][Range(0,10)] float _aggression;
     [SerializeField] [Range(0, 10)] float _intelligence;
