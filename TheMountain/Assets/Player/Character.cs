@@ -21,7 +21,7 @@
 
         #endregion Physics Variables
 
-        protected void Awake()
+        protected virtual void Awake()
         {
             animator = GetComponent<Animator>();
         }
@@ -74,10 +74,4 @@
         }
     
         #endregion Physics Material
-
-        public override void ReceiveDamage(Damage damage)
-        {
-            base.ReceiveDamage(damage);
-            //TriggerDamageReaction(damage);
-        }
     }

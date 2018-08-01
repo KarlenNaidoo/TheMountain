@@ -34,6 +34,10 @@ namespace Player
 
         public enum AttackCategory { none, light, heavy, running_heavy, running_light }
 
+        public enum HitBoxArea { LeftArm, RightArm, BothArms, LeftLeg, RightLeg, BothLegs, Weapon }
+
+        public enum ColliderState { Closed, Open, Colliding }
+
         public static class Constants
         {
             public static string Horizontal = "Horizontal";

@@ -50,10 +50,7 @@ public class NavigationManager : MonoBehaviour
 
     protected void Update()
     {
-        if (_blackboard.currentTarget)
-        {
-            SetTarget(_blackboard.currentTarget.position, _blackboard.onDoneMovement, _blackboard.onFailureMovement);
-        }
+        SetTarget(_blackboard.currentTarget, _blackboard.onDoneMovement, _blackboard.onFailureMovement);
 
         MoveToPosition();
     }

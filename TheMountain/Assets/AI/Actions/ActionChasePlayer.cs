@@ -77,14 +77,16 @@ public class ActionChasePlayer : ReGoapAction<string, object>
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
+      
         Vector3 inRangePosition = lastKnownPlayerPosition.position * .5f;
-        blackboard.currentTarget.position = inRangePosition;
-        Debug.Log("Going to " + inRangePosition);
+        
+        blackboard.currentTarget = lastKnownPlayerPosition.position;
         if (blackboard.targetReachedStatus)
         {
             Debug.Log("Chase success");
             done(this);
         }
+        fail(this);
     }
     
 }

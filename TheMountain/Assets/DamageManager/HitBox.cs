@@ -19,6 +19,7 @@ public class HitBox : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(gameObject.name + " collided with " + other.gameObject.name);
         _animEvents.currentHitBoxTrigger = _hitBoxTrigger;
         _responder?.CollidedWith(other);
         _state = ColliderState.Open;

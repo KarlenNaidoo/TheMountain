@@ -9,7 +9,7 @@ public class GoalKillPlayer : ReGoapGoalAdvanced<string, object>
     {
         base.Awake();
         //goal.Set("GoTo" + target.gameObject.tag, true);
-        goal.Set("PlayerDead", true);
+        goal.Set("playerDead", true);
     }
 
     public override string ToString()

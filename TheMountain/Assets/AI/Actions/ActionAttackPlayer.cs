@@ -27,7 +27,7 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
 
     protected virtual void OnFailureMovement()
     {
-        failCallback(this);
+        //failCallback(this);
         Debug.Log("Running fail for attack player");
         _blackboard.aggression++;
     }
@@ -42,8 +42,8 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
     public override ReGoapState<string, object> GetPreconditions(GoapActionStackData<string, object> stackData)
     {
         preconditions.Set("inMeleeRange", true);
-        preconditions.Set("meleeWeaponEquipped", false);
-        preconditions.Set("shootingWeaponEquipped", false);
+        //preconditions.Set("meleeWeaponEquipped", false);
+        //preconditions.Set("shootingWeaponEquipped", false);
         //preconditions.Set("isCharging", true);
         return base.GetPreconditions(stackData);
     }
@@ -60,8 +60,9 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
 
         base.Run(previous, next, settings, goalState, done, fail);
         _blackboard.SetAttackParameters(1, (int) Blackboard.AIAttackType.NoWeapon, true);
-        Debug.Log("Attacking Player");
-        done(this);
+
+       // OnFailureMovement();
+        fail(this);
 
     }
 }

@@ -1,23 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Player.Utility;
 
 [RequireComponent(typeof(Blackboard))]
-public class NPCProfile : Character {
+[RequireComponent(typeof(AnimEvents))]
+[RequireComponent(typeof(HitBox))]
+[RequireComponent(typeof(IHitboxResponder))]
+public class NPCProfile : Character, IHitboxResponder {
 
     [SerializeField][Range(0,10)] float _aggression;
     [SerializeField] [Range(0, 10)] float _intelligence;
     Blackboard _blackboard;
-
-    private void Awake()
+    HitBox hitbox;
+    AnimEvents animEvents;
+    public HitboxProfile[] hitboxProfile { get; set; }
+    protected override void Awake()
     {
         _blackboard = GetComponent<Blackboard>();
+        hitbox = GetComponentInChildren<HitBox>();
+        animEvents = GetComponent<AnimEvents>();
+        base.Awake();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _blackboard.aggression = _aggression;
         _blackboard.intelligence = _intelligence;
     }
+
+
+    public void CollidedWith(Collider collider)
+    {
+        Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
+        if (animEvents.OpenHitBox())
+        {
+            Damage attackDamage = new Damage(15);
+            hurtbox?.ReceiveDamage(attackDamage);
+        }
+    }
+
+
+    private void Attack()
+    {
+        hitbox.SetResponder(this);
+    }
+}
+
+[System.Serializable]
+public class HitboxProfile
+{
+    public HitBoxArea hitboxArea;
+    public Collider hitBox;
 
 }

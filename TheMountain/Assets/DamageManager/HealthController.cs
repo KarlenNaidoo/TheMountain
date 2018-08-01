@@ -121,6 +121,7 @@ public class HealthController : MonoBehaviour, IHealthController
 
     public virtual void ReceiveDamage(Damage damage)
     {
+        Debug.Log("BEING CALLED");
         if (damage != null)
         {
             currentHealthRecoveryDelay = currentHealth <= 0 ? 0 : healthRecoveryDelay;

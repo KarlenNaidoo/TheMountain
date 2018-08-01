@@ -83,7 +83,7 @@ public class ActionPatrolWaypoints : ReGoapAction<string, object>
             blackboard.onDoneMovement = OnDoneMovement;
             blackboard.onFailureMovement = OnFailureMovement;
             
-            blackboard.currentTarget = patrolDestinations[_waypointIndex];
+            blackboard.currentTarget = patrolDestinations[_waypointIndex].position;
 
             //Debug.Log("Setting currentTarget to: " + blackboard.currentTarget.position);
 
