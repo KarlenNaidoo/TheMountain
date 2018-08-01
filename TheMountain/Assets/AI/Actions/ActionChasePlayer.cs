@@ -83,7 +83,7 @@ public class ActionChasePlayer : ReGoapAction<string, object>
         blackboard.currentTarget = lastKnownPlayerPosition.position;
         if (blackboard.targetReachedStatus)
         {
-            Debug.Log("Chase success");
+            //Debug.Log("Chase success");
             done(this);
         }
         fail(this);

@@ -15,9 +15,11 @@ public class HitBox : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(gameObject.name + " collided with " + other.gameObject.name);
-        _responder?.CollidedWith(other);
+        _responder?.CollidedWith(other); // ? means it wont throw a Null Reference if _responder is null
     }
     
+
+
     public void SetResponder(IHitboxResponder responder)
     {
         _responder = responder;

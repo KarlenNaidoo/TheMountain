@@ -8,12 +8,13 @@ public class MeleeAttackControl : StateMachineBehaviour {
 
 
     private Blackboard _blackboard;
-    public HitBoxArea[] hitboxes;
+    public List<HitBoxArea> hitboxes;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {    
         _blackboard = animator.GetComponent<Blackboard>();
         if (_blackboard)
         {
+            _blackboard.hitboxes = new List<HitBoxArea>();
             _blackboard.hitboxes = hitboxes; // Updates the blackboard with the new list according to the current animation playing
         }
 	}

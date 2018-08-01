@@ -12,7 +12,7 @@ public class NPCProfile : Character, IHitboxResponder {
     [SerializeField][Range(0,10)] float _aggression;
     [SerializeField] [Range(0, 10)] float _intelligence;
     Blackboard _blackboard;
-    HitBox hitbox;
+    List<HitBox> activeHitboxes;
     AnimEvents animEvents;
     public HitboxProfile[] hitboxProfile;
 
@@ -21,7 +21,6 @@ public class NPCProfile : Character, IHitboxResponder {
     protected override void Awake()
     {
         _blackboard = GetComponent<Blackboard>();
-        hitbox = GetComponentInChildren<HitBox>();
         animEvents = GetComponent<AnimEvents>();
         base.Awake();
     }
@@ -32,7 +31,7 @@ public class NPCProfile : Character, IHitboxResponder {
         _blackboard.aggression = _aggression;
         _blackboard.intelligence = _intelligence;
     }
-
+    
 
     public void CollidedWith(Collider collider)
     {
@@ -46,9 +45,18 @@ public class NPCProfile : Character, IHitboxResponder {
     }
 
 
-    private void Attack()
+    public void SetAsResponder()
     {
-        hitbox.SetResponder(this);
+        Debug.Log("Setting responder");
+        activeHitboxes = _blackboard.activeHitboxTriggers;
+        if (activeHitboxes != null)
+        {
+            foreach (HitBox activeHitbox in activeHitboxes)
+            {
+                Debug.Log("Active hitbox: " + activeHitbox);
+                activeHitbox.SetResponder(this);
+            }
+        }
     }
 }
 

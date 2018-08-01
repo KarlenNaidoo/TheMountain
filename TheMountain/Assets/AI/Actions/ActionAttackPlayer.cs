@@ -8,16 +8,22 @@ using System.Linq;
 
 public class ActionAttackPlayer : ReGoapAction<string, object>
 {
-
-    Animator _anim;
+    
+    NPCProfile _npcProfile;
     Blackboard _blackboard;
     const int AGGRESSION_THRESHOLD = 4;
     protected override void Awake()
     {
         base.Awake();
-        _anim = GetComponent<Animator>();
         _blackboard = GetComponent<Blackboard>();
+        _npcProfile = GetComponent<NPCProfile>();
+       
+    }
 
+    protected override void Start()
+    {
+        base.Start();
+        
     }
     public override bool CheckProceduralCondition(GoapActionStackData<string, object> stackData)
     {
@@ -59,9 +65,11 @@ public class ActionAttackPlayer : ReGoapAction<string, object>
     {
 
         base.Run(previous, next, settings, goalState, done, fail);
+        
         _blackboard.SetAttackParameters(1, (int) Blackboard.AIAttackType.NoWeapon, true);
 
-       // OnFailureMovement();
+        _npcProfile.SetAsResponder();
+        // OnFailureMovement();
         fail(this);
 
     }

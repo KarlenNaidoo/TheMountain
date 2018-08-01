@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AnimEvents : MonoBehaviour {
@@ -7,67 +8,88 @@ public class AnimEvents : MonoBehaviour {
 
     Blackboard blackboard;
     NPCProfile npcProfile;
-    Collider _hitBoxTrigger;
+    List<Collider> _hitBoxTriggers;
     public enum ColliderState { Closed, Open, Colliding }
 
     private ColliderState _state;
 
 
-    private void Start()
+    private void Awake()
     {
         blackboard = GetComponent<Blackboard>();
         npcProfile = GetComponent<NPCProfile>();
     }
-    
+
+    private void Start()
+    {
+    }
+
+    public List<HitBox> GetActiveHitboxes()
+    {
+        List<HitBox> activeHitboxes = new List<HitBox>();
+        if (blackboard.hitboxes != null)
+        {
+
+            for (int i = 0; i < blackboard.hitboxes.Count; i++)
+            {
+                for (int j = 0; j < npcProfile.hitboxProfile.Length; j++)
+                {
+                    if (npcProfile.hitboxProfile[j].hitboxArea == blackboard.hitboxes[i])
+                    {
+                        activeHitboxes.Add(npcProfile.hitboxProfile[j].hitBox.GetComponent<HitBox>());
+                    }
+                }
+            }
+        }
+        return activeHitboxes;
+    }
+
+
+    public List<Collider> GetActiveHitboxTriggers()
+    {
+        List<Collider> activeHitboxTriggers = new List<Collider>();
+        if (blackboard.hitboxes != null && blackboard.hitboxes.Count > 0)
+        {
+            for (int i = 0; i < blackboard.hitboxes.Count; i++)
+            {
+                for (int j = 0; j < npcProfile.hitboxProfile.Length; j++)
+                {
+                    if (npcProfile.hitboxProfile[j].hitboxArea == blackboard.hitboxes[i])
+                    {
+                        activeHitboxTriggers.Add(npcProfile.hitboxProfile[j].hitBox);
+                    }
+                }
+            }
+        }
+        return activeHitboxTriggers;
+    }
+
+    public void EnableHitbox(bool value)
+    {
+        List<Collider> hitboxTriggers = new List<Collider>();
+        hitboxTriggers = GetActiveHitboxTriggers();
+        foreach (var hitbox in hitboxTriggers)
+        {
+            hitbox.enabled = value;
+        }
+    }
 
     public bool OpenHitBox()
     {
 
         _state = ColliderState.Open;
-        Debug.Log("animation event open hitbox");
-        // currentHitBoxTrigger should be passed in from the statemachinebehaviour
-        if (blackboard.hitboxes != null)
-        {
-
-            for (int i = 0; i < blackboard.hitboxes.Length; i++)
-            {
-                for (int j = 0; j < npcProfile.hitboxProfile.Length; j++)
-                {
-                    if (npcProfile.hitboxProfile[j].hitboxArea == blackboard.hitboxes[i])
-                    {
-                        npcProfile.hitboxProfile[j].hitBox.enabled = true;
-                        _hitBoxTrigger = npcProfile.hitboxProfile[j].hitBox;
-                    }
-                }
-
-            }
-
-            return true;
-        }
-        return false;
+        Debug.Log("OPEN HITBOX");
+        EnableHitbox(true);
+        blackboard.activeHitboxTriggers = GetActiveHitboxes();
+        return true;
     }
 
 
     public bool CloseHitBox()
     {
-        Debug.Log("animation event close hitbox");
-        _state = ColliderState.Closed;
-        if (blackboard.hitboxes != null)
-        {
-
-            for (int i = 0; i < blackboard.hitboxes.Length; i++)
-            {
-                for (int j = 0; j < npcProfile.hitboxProfile.Length; j++)
-                {
-                    if (npcProfile.hitboxProfile[j].hitboxArea == blackboard.hitboxes[i])
-                    {
-                        npcProfile.hitboxProfile[j].hitBox.enabled = false;
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
+        Debug.Log("CLOSE HITBOX");
+        EnableHitbox(false);
+        return true;
     }
 
 
@@ -100,20 +122,32 @@ public class AnimEvents : MonoBehaviour {
 
     private void OnDrawGizmos()
     {
+        if (!Application.isPlaying) return;
+
         //_hitBoxTrigger = gameObject.GetComponent<Collider>();
         checkGizmoColor();
-        if (_hitBoxTrigger && _hitBoxTrigger.enabled)
+        
+        _hitBoxTriggers = GetActiveHitboxTriggers(); // TODO: Causes a null pointer error upon exiting play mode
+
+        if (_hitBoxTriggers != null)
         {
-            if (_hitBoxTrigger as BoxCollider)
+            foreach (var _hitBoxTrigger in _hitBoxTriggers)
             {
 
-                BoxCollider box = _hitBoxTrigger as BoxCollider;
-                var sizeX = transform.lossyScale.x * box.size.x;
-                var sizeY = transform.lossyScale.y * box.size.y;
-                var sizeZ = transform.lossyScale.z * box.size.z;
-                Matrix4x4 rotationMatrix = Matrix4x4.TRS(box.bounds.center, transform.rotation, new Vector3(sizeX, sizeY, sizeZ));
-                Gizmos.matrix = rotationMatrix;
-                Gizmos.DrawCube(Vector3.zero, Vector3.one);
+                if (_hitBoxTrigger && _hitBoxTrigger.enabled)
+                {
+                    if (_hitBoxTrigger as BoxCollider)
+                    {
+
+                        BoxCollider box = _hitBoxTrigger as BoxCollider;
+                        var sizeX = transform.lossyScale.x * box.size.x;
+                        var sizeY = transform.lossyScale.y * box.size.y;
+                        var sizeZ = transform.lossyScale.z * box.size.z;
+                        Matrix4x4 rotationMatrix = Matrix4x4.TRS(box.bounds.center, transform.rotation, new Vector3(sizeX, sizeY, sizeZ));
+                        Gizmos.matrix = rotationMatrix;
+                        Gizmos.DrawCube(Vector3.zero, Vector3.one);
+                    }
+                }
             }
         }
     }

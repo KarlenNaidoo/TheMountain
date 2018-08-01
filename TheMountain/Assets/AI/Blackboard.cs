@@ -29,8 +29,8 @@ public class Blackboard : MonoBehaviour
     public bool shouldAttack { get; private set; }
     public float aggression { get; set; }
     public float intelligence { get; set; }
-    public HitBoxArea[] hitboxes { get; set; }
-
+    public List<HitBoxArea> hitboxes { get; set; }
+    public List<HitBox> activeHitboxTriggers { get; set; }
     public void SetMoveParameters (Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {
         this.localDesiredVelocity = localDesiredVelocity;
@@ -61,6 +61,7 @@ public class Blackboard : MonoBehaviour
     void Start()
     {
         _workingMemory.GetWorldState();
+        hitboxes = new List<HitBoxArea>();
     }
 
     // Update is called once per frame
