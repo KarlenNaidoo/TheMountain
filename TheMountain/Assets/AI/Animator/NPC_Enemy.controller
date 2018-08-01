@@ -212,13 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43efa64471c9a349ba3bad559dbff62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDamage: 0.05
-  endDamage: 0.9
-  allowMovementAt: 0.9
-  damageMultiplier: 0
-  attackName: Punch
-  resetAttackTrigger: 0
-  debug: 1
+  hitboxes: 01000000
 --- !u!114 &114914118738016832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -910,7 +904,7 @@ AnimatorStateTransition:
     m_EventTreshold: 1
   - m_ConditionMode: 6
     m_ConditionEvent: AttackType
-    m_EventTreshold: 1
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102927111594926862}
   m_Solo: 0
@@ -1662,7 +1656,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400022, guid: 0cf6cd90fa783f74d9a28a42e2071737, type: 3}
+  m_Motion: {fileID: 7400000, guid: 1b6baf9d3ad5f294eaac3af33d10e63f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2015,8 +2009,8 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
-  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_ExitPosition: {x: 492, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 648, y: 48, z: 0}
   m_DefaultState: {fileID: 1102927111594926862}
 --- !u!1107 &1107838299513043798
 AnimatorStateMachine:

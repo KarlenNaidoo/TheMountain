@@ -14,7 +14,10 @@ public class NPCProfile : Character, IHitboxResponder {
     Blackboard _blackboard;
     HitBox hitbox;
     AnimEvents animEvents;
-    public HitboxProfile[] hitboxProfile { get; set; }
+    public HitboxProfile[] hitboxProfile;
+
+    
+
     protected override void Awake()
     {
         _blackboard = GetComponent<Blackboard>();
@@ -33,6 +36,7 @@ public class NPCProfile : Character, IHitboxResponder {
 
     public void CollidedWith(Collider collider)
     {
+        Debug.Log("Running collided with method");
         Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
         if (animEvents.OpenHitBox())
         {
