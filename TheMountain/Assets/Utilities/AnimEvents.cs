@@ -9,19 +9,39 @@ public class AnimEvents : MonoBehaviour {
     Blackboard blackboard;
     NPCProfile npcProfile;
     List<Collider> _hitBoxTriggers;
+    Hurtbox[] _hurtboxes;
     public enum ColliderState { Closed, Open, Colliding }
 
     private ColliderState _state;
 
 
+    private HitBox[] _hitboxes;
+
+   
     private void Awake()
     {
         blackboard = GetComponent<Blackboard>();
         npcProfile = GetComponent<NPCProfile>();
+        _hitboxes = GetComponentsInChildren<HitBox>(true);
+        _hurtboxes = GetComponentsInChildren<Hurtbox>(true);
     }
 
     private void Start()
     {
+        IgnoreOwnHurtboxes();
+    }
+
+    private void IgnoreOwnHurtboxes()
+    {
+        foreach (Hurtbox hurtbox in _hurtboxes)
+        {
+
+            foreach (HitBox hitbox in _hitboxes)
+            {
+                Debug.Log("Setting ignore collision for " + hitbox.gameObject.name);
+                Physics.IgnoreCollision(hurtbox.gameObject.GetComponent<Collider>(), hitbox.gameObject.GetComponent<Collider>());
+            }
+        }
     }
 
     public List<HitBox> GetActiveHitboxes()
