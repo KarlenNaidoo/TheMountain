@@ -13,6 +13,7 @@ public interface IHealthController: IDamageReceiver
     bool isDead { get; set; }
     void ChangeHealth(int value);
     void ChangeMaxHealth(int value);
+    void PlayHurtAnimation(bool value);
 }
 
 public interface IHitboxResponder

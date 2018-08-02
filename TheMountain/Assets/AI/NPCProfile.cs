@@ -37,11 +37,9 @@ public class NPCProfile : Character, IHitboxResponder {
     {
         Debug.Log("Running collided with method");
         Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
-        if (animEvents.OpenHitBox())
-        {
-            Damage attackDamage = new Damage(15);
-            hurtbox?.ReceiveDamage(attackDamage);
-        }
+        IHealthController healthController = hurtbox.GetComponentInParent<IHealthController>(); // the parent gameobject will implement the health and damage
+        Damage attackDamage = new Damage(15);
+        healthController?.ReceiveDamage(attackDamage);
     }
 
 
@@ -57,6 +55,16 @@ public class NPCProfile : Character, IHitboxResponder {
                 activeHitbox.SetResponder(this);
             }
         }
+    }
+
+    public override void ReceiveDamage(Damage damage)
+    {
+        Debug.Log("Overriding receive damage");
+        PlayHurtAnimation(true);
+    }
+    public override void PlayHurtAnimation(bool value)
+    {
+        Debug.Log("Enemy override hurt animation");
     }
 }
 

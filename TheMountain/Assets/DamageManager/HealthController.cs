@@ -133,13 +133,18 @@ public class HealthController : MonoBehaviour, IHealthController
             {
                 currentHealth -= damage.damageValue;
 
-                Debug.Log("Current Health: " + currentHealth);
+                //Debug.Log("Current Health: " + currentHealth);
             }
         }
         if (damage.hitReaction)
         {
-            Debug.Log("Find hit position. Play hurt animation");
+            PlayHurtAnimation(true);
         }
+    }
+
+    public virtual void PlayHurtAnimation(bool value)
+    {
+        Debug.Log("Play hurt animation. Override in child classes");
     }
 }
 

@@ -119,5 +119,10 @@ namespace Player.PlayerController
             animator.SetInteger("AttackID", (int) AttackID);
         }
 
+        public override void PlayHurtAnimation(bool value)
+        {
+            animator.Play("Idle_Hit_Strong_Right");
+        }
+
     }
 }

@@ -193,11 +193,9 @@ namespace Player.PlayerController
         public void CollidedWith(Collider collider)
         {
             Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
-            if (animEvents.OpenHitBox())
-            {
-                Damage attackDamage = new Damage(15);
-                hurtbox?.ReceiveDamage(attackDamage);
-            }
+            IHealthController hurtBoxController = hurtbox.GetComponentInParent<IHealthController>(); // the parent gameobject will implement the health and damage
+            Damage attackDamage = new Damage(15);
+            hurtBoxController?.ReceiveDamage(attackDamage);
         }
 
 
