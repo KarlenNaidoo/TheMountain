@@ -31,6 +31,9 @@ namespace Player
             }
         }
 
+        public enum ActionInput {R1, R2, L1, L2, None}
+
+        public enum LocomotionType { Free, Strafe }
 
         public enum AttackCategory { none, light, heavy, running_heavy, running_light }
 

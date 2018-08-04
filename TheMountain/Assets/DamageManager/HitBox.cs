@@ -4,12 +4,12 @@ using System.Collections;
 public class HitBox : MonoBehaviour
 {
     private IHitboxResponder _responder = null;
-    private AnimEvents _animEvents;
+    private HitBoxController _animEvents;
     private Animator _anim;
 
     private void Awake()
     {
-        _animEvents = GetComponentInParent<AnimEvents>();
+        _animEvents = GetComponentInParent<HitBoxController>();
         _anim = GetComponentInParent<Animator>();
     }
 

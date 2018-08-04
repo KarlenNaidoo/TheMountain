@@ -4,7 +4,7 @@ using UnityEngine;
 using static Player.Utility;
 
 [RequireComponent(typeof(Blackboard))]
-[RequireComponent(typeof(AnimEvents))]
+[RequireComponent(typeof(HitBoxController))]
 [RequireComponent(typeof(HitBox))]
 [RequireComponent(typeof(IHitboxResponder))]
 public class NPCProfile : Character, IHitboxResponder {
@@ -13,7 +13,7 @@ public class NPCProfile : Character, IHitboxResponder {
     [SerializeField] [Range(0, 10)] float _intelligence;
     Blackboard _blackboard;
     List<HitBox> activeHitboxes;
-    AnimEvents animEvents;
+    HitBoxController animEvents;
     public HitboxProfile[] hitboxProfile;
 
     
@@ -21,7 +21,7 @@ public class NPCProfile : Character, IHitboxResponder {
     protected override void Awake()
     {
         _blackboard = GetComponent<Blackboard>();
-        animEvents = GetComponent<AnimEvents>();
+        animEvents = GetComponent<HitBoxController>();
         base.Awake();
     }
 

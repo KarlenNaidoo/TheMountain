@@ -7,8 +7,10 @@
 
 namespace Player.PlayerController
 {
-    public abstract class PlayerAnimator : PlayerMotor
+    public class PlayerAnimator : MonoBehaviour
     {
+
+        PlayerBlackboard blackboard;
         private float randomIdleCount, randomIdle;
         private float _speed = 0;
         
@@ -16,113 +18,141 @@ namespace Player.PlayerController
         [HideInInspector]
         public AnimatorStateInfo baseLayerInfo, underBodyInfo, rightArmInfo, leftArmInfo, fullBodyInfo, upperBodyInfo;
         private int baseLayer
-        { get { return animator.GetLayerIndex("Base Layer"); } }
+        { get { return blackboard.animator.GetLayerIndex("Base Layer"); } }
         private int underBodyLayer
-        { get { return animator.GetLayerIndex("UnderBody"); } }
+        { get { return blackboard.animator.GetLayerIndex("UnderBody"); } }
         private int rightArmLayer
-        { get { return animator.GetLayerIndex("RightArm"); } }
+        { get { return blackboard.animator.GetLayerIndex("RightArm"); } }
         private int leftArmLayer
-        { get { return animator.GetLayerIndex("LeftArm"); } }
+        { get { return blackboard.animator.GetLayerIndex("LeftArm"); } }
         private int upperBodyLayer
-        { get { return animator.GetLayerIndex("UpperBody"); } }
+        { get { return blackboard.animator.GetLayerIndex("UpperBody"); } }
         private int fullbodyLayer
-        { get { return animator.GetLayerIndex("FullBody"); } }
+        { get { return blackboard.animator.GetLayerIndex("FullBody"); } }
         //Current combo
         public int combo { get; set; }
+        string targetAnim;
+        protected virtual void Awake()
+        {
+
+            blackboard = GetComponent<PlayerBlackboard>();
+
+        }
+        protected virtual void Start()
+        {
+
+
+        }
         public void OnAnimatorMove()
         {
             UpdateAnimator();
-            if (useRootMotion)
+            if (blackboard.useRootMotion)
             {
-                transform.position = animator.rootPosition;
+                transform.position = blackboard.animator.rootPosition;
                 //transform.rotation = animator.rootRotation;
             }
         }
 
         public virtual void UpdateAnimator()
         {
-            if (animator == null || !animator.enabled) return;
+            if (blackboard.animator == null || !blackboard.animator.enabled) return;
 
             LayerControl();
 
             RandomIdle();
 
             LocomotionAnimation();
-
-            AttackingAnimation();
+            if(blackboard.actionSlot != null)
+            {
+                targetAnim = blackboard.actionSlot.targetAnim;
+                blackboard.animator.CrossFade(targetAnim, 0.2f);
+            }
+                
+            Debug.Log(targetAnim);
+            //AttackingAnimation();
         }
 
         public void LayerControl()
         {
-            baseLayerInfo = animator.GetCurrentAnimatorStateInfo(baseLayer);
-            rightArmInfo = animator.GetCurrentAnimatorStateInfo(rightArmLayer);
-            leftArmInfo = animator.GetCurrentAnimatorStateInfo(leftArmLayer);
-            upperBodyInfo = animator.GetCurrentAnimatorStateInfo(upperBodyLayer);
-            fullBodyInfo = animator.GetCurrentAnimatorStateInfo(fullbodyLayer);
+            baseLayerInfo = blackboard.animator.GetCurrentAnimatorStateInfo(baseLayer);
+            rightArmInfo = blackboard.animator.GetCurrentAnimatorStateInfo(rightArmLayer);
+            leftArmInfo = blackboard.animator.GetCurrentAnimatorStateInfo(leftArmLayer);
+            upperBodyInfo = blackboard.animator.GetCurrentAnimatorStateInfo(upperBodyLayer);
+            fullBodyInfo = blackboard.animator.GetCurrentAnimatorStateInfo(fullbodyLayer);
         }
 
         private void RandomIdle()
         {
-            if (input != Vector2.zero) return;
+            if (blackboard.input != Vector2.zero) return;
 
-            if (input.sqrMagnitude == 0 && !isCrouching && _capsuleCollider.enabled)
+            if (blackboard.input.sqrMagnitude == 0 && !blackboard.isCrouching)
             {
                 randomIdleCount += Time.fixedDeltaTime;
                 if (randomIdleCount > 6)
                 {
                     randomIdleCount = 0;
-                    animator.SetTrigger(Utility.Constants.IdleRandomTrigger);
+                    blackboard.animator.SetTrigger(Utility.Constants.IdleRandomTrigger);
                     //animator.SetInteger(Utility.Constants.IdleRandom, Random.Range(0, 1));
                 }
             }
             else
             {
                 randomIdleCount = 0;
-                animator.SetInteger(Utility.Constants.IdleRandom, 0);
+                blackboard.animator.SetInteger(Utility.Constants.IdleRandom, 0);
             }
         }
 
         public void LocomotionAnimation()
         {
-            animator.SetBool("IsCrouching", IsCrouching);
-            animator.SetFloat(Utility.Constants.InputMagnitude, speed, .2f, Time.deltaTime);
+            blackboard.animator.SetBool("IsCrouching", blackboard.isCrouching);
+            blackboard.animator.SetFloat(Utility.Constants.InputMagnitude, blackboard.speed, .2f, Time.deltaTime);
 
             var dir = transform.InverseTransformDirection(Camera.main.transform.position);
-            dir.z *= speed;
-            animator.SetFloat("InputVertical", Mathf.Clamp(dir.z, -1, 1));
-            animator.SetFloat("InputHorizontal", Mathf.Clamp(dir.x, -1, 1));
+            dir.z *= blackboard.speed;
+            blackboard.animator.SetFloat("InputVertical", Mathf.Clamp(dir.z, -1, 1));
+            blackboard.animator.SetFloat("InputHorizontal", Mathf.Clamp(dir.x, -1, 1));
         }
 
-        public void AttackingAnimation()
+       
+        public virtual void PlayHurtAnimation(bool value)
         {
-            if (_isAttacking)
+            blackboard.animator.Play("Idle_Hit_Strong_Right");
+        }
+
+        public virtual void Sprint(bool value)
+        {
+            if (value)
             {
-                if (IsLightAttack)
-                { 
-                    animator.SetTrigger("LightAttack");
-                }
-                if (IsHeavyAttack)
+                if (blackboard.currentSprintStamina > 0 && blackboard.input.sqrMagnitude > 0.1f)
                 {
-                    animator.SetTrigger("HeavyAttack");
+                    blackboard.isSprinting = true;
+                    blackboard.isRunning = false;
                 }
-                animator.SetInteger("AttackCombo", combo);
+                else if (blackboard.currentSprintStamina <= 0)
+                {
+                    blackboard.isRunning = true;
+                    blackboard.isSprinting = false;
+                }
+
+                if (blackboard.input.sqrMagnitude < 0.1f || blackboard.isCrouching || blackboard.speed <= 0)
+                {
+                    blackboard.isSprinting = false;
+                    blackboard.isRunning = false;
+                }
+                blackboard.currentSprintStamina = (blackboard.currentSprintStamina > 0) ? blackboard.currentSprintStamina - Time.deltaTime : 0;
             }
             else
             {
-                animator.ResetTrigger("LightAttack");
-                animator.ResetTrigger("HeavyAttack");
-                ResetAttackTriggers = false;
-                AttackID = 0;
-                //CanLightAttackAgain = false;
-                //CanHeavyAttackAgain = false;
+                blackboard.isSprinting = false;
+                blackboard.isRunning = false;
             }
-            animator.SetInteger("AttackID", (int) AttackID);
         }
 
-        public override void PlayHurtAnimation(bool value)
+        public virtual void Crouch()
         {
-            animator.Play("Idle_Hit_Strong_Right");
-        }
 
+            blackboard.isCrouching = true;
+
+        }
     }
 }

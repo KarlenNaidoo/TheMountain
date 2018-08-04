@@ -12,6 +12,7 @@ public class Blackboard : MonoBehaviour
     NavigationManager _navManager;
 
 
+    public bool isCrouching { get; set; }
     public enum AIAttackType { NoWeapon, MeleeWeapon, RangeWeapon }
     public ReGoapState<string, object> worldState { get { return _workingMemory.GetWorldState();} }
     public NavigationManager navManager { get; set; }
