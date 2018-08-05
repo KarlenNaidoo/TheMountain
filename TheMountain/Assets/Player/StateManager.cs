@@ -19,7 +19,6 @@ public class StateManager : PlayerMotor, IHitboxResponder
     {
         base.Awake();
         cameraManager = GetComponent<CameraManager>();
-
         _hitbox = GetComponentInChildren<HitBox>();
         _hitboxController = GetComponent<PlayerHitboxController>();
     }
