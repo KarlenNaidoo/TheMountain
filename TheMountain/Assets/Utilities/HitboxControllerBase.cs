@@ -100,7 +100,6 @@ public abstract class HitboxControllerBase : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Debug.Log("running gizmos");
 
         if (!Application.isPlaying) return;
         checkGizmoColor();

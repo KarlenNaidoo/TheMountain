@@ -4,8 +4,12 @@ using Player.PlayerController;
 using static Player.Utility;
 using System.Collections.Generic;
 
+
+[RequireComponent(typeof(ControllerActionManager))]
+[RequireComponent(typeof(InventoryManager))]
 public class PlayerBlackboard : MonoBehaviour, IBlackboard
 {
+    InventoryManager _inventoryManager;
     ControllerActionManager _actionManager;
     PlayerMotor _motor;
     float _inputX;
@@ -38,6 +42,9 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public List<HitBoxArea> hitboxes { get; set; }
     public List<HitBox> activeHitboxComponents { get; set; }
 
+    public WeaponStatus currentWeapon { get; set; }
+    public Weapon weaponList { get; set; }
+
     public void SetPlayerInputParameters(float x, float y)
     {
         input = new Vector2(x, y);
@@ -48,9 +55,9 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
         animator = GetComponent<Animator>();
         _actionManager = GetComponent<ControllerActionManager>();
         _motor = GetComponent<PlayerMotor>();
+        _inventoryManager = GetComponent<InventoryManager>();
     }
-
-
+    
     public void SetAttackParameters(bool shouldAttack)
     {
         this.shouldAttack = shouldAttack;

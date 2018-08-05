@@ -31,6 +31,7 @@ namespace Player
             }
         }
         
+        public enum WeaponStatus { None, OneHanded, TwoHanded}
 
         public enum ActionInput {R1, R2, L1, L2, None}
 

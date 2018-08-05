@@ -3,22 +3,19 @@ using System.Collections;
 using Player.PlayerController;
 using Player;
 
-[RequireComponent(typeof(PlayerAnimator))]
-[RequireComponent(typeof(PlayerBlackboard))]
 [RequireComponent(typeof(CameraManager))]
 public class StateManager : PlayerMotor, IHitboxResponder
 {
 
-    CameraManager cameraManager;
+    CameraManager _cameraManager;
     public HitboxProfile[] hitboxProfile;
-
     PlayerHitboxController _hitboxController;
     HitBox _hitbox;
 
     protected override void Awake()
     {
         base.Awake();
-        cameraManager = GetComponent<CameraManager>();
+        _cameraManager = GetComponent<CameraManager>();
         _hitbox = GetComponentInChildren<HitBox>();
         _hitboxController = GetComponent<PlayerHitboxController>();
     }
@@ -33,10 +30,10 @@ public class StateManager : PlayerMotor, IHitboxResponder
     protected virtual IEnumerator CharacterInit() // TODO: Performance issues on this function
     {
         yield return new WaitForEndOfFrame();
-        if (cameraManager.tpCamera == null)
+        if (_cameraManager.tpCamera == null)
         {
-            cameraManager.tpCamera = FindObjectOfType<ThirdPersonCamera>();
-            if (cameraManager.tpCamera && cameraManager.tpCamera.target != transform) cameraManager.tpCamera.SetMainTarget(this.transform);
+            _cameraManager.tpCamera = FindObjectOfType<ThirdPersonCamera>();
+            if (_cameraManager.tpCamera && _cameraManager.tpCamera.target != transform) _cameraManager.tpCamera.SetMainTarget(this.transform);
         }
     }
 
@@ -44,7 +41,7 @@ public class StateManager : PlayerMotor, IHitboxResponder
 
     protected virtual void Update()
     {
-        ControlCapsuleHeight();                   // checks the capsule height dependent on crouching, etc
+        //ControlCapsuleHeight();                   // checks the capsule height dependent on crouching, etc
     }
 
 

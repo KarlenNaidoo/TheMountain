@@ -21,6 +21,37 @@ public class ControllerActionManager : PlayerInput
     {
         base.HandleInput();
         blackboard.actionSlot = GetActionSlot();
+        CheckCurrentWeapon();
+        SwitchWeaponActions();
+    }
+
+    public void SwitchWeaponActions()
+    {
+        Weapon weaponList = blackboard.weaponList;
+        switch (blackboard.currentWeapon)
+        {
+            case WeaponStatus.OneHanded:
+                for (int i = 0; i < weaponList.oneHandedSwordActions.Count; i++)
+                {
+                    ControllerAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
+                    a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
+                }
+                break;
+            case WeaponStatus.TwoHanded:
+                for (int i = 0; i < weaponList.twoHandedSwordActions.Count; i++)
+                {
+                    ControllerAction a = GetAction(weaponList.twoHandedSwordActions[i].inputButton);
+                    a.targetAnim = weaponList.twoHandedSwordActions[i].targetAnim;
+                }
+                break;
+            default:
+                for (int i = 0; i < weaponList.oneHandedSwordActions.Count; i++)
+                {
+                    ControllerAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
+                    a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
+                }
+                break;
+        }
     }
 
     public ControllerAction GetActionSlot ()
@@ -41,6 +72,14 @@ public class ControllerActionManager : PlayerInput
             return ActionInput.L2;
 
         return ActionInput.None;
+    }
+
+    public void CheckCurrentWeapon()
+    {
+        if (playerActions.OneHanded.IsPressed)
+            blackboard.currentWeapon = WeaponStatus.OneHanded;
+        if (playerActions.TwoHanded.IsPressed)
+            blackboard.currentWeapon = WeaponStatus.TwoHanded;
     }
 
     ControllerAction GetAction(ActionInput input)

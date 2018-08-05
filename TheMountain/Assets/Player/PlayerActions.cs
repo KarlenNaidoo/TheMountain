@@ -19,6 +19,8 @@
         public PlayerAction MouseLeft;
         public PlayerAction MouseUp;
         public PlayerAction MouseDown;
+        public PlayerAction OneHanded;
+        public PlayerAction TwoHanded;
 
         public PlayerTwoAxisAction Move;
         public PlayerTwoAxisAction MoveMouse;
@@ -27,6 +29,8 @@
         {
             LightAttack = CreatePlayerAction("LightAttack");
             HeavyAttack = CreatePlayerAction("HeavyAttack");
+            OneHanded = CreatePlayerAction("OneHanded");
+            TwoHanded = CreatePlayerAction("TwoHanded");
             Jump = CreatePlayerAction("Jump");
             Left = CreatePlayerAction("Move Left");
             Right = CreatePlayerAction("Move Right");
@@ -73,24 +77,16 @@
             playerActions.Up.AddDefaultBinding(InputControlType.LeftStickUp);
             playerActions.Up.AddDefaultBinding(InputControlType.DPadUp);
 
- 
-
             playerActions.Down.AddDefaultBinding(InputControlType.LeftStickDown);
             playerActions.Down.AddDefaultBinding(Key.DownArrow);
             playerActions.Down.AddDefaultBinding(Key.S);
             playerActions.Down.AddDefaultBinding(InputControlType.DPadDown);
 
-
-            playerActions.Left.AddDefaultBinding(Key.LeftArrow);
             playerActions.Left.AddDefaultBinding(Key.A);
             playerActions.Left.AddDefaultBinding(InputControlType.LeftStickLeft);
-            playerActions.Left.AddDefaultBinding(InputControlType.DPadLeft);
-
-
-            playerActions.Right.AddDefaultBinding(Key.RightArrow);
+            
             playerActions.Right.AddDefaultBinding(Key.D);
             playerActions.Right.AddDefaultBinding(InputControlType.LeftStickRight);
-            playerActions.Right.AddDefaultBinding(InputControlType.DPadRight);
 
             playerActions.MouseUp.AddDefaultBinding(Mouse.PositiveY);
             playerActions.MouseUp.AddDefaultBinding(InputControlType.RightStickUp);
@@ -103,6 +99,12 @@
 
             playerActions.MouseRight.AddDefaultBinding(Mouse.PositiveX);
             playerActions.MouseRight.AddDefaultBinding(InputControlType.RightStickRight);
+
+            playerActions.OneHanded.AddDefaultBinding(Key.LeftArrow);
+            playerActions.OneHanded.AddDefaultBinding(InputControlType.DPadLeft);
+
+            playerActions.TwoHanded.AddDefaultBinding(Key.RightArrow);
+            playerActions.TwoHanded.AddDefaultBinding(InputControlType.DPadRight);
 
             playerActions.ListenOptions.IncludeUnknownControllers = true;
             playerActions.ListenOptions.MaxAllowedBindings = 4;

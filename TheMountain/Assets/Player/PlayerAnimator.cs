@@ -62,14 +62,17 @@ namespace Player.PlayerController
             RandomIdle();
 
             LocomotionAnimation();
-            if(blackboard.actionSlot != null)
+
+            PlayTargetAnimation();
+        }
+
+        protected virtual void PlayTargetAnimation()
+        {
+            if (blackboard.actionSlot != null)
             {
                 targetAnim = blackboard.actionSlot.targetAnim;
                 blackboard.animator.CrossFade(targetAnim, 0.2f);
             }
-                
-            //Debug.Log(targetAnim);
-            //AttackingAnimation();
         }
 
         public void LayerControl()
