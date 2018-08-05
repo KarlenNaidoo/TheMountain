@@ -6,7 +6,7 @@ public class InventoryManager : MonoBehaviour
     
     StateManager _states;
     PlayerBlackboard _blackboard;
-    [SerializeField] Weapon _weaponList;
+    [SerializeField] WeaponList _weaponList;
 
     private void Awake()
     {
@@ -21,8 +21,8 @@ public class InventoryManager : MonoBehaviour
 
 
 [System.Serializable]
-public class Weapon
+public class WeaponList
 {
-     public List<ControllerAction> oneHandedSwordActions;
-     public List<ControllerAction> twoHandedSwordActions;
+     public List<WeaponAction> oneHandedSwordActions;
+     public List<WeaponAction> twoHandedSwordActions;
 }

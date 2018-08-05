@@ -19,7 +19,7 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     protected Vector3 _targetDirection;
     protected Quaternion _targetRotation;
 
-    public ControllerAction actionSlot { get; set; }
+    public WeaponAction actionSlot { get; set; }
     public Animator animator { get; set; }
 
     public float inputX { set { _inputX = value; } }
@@ -43,7 +43,7 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public List<HitBox> activeHitboxComponents { get; set; }
 
     public WeaponStatus currentWeapon { get; set; }
-    public Weapon weaponList { get; set; }
+    public WeaponList weaponList { get; set; }
 
     public void SetPlayerInputParameters(float x, float y)
     {

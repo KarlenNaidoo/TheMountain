@@ -1636,16 +1636,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
-        type: 2}
-      propertyPath: _weaponList.twoHandedSwordActions.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
-        type: 2}
-      propertyPath: _weaponList.oneHandedSwordActions.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4107934793718588, guid: 099ab65ae36178944bd0f598a8326120, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1680,33 +1670,8 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
         type: 2}
-      propertyPath: _weaponList.twoHandedSwordActions.Array.data[1].inputButton
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
-        type: 2}
-      propertyPath: _weaponList.twoHandedSwordActions.Array.data[0].targetAnim
-      value: 2Handed_Attack_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
-        type: 2}
       propertyPath: _weaponList.twoHandedSwordActions.Array.data[1].targetAnim
-      value: 2Handed_Attack_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
-        type: 2}
-      propertyPath: _weaponList.oneHandedSwordActions.Array.data[1].inputButton
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
-        type: 2}
-      propertyPath: _weaponList.oneHandedSwordActions.Array.data[0].targetAnim
-      value: LightAtk1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114193890613953978, guid: 099ab65ae36178944bd0f598a8326120,
-        type: 2}
-      propertyPath: _weaponList.oneHandedSwordActions.Array.data[1].targetAnim
-      value: LightAtk2
+      value: 2Handed_Attack_02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 099ab65ae36178944bd0f598a8326120, type: 2}

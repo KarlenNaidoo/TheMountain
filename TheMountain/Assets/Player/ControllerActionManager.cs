@@ -5,14 +5,15 @@ using Player.PlayerController;
 
 public class ControllerActionManager : PlayerInput
 { 
-    [SerializeField] List<ControllerAction> actionSlots = new List<ControllerAction>();
-    
+    [SerializeField] List<WeaponAction> actionSlots = new List<WeaponAction>();
+    const int CONTROLLER_INPUT_BUTTONS = 4;
+
     protected ControllerActionManager()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < CONTROLLER_INPUT_BUTTONS; i++) 
         {
-            ControllerAction a = new ControllerAction();
-            a.inputButton = (ActionInput)i;
+            WeaponAction a = new WeaponAction();
+            a.inputButton = (ControllerActionInput)i;
             actionSlots.Add(a);
         }
     }
@@ -27,51 +28,63 @@ public class ControllerActionManager : PlayerInput
 
     public void SwitchWeaponActions()
     {
-        Weapon weaponList = blackboard.weaponList;
+        WeaponList weaponList = blackboard.weaponList;
         switch (blackboard.currentWeapon)
         {
             case WeaponStatus.OneHanded:
+                EmptyAllSlots();
                 for (int i = 0; i < weaponList.oneHandedSwordActions.Count; i++)
                 {
-                    ControllerAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
+                    WeaponAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
                 }
                 break;
             case WeaponStatus.TwoHanded:
+                EmptyAllSlots();
                 for (int i = 0; i < weaponList.twoHandedSwordActions.Count; i++)
                 {
-                    ControllerAction a = GetAction(weaponList.twoHandedSwordActions[i].inputButton);
+                    WeaponAction a = GetAction(weaponList.twoHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.twoHandedSwordActions[i].targetAnim;
                 }
                 break;
             default:
+                EmptyAllSlots();
                 for (int i = 0; i < weaponList.oneHandedSwordActions.Count; i++)
                 {
-                    ControllerAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
+                    WeaponAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
                 }
                 break;
         }
     }
 
-    public ControllerAction GetActionSlot ()
+    void EmptyAllSlots()
     {
-        ActionInput a_input = GetActionInput();
+        for (int i = 0; i < CONTROLLER_INPUT_BUTTONS; i++)
+        {
+            WeaponAction a = GetAction((ControllerActionInput)i);
+            a.targetAnim = null;
+
+        }
+    }
+    public WeaponAction GetActionSlot ()
+    {
+        ControllerActionInput a_input = GetActionInput();
         return GetAction(a_input);
     }
 
-    public ActionInput GetActionInput ()
+    public ControllerActionInput GetActionInput ()
     {
         if (playerActions.LightAttack.IsPressed)
-            return ActionInput.R1;            
+            return ControllerActionInput.R1;            
         if (playerActions.HeavyAttack.IsPressed)
-            return ActionInput.R2;
+            return ControllerActionInput.R2;
         if (playerActions.Crouch)
-            return ActionInput.L1;
+            return ControllerActionInput.L1;
         if (playerActions.Crouch)
-            return ActionInput.L2;
+            return ControllerActionInput.L2;
 
-        return ActionInput.None;
+        return ControllerActionInput.None;
     }
 
     public void CheckCurrentWeapon()
@@ -82,7 +95,7 @@ public class ControllerActionManager : PlayerInput
             blackboard.currentWeapon = WeaponStatus.TwoHanded;
     }
 
-    ControllerAction GetAction(ActionInput input)
+    WeaponAction GetAction(ControllerActionInput input)
     {
         for (int i = 0; i < actionSlots.Count; i++)
         {
@@ -94,15 +107,20 @@ public class ControllerActionManager : PlayerInput
 
         return null;
     }
-    
-
 }
 
 [System.Serializable]
-public class ControllerAction
+public class WeaponAction
 {
-    public ActionInput inputButton;
+    public ControllerActionInput inputButton;
     public string targetAnim;
+}
+
+[System.Serializable]
+public class ItemAction
+{
+    public string targetAnim;
+    public string itemID;
 }
 
 

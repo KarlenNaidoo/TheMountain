@@ -59,7 +59,7 @@ namespace Player.PlayerController
 
             LayerControl();
 
-            RandomIdle();
+            SetIdle();
 
             LocomotionAnimation();
 
@@ -84,25 +84,9 @@ namespace Player.PlayerController
             fullBodyInfo = blackboard.animator.GetCurrentAnimatorStateInfo(fullbodyLayer);
         }
 
-        private void RandomIdle()
+        private void SetIdle()
         {
-            if (blackboard.input != Vector2.zero) return;
-
-            if (blackboard.input.sqrMagnitude == 0 && !blackboard.isCrouching)
-            {
-                randomIdleCount += Time.fixedDeltaTime;
-                if (randomIdleCount > 6)
-                {
-                    randomIdleCount = 0;
-                    blackboard.animator.SetTrigger(Utility.Constants.IdleRandomTrigger);
-                    //animator.SetInteger(Utility.Constants.IdleRandom, Random.Range(0, 1));
-                }
-            }
-            else
-            {
-                randomIdleCount = 0;
-                blackboard.animator.SetInteger(Utility.Constants.IdleRandom, 0);
-            }
+            blackboard.animator.SetFloat("IsTwoHanded", (float) blackboard.currentWeapon);
         }
 
         public void LocomotionAnimation()
