@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Player.PlayerController;
+using static Player.Utility;
+using System.Collections.Generic;
 
-public class PlayerBlackboard : MonoBehaviour
+public class PlayerBlackboard : MonoBehaviour, IBlackboard
 {
-    ActionManager _actionManager;
+    ControllerActionManager _actionManager;
     PlayerMotor _motor;
     float _inputX;
     float _inputY;
@@ -32,6 +34,9 @@ public class PlayerBlackboard : MonoBehaviour
     public Quaternion targetRotation { get { return _targetRotation; } set { _targetRotation = value; } }
     public Vector3 targetDirection { get { return _targetDirection; } set { _targetDirection = value; } }
 
+    bool shouldAttack;
+    public List<HitBoxArea> hitboxes { get; set; }
+    public List<HitBox> activeHitboxComponents { get; set; }
 
     public void SetPlayerInputParameters(float x, float y)
     {
@@ -41,8 +46,14 @@ public class PlayerBlackboard : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        _actionManager = GetComponent<ActionManager>();
+        _actionManager = GetComponent<ControllerActionManager>();
         _motor = GetComponent<PlayerMotor>();
+    }
+
+
+    public void SetAttackParameters(bool shouldAttack)
+    {
+        this.shouldAttack = shouldAttack;
     }
 
     public virtual void RotateToTarget(Transform target)

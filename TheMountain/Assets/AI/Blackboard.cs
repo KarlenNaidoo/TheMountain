@@ -6,7 +6,7 @@ using System;
 using Pathfinding;
 using static Player.Utility;
 
-public class Blackboard : MonoBehaviour
+public class Blackboard : MonoBehaviour, IBlackboard
 {
     WorkingMemory _workingMemory;
     NavigationManager _navManager;
@@ -31,7 +31,7 @@ public class Blackboard : MonoBehaviour
     public float aggression { get; set; }
     public float intelligence { get; set; }
     public List<HitBoxArea> hitboxes { get; set; }
-    public List<HitBox> activeHitboxTriggers { get; set; }
+    public List<HitBox> activeHitboxComponents { get; set; }
     public void SetMoveParameters (Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {
         this.localDesiredVelocity = localDesiredVelocity;

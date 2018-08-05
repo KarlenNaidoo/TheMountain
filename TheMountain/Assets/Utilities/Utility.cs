@@ -30,6 +30,7 @@ namespace Player
                 else this.isValid = false;
             }
         }
+        
 
         public enum ActionInput {R1, R2, L1, L2, None}
 

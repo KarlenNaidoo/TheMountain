@@ -6833,7 +6833,6 @@ GameObject:
   - component: {fileID: 1433440709}
   - component: {fileID: 1433440708}
   - component: {fileID: 1433440707}
-  - component: {fileID: 1433440722}
   - component: {fileID: 1433440723}
   m_Layer: 10
   m_Name: NPC
@@ -7010,7 +7009,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1433440705}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce11ea984e202491d9271f53021d8b89, type: 3}
   m_Name: 
@@ -7116,25 +7115,8 @@ MonoBehaviour:
   hitboxProfile:
   - hitboxArea: 0
     hitBox: {fileID: 1413633895}
-  - hitboxArea: 1
+  - hitboxArea: 0
     hitBox: {fileID: 414245473}
---- !u!114 &1433440722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1433440705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f319df7349d678846a16e7312537bc7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentHealth: 100
-  _isDead: 0
-  maxHealth: 100
-  healthRecovery: 0
-  healthRecoveryDelay: 0
-  currentHealthRecoveryDelay: 0
 --- !u!114 &1433440723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9801,11 +9783,13 @@ GameObject:
   - component: {fileID: 2028678858}
   - component: {fileID: 2028678857}
   - component: {fileID: 2028678861}
-  - component: {fileID: 2028678860}
   - component: {fileID: 2028678862}
   - component: {fileID: 2028678856}
   - component: {fileID: 2028678855}
   - component: {fileID: 2028678854}
+  - component: {fileID: 2028678860}
+  - component: {fileID: 2028678864}
+  - component: {fileID: 2028678863}
   m_Layer: 9
   m_Name: Oki
   m_TagString: Player
@@ -9864,6 +9848,9 @@ MonoBehaviour:
     walkByDefault: 0
   locomotionType: 0
   maxSprintStamina: 10
+  hitboxProfile:
+  - hitboxArea: 6
+    hitBox: {fileID: 676013427}
 --- !u!136 &2028678857
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9921,7 +9908,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2028678853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c88bec111414c479762a3fa837bb01, type: 3}
+  m_Script: {fileID: 11500000, guid: a95281a7cf5cb7c428d3492ca8354df8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2028678861
@@ -9951,6 +9938,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e85b3f502664f1c4a9a3482cc2f9fa60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2028678863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028678853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633eb75775cd3d3439749f9480e6dba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionSlots:
+  - inputButton: 0
+    targetAnim: LightAtk3
+  - inputButton: 1
+    targetAnim: HeavyAtk1
+  - inputButton: 2
+    targetAnim: 
+  - inputButton: 3
+    targetAnim: 
+--- !u!114 &2028678864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028678853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c9ce6cfeebf3848b0bffcdf023acd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2046537283

@@ -4,7 +4,7 @@ using UnityEngine;
 using static Player.Utility;
 
 [RequireComponent(typeof(Blackboard))]
-[RequireComponent(typeof(HitBoxController))]
+[RequireComponent(typeof(NPCHitBoxController))]
 [RequireComponent(typeof(HitBox))]
 [RequireComponent(typeof(IHitboxResponder))]
 public class NPCProfile : Character, IHitboxResponder {
@@ -13,7 +13,7 @@ public class NPCProfile : Character, IHitboxResponder {
     [SerializeField] [Range(0, 10)] float _intelligence;
     Blackboard _blackboard;
     List<HitBox> activeHitboxes;
-    HitBoxController animEvents;
+    NPCHitBoxController _hitboxController;
     public HitboxProfile[] hitboxProfile;
 
     
@@ -21,7 +21,7 @@ public class NPCProfile : Character, IHitboxResponder {
     protected override void Awake()
     {
         _blackboard = GetComponent<Blackboard>();
-        animEvents = GetComponent<HitBoxController>();
+        _hitboxController = GetComponent<NPCHitBoxController>();
         base.Awake();
     }
 
@@ -45,8 +45,8 @@ public class NPCProfile : Character, IHitboxResponder {
 
     public void SetAsResponder()
     {
-        Debug.Log("Setting responder");
-        activeHitboxes = _blackboard.activeHitboxTriggers;
+        Debug.Log("Setting npc as responder");
+        activeHitboxes = _blackboard.activeHitboxComponents;
         if (activeHitboxes != null)
         {
             foreach (HitBox activeHitbox in activeHitboxes)
@@ -66,12 +66,4 @@ public class NPCProfile : Character, IHitboxResponder {
     {
         Debug.Log("Enemy override hurt animation");
     }
-}
-
-[System.Serializable]
-public class HitboxProfile
-{
-    public HitBoxArea hitboxArea;
-    public Collider hitBox;
-
 }

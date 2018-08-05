@@ -68,7 +68,7 @@ namespace Player.PlayerController
                 blackboard.animator.CrossFade(targetAnim, 0.2f);
             }
                 
-            Debug.Log(targetAnim);
+            //Debug.Log(targetAnim);
             //AttackingAnimation();
         }
 
