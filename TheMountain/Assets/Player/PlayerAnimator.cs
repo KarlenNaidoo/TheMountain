@@ -11,6 +11,7 @@ namespace Player.PlayerController
     {
 
         PlayerBlackboard blackboard;
+        ControllerActionManager controllerActionManager;
         private float randomIdleCount, randomIdle;
         private float _speed = 0;
         
@@ -36,6 +37,7 @@ namespace Player.PlayerController
         {
 
             blackboard = GetComponent<PlayerBlackboard>();
+            controllerActionManager = GetComponent<ControllerActionManager>();
 
         }
         protected virtual void Start()
@@ -63,15 +65,33 @@ namespace Player.PlayerController
 
             LocomotionAnimation();
 
+            ResetAnimation();
+
             PlayTargetAnimation();
         }
 
         protected virtual void PlayTargetAnimation()
         {
-            if (blackboard.actionSlot != null)
+            if (blackboard.actionSlot != null && fullBodyInfo.IsName("ResetState")) // we need to be in the empty state in order to transition
             {
                 targetAnim = blackboard.actionSlot.targetAnim;
-                blackboard.animator.CrossFade(targetAnim, 0.2f);
+                blackboard.animator.Play(targetAnim);
+            }
+        }
+
+        protected void ResetAnimation()
+        {
+            if (blackboard.canAttack)
+            {
+                ControllerActionInput a_input = controllerActionManager.GetActionInput();
+                if(a_input != ControllerActionInput.None)
+                {
+
+                    Debug.Log("Attacking again");
+                    blackboard.animator.Play("ResetState");
+                    blackboard.canAttack = false;
+                    blackboard.attackAgain = false;
+                }
             }
         }
 

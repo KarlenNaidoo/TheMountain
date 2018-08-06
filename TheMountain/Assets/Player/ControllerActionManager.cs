@@ -22,7 +22,7 @@ public class ControllerActionManager : PlayerInput
     {
         base.HandleInput();
         blackboard.actionSlot = GetActionSlot();
-        CheckCurrentWeapon();
+        IsOneHandedOrTwoHanded();
         SwitchWeaponActions();
     }
 
@@ -79,15 +79,15 @@ public class ControllerActionManager : PlayerInput
             return ControllerActionInput.R1;            
         if (playerActions.HeavyAttack.IsPressed)
             return ControllerActionInput.R2;
-        if (playerActions.Crouch)
+        if (playerActions.Crouch.IsPressed)
             return ControllerActionInput.L1;
-        if (playerActions.Crouch)
+        if (playerActions.Crouch.IsPressed)
             return ControllerActionInput.L2;
 
         return ControllerActionInput.None;
     }
 
-    public void CheckCurrentWeapon()
+    public void IsOneHandedOrTwoHanded()
     {
         if (playerActions.OneHanded.IsPressed)
             blackboard.currentWeapon = WeaponStatus.OneHanded;
@@ -95,6 +95,18 @@ public class ControllerActionManager : PlayerInput
             blackboard.currentWeapon = WeaponStatus.TwoHanded;
     }
 
+    public void CanAttack()
+    {
+        Debug.Log("Opening can attack");
+        blackboard.canAttack = true;
+    }
+
+    public void CloseCanAttack()
+    {
+
+        Debug.Log("Closing can attack");
+        blackboard.canAttack = false;
+    }
     WeaponAction GetAction(ControllerActionInput input)
     {
         for (int i = 0; i < actionSlots.Count; i++)
