@@ -13,7 +13,7 @@ namespace Player.PlayerController
     {
         protected PlayerActions playerActions;
         string saveData;
-
+        private Rigidbody _rigidbody;
 
         protected PlayerBlackboard blackboard;
 
@@ -38,6 +38,7 @@ namespace Player.PlayerController
         protected virtual void Awake()
         {
             blackboard = GetComponent<PlayerBlackboard>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
         
 
@@ -76,12 +77,31 @@ namespace Player.PlayerController
             StoreMovement();
             CheckForSprint();
             CheckForCrouch();
+            MakeKinematic();
         }
 
         protected virtual void StoreMovement()
         {
             blackboard.SetPlayerInputParameters(playerActions.Move.X, playerActions.Move.Y);
             
+        }
+
+        protected virtual bool CheckForNoInput()
+        {
+            return (playerActions.Move.X == 0 && playerActions.Move.Y == 0);
+        }
+
+        protected virtual void MakeKinematic()
+        {
+            bool isIdle = CheckForNoInput();
+            if (isIdle)
+            {
+                _rigidbody.drag = 999;
+            }
+            else
+            {
+                _rigidbody.drag = 0;
+            }
         }
 
         public virtual void StoreMovement(Vector3 position, bool rotateToDirection = true)

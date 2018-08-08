@@ -15,6 +15,7 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     float _inputX;
     float _inputY;
     
+    public Rigidbody rb { get; set; }
     // general variables to the locomotion
     protected Vector3 _targetDirection;
     protected Quaternion _targetRotation;

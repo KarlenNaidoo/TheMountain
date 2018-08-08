@@ -10,17 +10,20 @@ namespace Player.PlayerController
     public class PlayerMotor : Character
     {
         public MovementSpeed freeSpeed;
-        
+        new PlayerBlackboard blackboard;
 
         public LocomotionType locomotionType = LocomotionType.Free;
 
         protected Quaternion freeRotation;
-        
 
+        protected override void Awake()
+        {
+            base.Awake();
+            blackboard = GetComponent<PlayerBlackboard>() ;
+        }
         [SerializeField] protected float maxSprintStamina = 10f;
 
-        protected float randomIdleTime = 0f;
-
+       
         // generate input for the controller
         protected bool rotateByWorld = false;
         

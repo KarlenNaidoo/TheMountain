@@ -22,7 +22,6 @@ public class StateManager : PlayerMotor, IHitboxResponder
     protected override void Start()
     {
         base.Start();
-        CalculatePhysicsMaterials();
         StartCoroutine(CharacterInit());
     }
 
