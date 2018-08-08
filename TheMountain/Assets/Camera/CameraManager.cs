@@ -74,7 +74,7 @@ public class CameraManager: PlayerInput
         distanceTarget = distance;
         smoothPosition = transform.position;
 
-        cam = GetComponent<Camera>();
+        cam = GetComponentInChildren<Camera>();
 
         lastUp = rotationSpace != null ? rotationSpace.up : Vector3.up;
     }

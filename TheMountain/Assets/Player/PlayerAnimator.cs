@@ -13,7 +13,7 @@ namespace Player.PlayerController
         ControllerActionManager controllerActionManager;
         private float randomIdleCount, randomIdle;
 
-        
+
         [SerializeField] float turnSensitivity = 0.2f; // Animator turning sensitivity
         [SerializeField] float turnSpeed = 5f; // Animator turning interpolation speed
         [SerializeField] float runCycleLegOffset = 0.2f; // The offset of leg positions in the running cycle
@@ -51,13 +51,25 @@ namespace Player.PlayerController
 
         public void OnAnimatorMove()
         {
-            UpdateAnimator();
+
             if (blackboard.useRootMotion)
             {
                 transform.position = blackboard.animator.rootPosition;
                 //transform.rotation = animator.rootRotation;
             }
+
+            Move(blackboard.animator.deltaPosition, blackboard.animator.deltaRotation);
         }
+
+
+        // When the Animator moves
+        public virtual void Move(Vector3 deltaPosition, Quaternion deltaRotation)
+        {
+            // Accumulate delta position, update in FixedUpdate to maintain consitency
+            blackboard.fixedDeltaPosition += deltaPosition;
+            blackboard.fixedDeltaRotation *= deltaRotation;
+        }
+
 
         public virtual void UpdateAnimator()
         {
@@ -78,8 +90,8 @@ namespace Player.PlayerController
             {
                 targetAnim = blackboard.actionSlot.targetAnim;
                 blackboard.animator.Play(targetAnim);
-                
-            } 
+
+            }
             else if (blackboard.actionSlot == null && fullBodyInfo.IsName("ResetState"))
             {
                 blackboard.canAttack = false;
@@ -91,8 +103,8 @@ namespace Player.PlayerController
         {
             if (blackboard.canAttack)
             {
-               ControllerActionInput a_input = controllerActionManager.GetActionInput();
-               if (a_input == ControllerActionInput.R1 && !blackboard.doOnce)
+                ControllerActionInput a_input = controllerActionManager.GetActionInput();
+                if (a_input == ControllerActionInput.R1 && !blackboard.doOnce)
                 {
                     blackboard.animator.SetTrigger("LightAttack");
                     blackboard.doOnce = true;
@@ -105,7 +117,7 @@ namespace Player.PlayerController
                     return;
                 }
             }
-            
+
         }
 
         public void LayerControl()
@@ -119,18 +131,12 @@ namespace Player.PlayerController
 
         private void SetIdle()
         {
-            blackboard.animator.SetFloat("IsTwoHanded", (float) blackboard.currentWeapon);
+            blackboard.animator.SetFloat("IsTwoHanded", (float)blackboard.currentWeapon);
         }
 
         public void LocomotionAnimation()
         {
-      
-            blackboard.animator.SetFloat(Utility.Constants.InputMagnitude, blackboard.speed, .2f, Time.deltaTime);
 
-            var dir = transform.InverseTransformDirection(Camera.main.transform.position);
-            dir.z *= blackboard.speed;
-            //blackboard.animator.SetFloat("InputVertical", Mathf.Clamp(dir.z, -1, 1));
-            //blackboard.animator.SetFloat("InputHorizontal", Mathf.Clamp(dir.x, -1, 1));
 
             // Calculate the angular delta in character rotation
             float angle = -GetAngleFromForward(lastForward) - deltaAngle;
@@ -139,7 +145,6 @@ namespace Player.PlayerController
             angle *= turnSensitivity * 0.01f;
             angle = Mathf.Clamp(angle / Time.deltaTime, -1f, 1f);
 
-            Debug.Log("Animstate z: " + blackboard.animState.moveDirection.z);
             // Update Animator params
             blackboard.animator.SetFloat("Turn", Mathf.Lerp(blackboard.animator.GetFloat("Turn"), angle, Time.deltaTime * turnSpeed));
             blackboard.animator.SetFloat("InputVertical", blackboard.animState.moveDirection.z);
@@ -147,7 +152,6 @@ namespace Player.PlayerController
             blackboard.animator.SetBool("Crouch", blackboard.animState.crouch);
             blackboard.animator.SetBool("OnGround", blackboard.animState.onGround);
             blackboard.animator.SetBool("IsStrafing", blackboard.animState.isStrafing);
-
 
         }
 
@@ -199,5 +203,11 @@ namespace Player.PlayerController
             Vector3 local = transform.InverseTransformDirection(worldDirection);
             return Mathf.Atan2(local.x, local.z) * Mathf.Rad2Deg;
         }
+        protected virtual void Update()
+        {
+            UpdateAnimator();
+        }
+
     }
+    
 }

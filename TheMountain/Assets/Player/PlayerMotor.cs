@@ -80,8 +80,6 @@ namespace Player.PlayerController
         private Vector3 moveDirectionVelocity;
         private float wallRunWeight;
         private float lastWallRunWeight;
-        private Vector3 fixedDeltaPosition;
-        private Quaternion fixedDeltaRotation = Quaternion.identity;
         private bool fixedFrame;
         private float wallRunEndTime;
         private Vector3 gravity;
@@ -110,7 +108,9 @@ namespace Player.PlayerController
 
             // Smoothing out the fixed time step
             rb.interpolation = smoothPhysics ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
-            
+
+
+            MoveFixed(blackboard.fixedDeltaPosition);
             Rotate();
 
             GroundCheck(); // detect and stick to ground
@@ -119,7 +119,8 @@ namespace Player.PlayerController
             if (blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
             else ZeroFriction();
 
-            bool stopSlide = onGround && blackboard.input == Vector2.zero && rb.velocity.magnitude < 0.5f && groundDistance < airborneThreshold * 0.5f;
+            Debug.Log("Velocity " + rb.velocity.magnitude);
+            bool stopSlide = onGround && groundDistance < airborneThreshold * 0.5f;
 
             // Individual gravity
             if (gravityTarget != null)
@@ -191,7 +192,6 @@ namespace Player.PlayerController
             else
             {
                 // Air move
-                //Vector3 airMove = new Vector3 (userControl.state.move.x * airSpeed, 0f, userControl.state.move.z * airSpeed);
                 Vector3 airMove = V3Tools.ExtractHorizontal(blackboard.input * airSpeed, gravity, 1f);
                 velocity = Vector3.Lerp(rb.velocity, airMove, Time.deltaTime * airControl);
             }
@@ -213,7 +213,7 @@ namespace Player.PlayerController
                 }
             }
 
-            rb.velocity = horizontalVelocity + verticalVelocity;
+            //rb.velocity = horizontalVelocity + verticalVelocity;
 
             // Dampering forward speed on the slopes
             float slopeDamper = !onGround ? 1f : GetSlopeDamper(-deltaPosition / Time.deltaTime, normal);
@@ -296,7 +296,6 @@ namespace Player.PlayerController
                     moveDirection = Vector3.MoveTowards(moveDirection, blackboard.input, Time.deltaTime * linearAccelerationSpeed);
                     return transform.InverseTransformDirection(moveDirection);
             }
-
             return Vector3.zero;
         }
 

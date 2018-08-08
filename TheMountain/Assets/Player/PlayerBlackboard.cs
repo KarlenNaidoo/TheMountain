@@ -39,6 +39,10 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
 
     public Vector3 lookPos { get; set; }
     public AnimState animState { get; set; }
+
+    public Vector3 fixedDeltaPosition { get; set; }
+    public Quaternion fixedDeltaRotation { get; set; } = Quaternion.identity;
+
     bool shouldAttack;
     public List<HitBoxArea> hitboxes { get; set; }
     public List<HitBox> activeHitboxComponents { get; set; }

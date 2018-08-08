@@ -1506,47 +1506,6 @@ Transform:
   m_Father: {fileID: 1482706857}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &632359455 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1917843550136074, guid: 026b3fc896170524a82e36967e7a66ee,
-    type: 2}
-  m_PrefabInternal: {fileID: 1668040919}
---- !u!114 &632359457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 632359455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9a9c6fc9cdf9b041bd0d7cd08ac7d9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1192294602}
-  rotationSpace: {fileID: 0}
-  updateMode: 2
-  lockCursor: 1
-  smoothFollow: 0
-  offset: {x: 0, y: 1.5, z: 0.5}
-  followSpeed: 10
-  rotationSensitivity: 3.5
-  yMinLimit: -20
-  yMaxLimit: 80
-  rotateAlways: 1
-  rotateOnLeftButton: 0
-  rotateOnRightButton: 0
-  rotateOnMiddleButton: 0
-  distance: 10
-  minDistance: 4
-  maxDistance: 10
-  zoomSpeed: 10
-  zoomSensitivity: 1
-  blockingLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  blockingRadius: 1
-  blockingSmoothTime: 0.1
-  blockedOffset: 0.5
 --- !u!1 &635565425
 GameObject:
   m_ObjectHideFlags: 0
@@ -3519,6 +3478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c6ba415e5c10104ea319234801e7a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnSensitivity: 0.2
+  turnSpeed: 5
+  runCycleLegOffset: 0.2
+  animSpeedMultiplier: 1
 --- !u!114 &1455379512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3568,8 +3531,8 @@ MonoBehaviour:
   spherecastRadius: 0.1
   groundLayers:
     serializedVersion: 2
-    m_Bits: 0
-  cam: {fileID: 632359457}
+    m_Bits: 1
+  cam: {fileID: 1477620642}
   moveMode: 0
   smoothPhysics: 1
   smoothAccelerationTime: 0.2
@@ -3579,12 +3542,10 @@ MonoBehaviour:
   maxVerticalVelocityOnGround: 3
   velocityToGroundTangentWeight: 0
   lookInCameraDirection: 0
-  turnSpeed: 5
-  stationaryTurnSpeedMlp: 1
+  turnSpeed: 10
+  stationaryTurnSpeedMlp: 0
   airSpeed: 6
   airControl: 2
-  jumpPower: 12
-  jumpRepeatDelayTime: 0
   wallRunLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -4332,6 +4293,47 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 886758c00f5412747bef0c21f6f30418, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1477620641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1424113620421782, guid: 026b3fc896170524a82e36967e7a66ee,
+    type: 2}
+  m_PrefabInternal: {fileID: 1668040919}
+--- !u!114 &1477620642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1477620641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a9c6fc9cdf9b041bd0d7cd08ac7d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1192294602}
+  rotationSpace: {fileID: 0}
+  updateMode: 2
+  lockCursor: 1
+  smoothFollow: 0
+  offset: {x: 0, y: 1.5, z: 0.5}
+  followSpeed: 10
+  rotationSensitivity: 3.5
+  yMinLimit: -20
+  yMaxLimit: 80
+  rotateAlways: 1
+  rotateOnLeftButton: 0
+  rotateOnRightButton: 0
+  rotateOnMiddleButton: 0
+  distance: 10
+  minDistance: 4
+  maxDistance: 10
+  zoomSpeed: 10
+  zoomSensitivity: 1
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  blockingRadius: 1
+  blockingSmoothTime: 0.1
+  blockedOffset: 0.5
 --- !u!1 &1482706856
 GameObject:
   m_ObjectHideFlags: 0
@@ -4686,7 +4688,8 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114780305508625190, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &1688325897

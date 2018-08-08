@@ -82,8 +82,6 @@ namespace Player.PlayerController
         protected virtual void StoreMovement()
         {
             blackboard.SetPlayerInputParameters(playerActions.Move.X, playerActions.Move.Y);
-            Debug.Log("Move X: " + playerActions.Move.X);
-            Debug.Log("Move Y: " + playerActions.Move.Y);
         }
         
         
