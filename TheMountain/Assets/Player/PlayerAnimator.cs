@@ -84,17 +84,23 @@ namespace Player.PlayerController
         {
             if (blackboard.canAttack && blackboard.comboList != null)
             {
-                for (int i = 0; i < blackboard.comboList.Count; i++)
+
+                ControllerActionInput a_input = controllerActionManager.GetActionInput();
+               if (a_input == ControllerActionInput.R1 && !blackboard.doOnce)
                 {
-                    ControllerActionInput a_input = controllerActionManager.GetActionInput();
-                    if (a_input == blackboard.comboList[i].inputButton && !blackboard.doOnce)
-                    {
-                        blackboard.animator.SetTrigger("LightAttack");
-                        blackboard.doOnce = true;
-                        return;
-                    }
+                    blackboard.animator.SetTrigger("LightAttack");
+                    blackboard.doOnce = true;
+                    return;
                 }
+                if (a_input == ControllerActionInput.R2 && !blackboard.doOnce)
+                {
+                    blackboard.animator.SetTrigger("HeavyAttack");
+                    blackboard.doOnce = true;
+                    return;
+                }
+                Debug.Log("Checking input: " + a_input);
             }
+            
         }
 
         public void LayerControl()
