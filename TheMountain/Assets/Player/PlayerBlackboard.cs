@@ -44,9 +44,8 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
 
     public WeaponStatus currentWeapon { get; set; }
     public WeaponList weaponList { get; set; }
-
+    public bool doOnce { get; set; }
     public bool canAttack { get; set; }
-    public bool attackAgain { get; set; }
     public void SetPlayerInputParameters(float x, float y)
     {
         input = new Vector2(x, y);

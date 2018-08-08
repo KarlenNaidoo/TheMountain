@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-// TODO: Calculate hashes for animator
 /* Actually moves the player
  * It accepts input from PlayerInput, it gets the values froom the MovementController about its transitions, and how to move from the PlayerMotor
  */
@@ -14,7 +13,7 @@ namespace Player.PlayerController
         ControllerActionManager controllerActionManager;
         private float randomIdleCount, randomIdle;
         private float _speed = 0;
-        
+
         // get Layers from the Animator Controller
         [HideInInspector]
         public AnimatorStateInfo baseLayerInfo, underBodyInfo, rightArmInfo, leftArmInfo, fullBodyInfo, upperBodyInfo;
@@ -30,21 +29,13 @@ namespace Player.PlayerController
         { get { return blackboard.animator.GetLayerIndex("UpperBody"); } }
         private int fullbodyLayer
         { get { return blackboard.animator.GetLayerIndex("FullBody"); } }
-        //Current combo
-        public int combo { get; set; }
-        string targetAnim;
+
         protected virtual void Awake()
         {
-
             blackboard = GetComponent<PlayerBlackboard>();
             controllerActionManager = GetComponent<ControllerActionManager>();
-
         }
-        protected virtual void Start()
-        {
 
-
-        }
         public void OnAnimatorMove()
         {
             UpdateAnimator();
@@ -60,39 +51,48 @@ namespace Player.PlayerController
             if (blackboard.animator == null || !blackboard.animator.enabled) return;
 
             LayerControl();
-
             SetIdle();
-
             LocomotionAnimation();
-
-            ResetAnimation();
-
             PlayTargetAnimation();
+            CheckForCombo();
         }
 
         protected virtual void PlayTargetAnimation()
         {
+
+            string targetAnim;
             if (blackboard.actionSlot != null && fullBodyInfo.IsName("ResetState")) // we need to be in the empty state in order to transition
             {
                 targetAnim = blackboard.actionSlot.targetAnim;
                 blackboard.animator.Play(targetAnim);
+                
+            } 
+            else if (blackboard.actionSlot == null && fullBodyInfo.IsName("ResetState"))
+            {
+                blackboard.canAttack = false;
+                blackboard.doOnce = false;
             }
         }
 
-        protected void ResetAnimation()
+        protected void CheckForCombo()
         {
             if (blackboard.canAttack)
             {
-                ControllerActionInput a_input = controllerActionManager.GetActionInput();
-                if(a_input != ControllerActionInput.None)
+               ControllerActionInput a_input = controllerActionManager.GetActionInput();
+               if (a_input == ControllerActionInput.R1 && !blackboard.doOnce)
                 {
-
-                    Debug.Log("Attacking again");
-                    blackboard.animator.Play("ResetState");
-                    blackboard.canAttack = false;
-                    blackboard.attackAgain = false;
+                    blackboard.animator.SetTrigger("LightAttack");
+                    blackboard.doOnce = true;
+                    return;
+                }
+                if (a_input == ControllerActionInput.R2 && !blackboard.doOnce)
+                {
+                    blackboard.animator.SetTrigger("HeavyAttack");
+                    blackboard.doOnce = true;
+                    return;
                 }
             }
+            
         }
 
         public void LayerControl()

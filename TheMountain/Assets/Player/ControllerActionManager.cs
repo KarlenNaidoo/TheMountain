@@ -23,10 +23,10 @@ public class ControllerActionManager : PlayerInput
         base.HandleInput();
         blackboard.actionSlot = GetActionSlot();
         IsOneHandedOrTwoHanded();
-        SwitchWeaponActions();
+        MapControllerAtkActions();
     }
 
-    public void SwitchWeaponActions()
+    public void MapControllerAtkActions()
     {
         WeaponList weaponList = blackboard.weaponList;
         switch (blackboard.currentWeapon)
@@ -67,6 +67,7 @@ public class ControllerActionManager : PlayerInput
 
         }
     }
+    
     public WeaponAction GetActionSlot ()
     {
         ControllerActionInput a_input = GetActionInput();
@@ -99,13 +100,14 @@ public class ControllerActionManager : PlayerInput
     {
         Debug.Log("Opening can attack");
         blackboard.canAttack = true;
+        blackboard.doOnce = false;
     }
 
     public void CloseCanAttack()
     {
 
-        Debug.Log("Closing can attack");
-        blackboard.canAttack = false;
+        //Debug.Log("Closing can attack");
+        //blackboard.canAttack = false;
     }
     WeaponAction GetAction(ControllerActionInput input)
     {
@@ -120,6 +122,7 @@ public class ControllerActionManager : PlayerInput
         return null;
     }
 }
+
 
 [System.Serializable]
 public class WeaponAction

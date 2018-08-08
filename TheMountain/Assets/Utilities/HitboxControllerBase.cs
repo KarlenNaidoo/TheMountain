@@ -57,7 +57,7 @@ public abstract class HitboxControllerBase : MonoBehaviour
     protected virtual bool OpenHitBox()
     {
         _state = ColliderState.Open;
-        Debug.Log("OPEN HITBOX");
+        //Debug.Log("OPEN HITBOX");
         EnableHitbox(true);
         _blackboard.activeHitboxComponents = GetActiveHitboxComponents();
         return true;
@@ -66,7 +66,7 @@ public abstract class HitboxControllerBase : MonoBehaviour
 
     protected virtual bool CloseHitBox()
     {
-        Debug.Log("CLOSE HITBOX");
+        //Debug.Log("CLOSE HITBOX");
         EnableHitbox(false);
         return true;
     }

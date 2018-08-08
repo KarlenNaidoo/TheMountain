@@ -3367,9 +3367,9 @@ MonoBehaviour:
   _weaponList:
     oneHandedSwordActions:
     - inputButton: 0
-      targetAnim: LightAtk3
+      targetAnim: LightAtk1
     - inputButton: 1
-      targetAnim: LightAtk2
+      targetAnim: HeavyAtk1
     twoHandedSwordActions:
     - inputButton: 0
       targetAnim: 2Handed_Attack_01
