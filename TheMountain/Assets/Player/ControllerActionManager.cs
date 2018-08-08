@@ -22,7 +22,6 @@ public class ControllerActionManager : PlayerInput
     {
         base.HandleInput();
         blackboard.actionSlot = GetActionSlot();
-        blackboard.comboList = GetComboList();
         IsOneHandedOrTwoHanded();
         MapControllerAtkActions();
     }
@@ -38,7 +37,6 @@ public class ControllerActionManager : PlayerInput
                 {
                     WeaponAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
-                    a.combos = weaponList.oneHandedSwordActions[i].combos;
                 }
                 break;
             case WeaponStatus.TwoHanded:
@@ -47,7 +45,6 @@ public class ControllerActionManager : PlayerInput
                 {
                     WeaponAction a = GetAction(weaponList.twoHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.twoHandedSwordActions[i].targetAnim;
-                    a.combos = weaponList.twoHandedSwordActions[i].combos;
                 }
                 break;
             default:
@@ -56,7 +53,6 @@ public class ControllerActionManager : PlayerInput
                 {
                     WeaponAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
-                    a.combos = weaponList.oneHandedSwordActions[i].combos;
                 }
                 break;
         }
@@ -71,13 +67,7 @@ public class ControllerActionManager : PlayerInput
 
         }
     }
-
-    public List<ComboAction> GetComboList()
-    {
-        WeaponAction a_action = GetActionSlot();
-        return a_action.combos;
-
-    }
+    
     public WeaponAction GetActionSlot ()
     {
         ControllerActionInput a_input = GetActionInput();
@@ -133,19 +123,12 @@ public class ControllerActionManager : PlayerInput
     }
 }
 
-[System.Serializable]
-public class ComboAction
-{
-    public ControllerActionInput inputButton;
-    public string targetAnim;
-}
 
 [System.Serializable]
 public class WeaponAction
 {
     public ControllerActionInput inputButton;
     public string targetAnim;
-    public List<ComboAction> combos;
 }
 
 [System.Serializable]

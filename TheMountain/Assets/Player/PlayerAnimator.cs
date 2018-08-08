@@ -82,10 +82,9 @@ namespace Player.PlayerController
 
         protected void CheckForCombo()
         {
-            if (blackboard.canAttack && blackboard.comboList != null)
+            if (blackboard.canAttack)
             {
-
-                ControllerActionInput a_input = controllerActionManager.GetActionInput();
+               ControllerActionInput a_input = controllerActionManager.GetActionInput();
                if (a_input == ControllerActionInput.R1 && !blackboard.doOnce)
                 {
                     blackboard.animator.SetTrigger("LightAttack");
@@ -98,7 +97,6 @@ namespace Player.PlayerController
                     blackboard.doOnce = true;
                     return;
                 }
-                Debug.Log("Checking input: " + a_input);
             }
             
         }
