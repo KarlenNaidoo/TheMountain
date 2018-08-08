@@ -11,7 +11,7 @@ public class ResetAttackTriggers : StateMachineBehaviour {
         blackboard = animator.GetComponent<PlayerBlackboard>();
         if (blackboard)
         {
-
+            blackboard.animator.ResetTrigger("HeavyAttack");
             blackboard.animator.ResetTrigger("LightAttack");
         }
         
