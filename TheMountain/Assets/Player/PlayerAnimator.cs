@@ -1,9 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
-using System;
 
-// TODO: Calculate hashes for animator
 /* Actually moves the player
  * It accepts input from PlayerInput, it gets the values froom the MovementController about its transitions, and how to move from the PlayerMotor
  */
@@ -33,15 +29,11 @@ namespace Player.PlayerController
         { get { return blackboard.animator.GetLayerIndex("UpperBody"); } }
         private int fullbodyLayer
         { get { return blackboard.animator.GetLayerIndex("FullBody"); } }
-        //Current combo
-        public int combo { get; set; }
-        string targetAnim;
+
         protected virtual void Awake()
         {
-
             blackboard = GetComponent<PlayerBlackboard>();
             controllerActionManager = GetComponent<ControllerActionManager>();
-
         }
 
         public void OnAnimatorMove()
@@ -67,6 +59,8 @@ namespace Player.PlayerController
 
         protected virtual void PlayTargetAnimation()
         {
+
+            string targetAnim;
             if (blackboard.actionSlot != null && fullBodyInfo.IsName("ResetState")) // we need to be in the empty state in order to transition
             {
                 targetAnim = blackboard.actionSlot.targetAnim;
