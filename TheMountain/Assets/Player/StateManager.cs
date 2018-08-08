@@ -3,7 +3,6 @@ using System.Collections;
 using Player.PlayerController;
 using Player;
 
-[RequireComponent(typeof(CameraManager))]
 public class StateManager : PlayerMotor, IHitboxResponder
 {
 
@@ -22,26 +21,10 @@ public class StateManager : PlayerMotor, IHitboxResponder
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(CharacterInit());
     }
+    
 
-
-    protected virtual IEnumerator CharacterInit() // TODO: Performance issues on this function
-    {
-        yield return new WaitForEndOfFrame();
-        if (_cameraManager.tpCamera == null)
-        {
-            _cameraManager.tpCamera = FindObjectOfType<ThirdPersonCamera>();
-            if (_cameraManager.tpCamera && _cameraManager.tpCamera.target != transform) _cameraManager.tpCamera.SetMainTarget(this.transform);
-        }
-    }
-
-
-
-    protected virtual void Update()
-    {
-        //ControlCapsuleHeight();                   // checks the capsule height dependent on crouching, etc
-    }
+    
 
 
     public override void PlayHurtAnimation(bool value)

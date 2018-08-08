@@ -77,48 +77,16 @@ namespace Player.PlayerController
             StoreMovement();
             CheckForSprint();
             CheckForCrouch();
-            MakeKinematic();
         }
 
         protected virtual void StoreMovement()
         {
             blackboard.SetPlayerInputParameters(playerActions.Move.X, playerActions.Move.Y);
-            
+            Debug.Log("Move X: " + playerActions.Move.X);
+            Debug.Log("Move Y: " + playerActions.Move.Y);
         }
-
-        protected virtual bool CheckForNoInput()
-        {
-            return (playerActions.Move.X == 0 && playerActions.Move.Y == 0);
-        }
-
-        protected virtual void MakeKinematic()
-        {
-            bool isIdle = CheckForNoInput();
-            if (isIdle)
-            {
-                _rigidbody.drag = 999;
-            }
-            else
-            {
-                _rigidbody.drag = 0;
-            }
-        }
-
-        public virtual void StoreMovement(Vector3 position, bool rotateToDirection = true)
-        {
-            var dir = position - transform.position;
-            var targetDir = dir.normalized;
-            blackboard.SetPlayerInputParameters(targetDir.x, targetDir.z);
-
-            targetDir.y = 0;
-            blackboard.targetDirection = targetDir;
-        }
-
-        public virtual void StoreMovement(Transform _transform, bool rotateToDirection = true)
-        {
-            StoreMovement(_transform.position, rotateToDirection);
-        }
-
+        
+        
         protected virtual void CheckForSprint()
         {
             if (playerActions.Sprint.IsPressed)

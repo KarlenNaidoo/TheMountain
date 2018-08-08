@@ -36,9 +36,9 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public float currentSprintStamina { get; set; }
     public bool useRootMotion { get; set; } = true;
     public float speed { get; set; }
-    public Quaternion targetRotation { get { return _targetRotation; } set { _targetRotation = value; } }
-    public Vector3 targetDirection { get { return _targetDirection; } set { _targetDirection = value; } }
 
+    public Vector3 lookPos { get; set; }
+    public AnimState animState { get; set; }
     bool shouldAttack;
     public List<HitBoxArea> hitboxes { get; set; }
     public List<HitBox> activeHitboxComponents { get; set; }
@@ -64,19 +64,5 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     {
         this.shouldAttack = shouldAttack;
     }
-
-    public virtual void RotateToTarget(Transform target)
-    {
-        _motor.RotateToTarget(target);
-    }
-
-    public virtual void RotateWithAnotherTransform(Transform referenceTransform)
-    {
-        _motor.RotateWithAnotherTransform(referenceTransform);
-    }
-
-    public virtual void UpdateTargetDirection(Transform referenceTransform = null)
-    {
-        _motor.UpdateTargetDirection(referenceTransform);
-    }
+    
 }
