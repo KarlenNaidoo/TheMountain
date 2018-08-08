@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
+using System;
 
 // TODO: Calculate hashes for animator
 /* Actually moves the player
@@ -14,7 +17,7 @@ namespace Player.PlayerController
         ControllerActionManager controllerActionManager;
         private float randomIdleCount, randomIdle;
         private float _speed = 0;
-        
+
         // get Layers from the Animator Controller
         [HideInInspector]
         public AnimatorStateInfo baseLayerInfo, underBodyInfo, rightArmInfo, leftArmInfo, fullBodyInfo, upperBodyInfo;
@@ -40,11 +43,7 @@ namespace Player.PlayerController
             controllerActionManager = GetComponent<ControllerActionManager>();
 
         }
-        protected virtual void Start()
-        {
 
-
-        }
         public void OnAnimatorMove()
         {
             UpdateAnimator();
@@ -60,14 +59,10 @@ namespace Player.PlayerController
             if (blackboard.animator == null || !blackboard.animator.enabled) return;
 
             LayerControl();
-
             SetIdle();
-
             LocomotionAnimation();
-
-            ResetAnimation();
-
             PlayTargetAnimation();
+            CheckForCombo();
         }
 
         protected virtual void PlayTargetAnimation()
@@ -76,21 +71,28 @@ namespace Player.PlayerController
             {
                 targetAnim = blackboard.actionSlot.targetAnim;
                 blackboard.animator.Play(targetAnim);
+                
+            } 
+            else if (blackboard.actionSlot == null && fullBodyInfo.IsName("ResetState"))
+            {
+                blackboard.canAttack = false;
+                blackboard.doOnce = false;
             }
         }
 
-        protected void ResetAnimation()
+        protected void CheckForCombo()
         {
-            if (blackboard.canAttack)
+            if (blackboard.canAttack && blackboard.comboList != null)
             {
-                ControllerActionInput a_input = controllerActionManager.GetActionInput();
-                if(a_input != ControllerActionInput.None)
+                for (int i = 0; i < blackboard.comboList.Count; i++)
                 {
-
-                    Debug.Log("Attacking again");
-                    blackboard.animator.Play("ResetState");
-                    blackboard.canAttack = false;
-                    blackboard.attackAgain = false;
+                    ControllerActionInput a_input = controllerActionManager.GetActionInput();
+                    if (a_input == blackboard.comboList[i].inputButton && !blackboard.doOnce)
+                    {
+                        blackboard.animator.SetTrigger("LightAttack");
+                        blackboard.doOnce = true;
+                        return;
+                    }
                 }
             }
         }

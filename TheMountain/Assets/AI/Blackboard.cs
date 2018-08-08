@@ -10,8 +10,7 @@ public class Blackboard : MonoBehaviour, IBlackboard
 {
     WorkingMemory _workingMemory;
     NavigationManager _navManager;
-
-
+    
     public bool isCrouching { get; set; }
     public enum AIAttackType { NoWeapon, MeleeWeapon, RangeWeapon }
     public ReGoapState<string, object> worldState { get { return _workingMemory.GetWorldState();} }

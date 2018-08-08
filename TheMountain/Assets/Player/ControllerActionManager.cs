@@ -22,11 +22,12 @@ public class ControllerActionManager : PlayerInput
     {
         base.HandleInput();
         blackboard.actionSlot = GetActionSlot();
+        blackboard.comboList = GetComboList();
         IsOneHandedOrTwoHanded();
-        SwitchWeaponActions();
+        MapControllerAtkActions();
     }
 
-    public void SwitchWeaponActions()
+    public void MapControllerAtkActions()
     {
         WeaponList weaponList = blackboard.weaponList;
         switch (blackboard.currentWeapon)
@@ -37,6 +38,7 @@ public class ControllerActionManager : PlayerInput
                 {
                     WeaponAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
+                    a.combos = weaponList.oneHandedSwordActions[i].combos;
                 }
                 break;
             case WeaponStatus.TwoHanded:
@@ -45,6 +47,7 @@ public class ControllerActionManager : PlayerInput
                 {
                     WeaponAction a = GetAction(weaponList.twoHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.twoHandedSwordActions[i].targetAnim;
+                    a.combos = weaponList.twoHandedSwordActions[i].combos;
                 }
                 break;
             default:
@@ -53,6 +56,7 @@ public class ControllerActionManager : PlayerInput
                 {
                     WeaponAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
                     a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
+                    a.combos = weaponList.oneHandedSwordActions[i].combos;
                 }
                 break;
         }
@@ -66,6 +70,13 @@ public class ControllerActionManager : PlayerInput
             a.targetAnim = null;
 
         }
+    }
+
+    public List<ComboAction> GetComboList()
+    {
+        WeaponAction a_action = GetActionSlot();
+        return a_action.combos;
+
     }
     public WeaponAction GetActionSlot ()
     {
@@ -99,13 +110,14 @@ public class ControllerActionManager : PlayerInput
     {
         Debug.Log("Opening can attack");
         blackboard.canAttack = true;
+        blackboard.doOnce = false;
     }
 
     public void CloseCanAttack()
     {
 
-        Debug.Log("Closing can attack");
-        blackboard.canAttack = false;
+        //Debug.Log("Closing can attack");
+        //blackboard.canAttack = false;
     }
     WeaponAction GetAction(ControllerActionInput input)
     {
@@ -122,10 +134,18 @@ public class ControllerActionManager : PlayerInput
 }
 
 [System.Serializable]
+public class ComboAction
+{
+    public ControllerActionInput inputButton;
+    public string targetAnim;
+}
+
+[System.Serializable]
 public class WeaponAction
 {
     public ControllerActionInput inputButton;
     public string targetAnim;
+    public List<ComboAction> combos;
 }
 
 [System.Serializable]

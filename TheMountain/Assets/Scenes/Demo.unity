@@ -3322,12 +3322,16 @@ MonoBehaviour:
   actionSlots:
   - inputButton: 0
     targetAnim: 
+    combos: []
   - inputButton: 1
     targetAnim: 
+    combos: []
   - inputButton: 2
     targetAnim: 
+    combos: []
   - inputButton: 3
     targetAnim: 
+    combos: []
 --- !u!114 &1455379510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3367,14 +3371,24 @@ MonoBehaviour:
   _weaponList:
     oneHandedSwordActions:
     - inputButton: 0
-      targetAnim: LightAtk3
+      targetAnim: LightAtk1
+      combos:
+      - inputButton: 0
+        targetAnim: LightAtk2
+        comboNumber: 1
+      - inputButton: 0
+        targetAnim: LightAtk3
+        comboNumber: 2
     - inputButton: 1
       targetAnim: LightAtk2
+      combos: []
     twoHandedSwordActions:
     - inputButton: 0
       targetAnim: 2Handed_Attack_01
+      combos: []
     - inputButton: 1
       targetAnim: 2Handed_Attack_02
+      combos: []
 --- !u!114 &1455379513
 MonoBehaviour:
   m_ObjectHideFlags: 0
