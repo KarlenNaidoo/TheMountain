@@ -111,7 +111,7 @@ namespace Player.PlayerController
 
 
             MoveFixed(blackboard.fixedDeltaPosition);
-            Rotate();
+            //Rotate();
 
             GroundCheck(); // detect and stick to ground
 
@@ -315,7 +315,6 @@ namespace Player.PlayerController
                 angle *= (1.01f - (Mathf.Abs(angle) / 180f)) * stationaryTurnSpeedMlp;
 
             // Rotating the character
-            //RigidbodyRotateAround(characterAnimation.GetPivotPoint(), transform.up, angle * Time.deltaTime * turnSpeed);
             rb.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * rb.rotation);
         }
 

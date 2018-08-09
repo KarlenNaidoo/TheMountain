@@ -147,7 +147,7 @@ namespace Player.PlayerController
 
             // Update Animator params
             blackboard.animator.SetFloat("Turn", Mathf.Lerp(blackboard.animator.GetFloat("Turn"), angle, Time.deltaTime * turnSpeed));
-            blackboard.animator.SetFloat("InputVertical", blackboard.animState.moveDirection.z);
+            blackboard.animator.SetFloat("InputVertical", blackboard.input.magnitude);
             blackboard.animator.SetFloat("InputHorizontal", blackboard.animState.moveDirection.x);
             blackboard.animator.SetBool("Crouch", blackboard.animState.crouch);
             blackboard.animator.SetBool("OnGround", blackboard.animState.onGround);
