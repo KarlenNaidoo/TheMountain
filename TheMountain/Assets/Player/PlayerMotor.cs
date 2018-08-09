@@ -119,7 +119,6 @@ namespace Player.PlayerController
             if (blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
             else ZeroFriction();
 
-            Debug.Log("Velocity " + rb.velocity.magnitude);
             bool stopSlide = onGround && groundDistance < airborneThreshold * 0.5f;
 
             // Individual gravity
@@ -155,21 +154,23 @@ namespace Player.PlayerController
             animState.isStrafing = moveMode == MoveMode.Strafe;
             blackboard.animState = animState;
         }
-
-        protected virtual void LateUpdate()
+        public virtual void RotateToTarget(Transform target)
         {
-            if (cam == null) return;
-
-            cam.UpdateInput();
-
-            if (!fixedFrame && rb.interpolation == RigidbodyInterpolation.None) return;
-
-            // Update camera only if character moves
-            cam.UpdateTransform(rb.interpolation == RigidbodyInterpolation.None ? Time.fixedDeltaTime : Time.deltaTime);
-
-            fixedFrame = false;
+            if (target)
+            {
+                    Quaternion rot = Quaternion.LookRotation(target.position - transform.position);
+                    var newPos = new Vector3(transform.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
+                    blackboard.targetRotation = Quaternion.Euler(newPos);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newPos), Time.deltaTime);
+                }
         }
 
+        public virtual void RotateWithAnotherTransform(Transform referenceTransform)
+        {
+            var newRotation = new Vector3(transform.eulerAngles.x, referenceTransform.eulerAngles.y, transform.eulerAngles.z);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), Time.deltaTime);
+            blackboard.targetRotation = transform.rotation;
+        }
         private void MoveFixed(Vector3 deltaPosition)
         {
             // Process horizontal wall-running

@@ -3,7 +3,7 @@ using System.Collections;
 using Player.PlayerController;
 using static Player.Utility;
 using System.Collections.Generic;
-
+using System;
 
 [RequireComponent(typeof(ControllerActionManager))]
 [RequireComponent(typeof(InventoryManager))]
@@ -44,6 +44,8 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public Quaternion fixedDeltaRotation { get; set; } = Quaternion.identity;
 
     bool shouldAttack;
+    public Quaternion targetRotation { get; set; }
+
     public List<HitBoxArea> hitboxes { get; set; }
     public List<HitBox> activeHitboxComponents { get; set; }
 
@@ -68,5 +70,14 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     {
         this.shouldAttack = shouldAttack;
     }
-    
+
+    public void RotateToTarget(Transform lockTarget)
+    {
+        _motor.RotateToTarget(lockTarget);
+    }
+
+    public void RotateWithAnotherTransform(Transform cameraTransform)
+    {
+        _motor.RotateWithAnotherTransform(cameraTransform);
+    }
 }

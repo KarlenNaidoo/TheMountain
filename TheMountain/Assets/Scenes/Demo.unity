@@ -3425,7 +3425,6 @@ GameObject:
   - component: {fileID: 1455379509}
   - component: {fileID: 1455379520}
   - component: {fileID: 1455379519}
-  - component: {fileID: 1455379521}
   m_Layer: 9
   m_Name: Oki
   m_TagString: Player
@@ -3532,7 +3531,7 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 1
-  cam: {fileID: 1477620642}
+  cam: {fileID: 0}
   moveMode: 0
   smoothPhysics: 1
   smoothAccelerationTime: 0.2
@@ -4111,42 +4110,6 @@ MonoBehaviour:
     spineStiffness: 0.5
     pullBodyVertical: 0.5
     pullBodyHorizontal: 0
---- !u!114 &1455379521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1455379508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85ef3e8d5c77f405d8ab70a643d6a2f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  rotationSpace: {fileID: 0}
-  updateMode: 2
-  lockCursor: 0
-  smoothFollow: 1
-  offset: {x: 0.3, y: 1.2, z: 0.5}
-  followSpeed: 10
-  rotationSensitivity: 3.5
-  yMinLimit: -80
-  yMaxLimit: 80
-  rotateAlways: 1
-  rotateOnLeftButton: 0
-  rotateOnRightButton: 0
-  rotateOnMiddleButton: 0
-  distance: 4
-  minDistance: 1.5
-  maxDistance: 10
-  zoomSpeed: 10
-  zoomSensitivity: 1
-  blockingLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  blockingRadius: 1
-  blockingSmoothTime: 0.1
-  blockedOffset: 0.5
 --- !u!1 &1455987764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4662,31 +4625,39 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.4
       objectReference: {fileID: 0}
     - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.99492663
       objectReference: {fileID: 0}
     - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.10060384
       objectReference: {fileID: 0}
     - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180.00002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707748149874096, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 11.548
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114780305508625190, guid: 026b3fc896170524a82e36967e7a66ee, type: 2}
