@@ -8,18 +8,18 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1424113620421782}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1424113620421782
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4707748149874096}
-  - component: {fileID: 114780305508625190}
+  - component: {fileID: 114195181474745236}
   m_Layer: 0
   m_Name: Camera Rig
   m_TagString: MainCamera
@@ -30,9 +30,9 @@ GameObject:
 --- !u!1 &1917843550136074
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4745002844625018}
   - component: {fileID: 20948257981402930}
@@ -47,21 +47,21 @@ GameObject:
 --- !u!4 &4707748149874096
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1424113620421782}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.100604855, y: 0, z: 0, w: 0.9949265}
+  m_LocalPosition: {x: 0, y: -1.4, z: 0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4745002844625018}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.548, y: 0, z: 0}
 --- !u!4 &4745002844625018
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1917843550136074}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -74,13 +74,17 @@ Transform:
 --- !u!20 &20948257981402930
 Camera:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1917843550136074}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -110,14 +114,14 @@ Camera:
 --- !u!81 &81972570648108238
 AudioListener:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1917843550136074}
   m_Enabled: 1
---- !u!114 &114780305508625190
+--- !u!114 &114195181474745236
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1424113620421782}
   m_Enabled: 1
@@ -126,8 +130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  smoothBetweenState: 2
-  smoothCameraRotation: 2
+  smoothBetweenState: 6
+  smoothCameraRotation: 6
   scrollSpeed: 10
   cullingLayer:
     serializedVersion: 2
@@ -136,7 +140,7 @@ MonoBehaviour:
   checkHeightRadius: 0
   showGizmos: 0
   startUsingTargetRotation: 1
-  startSmooth: 1
+  startSmooth: 0
   lockCamera: 0
   offsetMouse: {x: 0, y: 0}
   indexList: 0
@@ -194,3 +198,4 @@ MonoBehaviour:
     fixedAngle: {x: 0, y: 0}
     lookPoints: []
     cameraMode: 0
+  lockCursor: 1

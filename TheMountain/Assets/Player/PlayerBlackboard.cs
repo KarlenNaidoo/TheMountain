@@ -3,7 +3,7 @@ using System.Collections;
 using Player.PlayerController;
 using static Player.Utility;
 using System.Collections.Generic;
-
+using System;
 
 [RequireComponent(typeof(ControllerActionManager))]
 [RequireComponent(typeof(InventoryManager))]
@@ -36,10 +36,16 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public float currentSprintStamina { get; set; }
     public bool useRootMotion { get; set; } = true;
     public float speed { get; set; }
-    public Quaternion targetRotation { get { return _targetRotation; } set { _targetRotation = value; } }
-    public Vector3 targetDirection { get { return _targetDirection; } set { _targetDirection = value; } }
+
+    public Vector3 lookPos { get; set; }
+    public AnimState animState { get; set; }
+
+    public Vector3 fixedDeltaPosition { get; set; }
+    public Quaternion fixedDeltaRotation { get; set; } = Quaternion.identity;
 
     bool shouldAttack;
+    public Quaternion targetRotation { get; set; }
+
     public List<HitBoxArea> hitboxes { get; set; }
     public List<HitBox> activeHitboxComponents { get; set; }
 
@@ -65,18 +71,13 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
         this.shouldAttack = shouldAttack;
     }
 
-    public virtual void RotateToTarget(Transform target)
+    public void RotateToTarget(Transform lockTarget)
     {
-        _motor.RotateToTarget(target);
+        _motor.RotateToTarget(lockTarget);
     }
 
-    public virtual void RotateWithAnotherTransform(Transform referenceTransform)
+    public void RotateWithAnotherTransform(Transform cameraTransform)
     {
-        _motor.RotateWithAnotherTransform(referenceTransform);
-    }
-
-    public virtual void UpdateTargetDirection(Transform referenceTransform = null)
-    {
-        _motor.UpdateTargetDirection(referenceTransform);
+        _motor.RotateWithAnotherTransform(cameraTransform);
     }
 }

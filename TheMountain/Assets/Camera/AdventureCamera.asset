@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -21,8 +21,8 @@ MonoBehaviour:
     minDistance: 3
     height: -1.8
     smoothFollow: 10
-    xMouseSensitivity: 2
-    yMouseSensitivity: 2
+    xMouseSensitivity: 12
+    yMouseSensitivity: 3
     yMinLimit: 0
     yMaxLimit: 20
     xMinLimit: -360

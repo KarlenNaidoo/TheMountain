@@ -37,7 +37,7 @@ public abstract class Character : HealthController
 
     private PhysicMaterial zeroFrictionMaterial;
     private PhysicMaterial highFrictionMaterial;
-    protected Rigidbody r;
+    protected Rigidbody rb;
     protected const float half = 0.5f;
     protected float originalHeight;
     protected Vector3 originalCenter;
@@ -55,7 +55,7 @@ public abstract class Character : HealthController
     {
         base.Start();
         capsule = GetComponent<Collider>() as CapsuleCollider;
-        r = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
 
         // Store the collider volume
         originalHeight = capsule.height;
@@ -72,7 +72,7 @@ public abstract class Character : HealthController
         highFrictionMaterial = new PhysicMaterial();
 
         // Making sure rigidbody rotation is fixed
-        r.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
 
     protected Vector3 GetGravity()
@@ -89,7 +89,7 @@ public abstract class Character : HealthController
     protected virtual RaycastHit GetSpherecastHit()
     {
         Vector3 up = transform.up;
-        Ray ray = new Ray(r.position + up * airborneThreshold, -up);
+        Ray ray = new Ray(rb.position + up * airborneThreshold, -up);
         RaycastHit h = new RaycastHit();
         h.point = transform.position - transform.transform.up * airborneThreshold;
         h.normal = transform.up;
@@ -110,8 +110,8 @@ public abstract class Character : HealthController
     {
         Quaternion rotation = Quaternion.AngleAxis(angle, axis);
         Vector3 d = transform.position - point;
-        r.MovePosition(point + rotation * d);
-        r.MoveRotation(rotation * transform.rotation);
+        rb.MovePosition(point + rotation * d);
+        rb.MoveRotation(rotation * transform.rotation);
     }
 
     // Scale the capsule collider to 'mlp' of the initial value

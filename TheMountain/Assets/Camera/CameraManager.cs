@@ -10,7 +10,7 @@ public class CameraManager: PlayerInput
     public bool ignoreCameraRotation;
     [Header("Camera Input")]
     [HideInInspector]
-    public ThirdPersonCamera tpCamera;              // acess camera info                
+    public ThirdPersonCamera cam;              // acess camera info                
     [HideInInspector]
     public string desiredCameraState;                    // generic string to change the CameraState        
     [HideInInspector]
@@ -21,25 +21,24 @@ public class CameraManager: PlayerInput
     public bool smoothCameraState;                      // generic bool to know if the state will change with or without lerp  
     [HideInInspector]
     public bool keepDirection;                          // keep the current direction in case you change the cameraState
-    
+   
 
     public virtual void CameraInput()
     {
         if (!Camera.main) Debug.Log("Missing a Camera with the tag MainCamera, please add one.");
         if (!ignoreCameraRotation)
         {
-            if (!keepDirection) blackboard.UpdateTargetDirection(Camera.main.transform);
             RotateWithCamera(Camera.main.transform);
         }
 
-        if (tpCamera == null)
+        if (cam == null)
             return;
-
+       
         var Y = playerActions.MoveMouse.Y;
         var X = playerActions.MoveMouse.X;
         //var zoom = Input.GetAxis("Mouse ScrollWheel");
 
-        tpCamera.RotateCamera(X, Y);
+        cam.RotateCamera(X, Y);
         //tpCamera.Zoom(zoom);
 
         // change keepDirection from input diference
@@ -50,23 +49,23 @@ public class CameraManager: PlayerInput
     {
         // CAMERA STATE - you can change the CameraState here, the bool means if you want lerp of not, make sure to use the same CameraState String that you named on TPCameraListData
 
-        if (tpCamera == null)
+        if (cam == null)
         {
-            tpCamera = FindObjectOfType<ThirdPersonCamera>();
-            if (tpCamera == null)
+            cam = FindObjectOfType<ThirdPersonCamera>();
+            if (cam == null)
                 return;
-            if (tpCamera)
+            if (cam)
             {
-                tpCamera.SetMainTarget(this.transform);
-                tpCamera.Init();
+                cam.SetMainTarget(this.transform);
+                cam.Init();
             }
         }
         if (changeCameraState)
-            tpCamera.ChangeState(desiredCameraState, customlookAtPoint, smoothCameraState);
+            cam.ChangeState(desiredCameraState, customlookAtPoint, smoothCameraState);
         else if (blackboard.isCrouching)
-            tpCamera.ChangeState("Crouch", true);
+            cam.ChangeState("Crouch", true);
         else
-            tpCamera.ChangeState("MovementState", true);
+            cam.ChangeState("MovementState", true);
     }
 
     public void ChangeCameraState(string cameraState)
@@ -84,9 +83,9 @@ public class CameraManager: PlayerInput
     protected virtual void RotateWithCamera(Transform cameraTransform)
     {
         // smooth align character with aim position               
-        if (tpCamera != null && tpCamera.lockTarget)
+        if (cam != null && cam.lockTarget)
         {
-            blackboard.RotateToTarget(tpCamera.lockTarget);
+            blackboard.RotateToTarget(cam.lockTarget);
         }
         // rotate the camera around the character and align with when the char move
         else if (blackboard.input != Vector2.zero)
@@ -95,7 +94,7 @@ public class CameraManager: PlayerInput
         }
 
     }
-
+    
 
     protected virtual void LateUpdate()
     {
