@@ -158,19 +158,20 @@ namespace Player.PlayerController
         {
             if (target)
             {
-                    Quaternion rot = Quaternion.LookRotation(target.position - transform.position);
-                    var newPos = new Vector3(transform.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
-                    blackboard.targetRotation = Quaternion.Euler(newPos);
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newPos), Time.deltaTime);
-                }
+                Quaternion rot = Quaternion.LookRotation(target.position - transform.position);
+                var newPos = new Vector3(transform.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
+                blackboard.targetRotation = Quaternion.Euler(newPos);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newPos), Time.deltaTime * turnSpeed);
+            }
         }
 
         public virtual void RotateWithAnotherTransform(Transform referenceTransform)
         {
             var newRotation = new Vector3(transform.eulerAngles.x, referenceTransform.eulerAngles.y, transform.eulerAngles.z);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), Time.deltaTime * turnSpeed);
             blackboard.targetRotation = transform.rotation;
         }
+
         private void MoveFixed(Vector3 deltaPosition)
         {
             // Process horizontal wall-running

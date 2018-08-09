@@ -172,7 +172,7 @@ MonoBehaviour:
     fixedAngle: {x: 0, y: 0}
     lookPoints: []
     cameraMode: 0
-  CameraStateList: {fileID: 0}
+  CameraStateList: {fileID: 11400000, guid: 688c7608c3833bc4893e95664ca755b2, type: 2}
   lockTarget: {fileID: 0}
   movementSpeed: {x: 0, y: 0}
   transitionState:
@@ -198,3 +198,4 @@ MonoBehaviour:
     fixedAngle: {x: 0, y: 0}
     lookPoints: []
     cameraMode: 0
+  lockCursor: 1

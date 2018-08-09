@@ -21,7 +21,7 @@ public class CameraManager: PlayerInput
     public bool smoothCameraState;                      // generic bool to know if the state will change with or without lerp  
     [HideInInspector]
     public bool keepDirection;                          // keep the current direction in case you change the cameraState
-
+   
 
     public virtual void CameraInput()
     {
@@ -33,7 +33,7 @@ public class CameraManager: PlayerInput
 
         if (cam == null)
             return;
-
+       
         var Y = playerActions.MoveMouse.Y;
         var X = playerActions.MoveMouse.X;
         //var zoom = Input.GetAxis("Mouse ScrollWheel");

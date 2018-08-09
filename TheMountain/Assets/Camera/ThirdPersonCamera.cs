@@ -103,6 +103,7 @@ namespace Player
         private bool isNewTarget;
         private bool firstStateIsInit;
         private Quaternion fixedRotation;
+        public bool lockCursor = true; // If true, the mouse will be locked to screen center and hidden
 
         public float CullingDistance
         {
@@ -170,6 +171,10 @@ namespace Player
         private void FixedUpdate()
         {
             if (target == null || targetLookAt == null || currentState == null || transitionState == null || !isInit) return;
+
+            // Cursors
+            Cursor.lockState = lockCursor ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = lockCursor ? false : true;
 
             switch (currentState.cameraMode)
             {
@@ -413,11 +418,11 @@ namespace Player
             }
             else
             {
-                // fixed rotation
+                // free directional
                 var _x = transitionState.fixedAngle.x;
                 var _y = transitionState.fixedAngle.y;
-                mouseX = useSmooth ? Mathf.LerpAngle(mouseX, _x, smoothBetweenState * Time.deltaTime) : _x;
-                mouseY = useSmooth ? Mathf.LerpAngle(mouseY, _y, smoothBetweenState * Time.deltaTime) : _y;
+                mouseX = useSmooth ? Mathf.LerpAngle(mouseX, _x, smoothBetweenState * Time.deltaTime * scrollSpeed) : _x;
+                mouseY = useSmooth ? Mathf.LerpAngle(mouseY, _y, smoothBetweenState * Time.deltaTime * scrollSpeed) : _y;
             }
         }
 
