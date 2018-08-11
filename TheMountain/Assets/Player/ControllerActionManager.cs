@@ -98,7 +98,6 @@ public class ControllerActionManager : PlayerInput
 
     public void CanAttack()
     {
-        Debug.Log("Opening can attack");
         blackboard.canAttack = true;
         blackboard.doOnce = false;
     }

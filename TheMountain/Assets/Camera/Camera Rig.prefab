@@ -50,22 +50,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1424113620421782}
-  m_LocalRotation: {x: 0.100604855, y: 0, z: 0, w: 0.9949265}
-  m_LocalPosition: {x: 0, y: -1.4, z: 0.8}
+  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: 0, y: 5, z: -5.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4745002844625018}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 11.548, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
 --- !u!4 &4745002844625018
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1917843550136074}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: -5.58}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4707748149874096}
@@ -138,14 +138,14 @@ MonoBehaviour:
     m_Bits: 1
   clipPlaneMargin: 0
   checkHeightRadius: 0
-  showGizmos: 0
+  showGizmos: 1
   startUsingTargetRotation: 1
-  startSmooth: 0
+  startSmooth: 1
   lockCamera: 0
   offsetMouse: {x: 0, y: 0}
   indexList: 0
   indexLookPoint: 0
-  offSetPlayerPivot: 0
+  offSetPlayerPivot: 4.6
   distance: 5
   currentStateName: 
   currentTarget: {fileID: 0}
@@ -199,3 +199,7 @@ MonoBehaviour:
     lookPoints: []
     cameraMode: 0
   lockCursor: 1
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  collisionRecoverSpeed: 3
