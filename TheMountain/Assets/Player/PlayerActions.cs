@@ -21,6 +21,7 @@
         public PlayerAction MouseDown;
         public PlayerAction OneHanded;
         public PlayerAction TwoHanded;
+        public PlayerAction LockOn;
 
         public PlayerTwoAxisAction Move;
         public PlayerTwoAxisAction MoveMouse;
@@ -31,6 +32,7 @@
             HeavyAttack = CreatePlayerAction("HeavyAttack");
             OneHanded = CreatePlayerAction("OneHanded");
             TwoHanded = CreatePlayerAction("TwoHanded");
+            LockOn = CreatePlayerAction("LockOn");
             Jump = CreatePlayerAction("Jump");
             Left = CreatePlayerAction("Move Left");
             Right = CreatePlayerAction("Move Right");
@@ -67,7 +69,10 @@
             playerActions.Jump.AddDefaultBinding(InputControlType.Back);
 
             playerActions.Sprint.AddDefaultBinding(Key.LeftShift);
-            playerActions.Sprint.AddDefaultBinding(InputControlType.LeftTrigger);
+            playerActions.Sprint.AddDefaultBinding(InputControlType.LeftStickButton);
+
+            playerActions.LockOn.AddDefaultBinding(Key.Tab);
+            playerActions.LockOn.AddDefaultBinding(InputControlType.RightStickButton);
 
             playerActions.Crouch.AddDefaultBinding(Key.C);
             playerActions.Crouch.AddDefaultBinding(InputControlType.RightTrigger);

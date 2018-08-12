@@ -43,6 +43,12 @@ public class CameraManager: PlayerInput
 
         // change keepDirection from input diference
         if (keepDirection && Vector2.Distance(blackboard.input, blackboard.oldInput) > 0.2f) keepDirection = false;
+
+        if (playerActions.LockOn.WasPressed)
+        {
+            blackboard.lockOnPressed = true;
+        }
+            
     }
 
     protected virtual void UpdateCameraStates()

@@ -8,7 +8,7 @@ AnimatorController:
   m_Name: Player
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: InputMagnitude
+  - m_Name: Speed
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1273,7 +1273,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: InputMagnitude
     m_Mirror: 0
-  m_BlendParameter: InputMagnitude
+  m_BlendParameter: Speed
   m_BlendParameterY: InputMagnitude
   m_MinThreshold: 0
   m_MaxThreshold: 0.1
@@ -1775,7 +1775,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: InputMagnitude
     m_Mirror: 0
-  m_BlendParameter: InputVertical
+  m_BlendParameter: Speed
   m_BlendParameterY: InputMagnitude
   m_MinThreshold: 0.2
   m_MaxThreshold: 3
@@ -2194,7 +2194,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: InputMagnitude
+    m_ConditionEvent: Speed
     m_EventTreshold: 0.3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102856266709871900}
@@ -2266,7 +2266,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 4
-    m_ConditionEvent: InputMagnitude
+    m_ConditionEvent: Speed
     m_EventTreshold: 0.3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102119351148125508}

@@ -153,6 +153,8 @@ namespace Player.PlayerController
             animState.crouch = blackboard.isCrouching;
             animState.isStrafing = moveMode == MoveMode.Strafe;
             blackboard.animState = animState;
+            Rotate();
+
         }
         public virtual void RotateToTarget(Transform target)
         {

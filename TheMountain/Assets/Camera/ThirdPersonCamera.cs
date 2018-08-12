@@ -111,7 +111,7 @@ namespace Player
         public float CullingDistance { get; private set; }
 
         #endregion hide properties
-
+        PlayerBlackboard blackboard;
         private bool hitSomething = false;
         [SerializeField] float collisionRecoverSpeed = 5f;
         private void OnDrawGizmos()
@@ -127,6 +127,10 @@ namespace Player
             }
         }
 
+        private void Awake()
+        {
+            blackboard = FindObjectOfType<PlayerBlackboard>();
+        }
         private void Start()
         {
             Init();
@@ -199,6 +203,15 @@ namespace Player
             this.heightOffset = heightOffset;
         }
 
+        public void SetLockTarget(Transform _lockTarget)
+        {
+            lockTarget = _lockTarget;
+        }
+
+        public void ClearLockOnTarget()
+        {
+            lockTarget = null;
+        }
         public void RemoveLockTarget()
         {
             lockTarget = null;
@@ -615,6 +628,11 @@ namespace Player
                 transform.position = current_cPos + (camDir * (distance));
             }
             var rotation = Quaternion.LookRotation((lookPoint) - transform.position);
+
+            if (blackboard.lockOnPressed)
+                SetLockTarget(blackboard.lockTarget);
+            else
+                ClearLockOnTarget();
 
             if (lockTarget)
             {
