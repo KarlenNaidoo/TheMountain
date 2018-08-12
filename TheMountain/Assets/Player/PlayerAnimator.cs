@@ -13,7 +13,6 @@ namespace Player.PlayerController
         ControllerActionManager controllerActionManager;
         private float randomIdleCount, randomIdle;
 
-
         [SerializeField] float turnSensitivity = 0.2f; // Animator turning sensitivity
         [SerializeField] float turnSpeed = 5f; // Animator turning interpolation speed
         [SerializeField] float runCycleLegOffset = 0.2f; // The offset of leg positions in the running cycle
@@ -147,11 +146,20 @@ namespace Player.PlayerController
 
             // Update Animator params
             blackboard.animator.SetFloat("Turn", Mathf.Lerp(blackboard.animator.GetFloat("Turn"), angle, Time.deltaTime * turnSpeed));
-            blackboard.animator.SetFloat("InputVertical", blackboard.input.magnitude);
-            blackboard.animator.SetFloat("InputHorizontal", blackboard.animState.moveDirection.x);
+            blackboard.animator.SetFloat("InputVertical", blackboard.input.y);
+            blackboard.animator.SetFloat("InputHorizontal", blackboard.input.x);
             blackboard.animator.SetBool("Crouch", blackboard.animState.crouch);
             blackboard.animator.SetBool("OnGround", blackboard.animState.onGround);
             blackboard.animator.SetBool("IsStrafing", blackboard.animState.isStrafing);
+            if (blackboard.isSprinting && blackboard.currentSprintStamina > 0)
+            {
+                blackboard.speed = PlayerBlackboard.SPRINT_SPEED;
+            }
+            if (blackboard.currentSprintStamina <= 0 && blackboard.isSprinting)
+            {
+                blackboard.speed = PlayerBlackboard.RUN_SPEED;
+            }
+            blackboard.animator.SetFloat("Speed", blackboard.speed, .2f, Time.deltaTime);
 
         }
 
@@ -161,34 +169,7 @@ namespace Player.PlayerController
             blackboard.animator.Play("Idle_Hit_Strong_Right");
         }
 
-        public virtual void Sprint(bool value)
-        {
-            if (value)
-            {
-                if (blackboard.currentSprintStamina > 0 && blackboard.input.sqrMagnitude > 0.1f)
-                {
-                    blackboard.isSprinting = true;
-                    blackboard.isRunning = false;
-                }
-                else if (blackboard.currentSprintStamina <= 0)
-                {
-                    blackboard.isRunning = true;
-                    blackboard.isSprinting = false;
-                }
-
-                if (blackboard.input.sqrMagnitude < 0.1f || blackboard.isCrouching || blackboard.speed <= 0)
-                {
-                    blackboard.isSprinting = false;
-                    blackboard.isRunning = false;
-                }
-                blackboard.currentSprintStamina = (blackboard.currentSprintStamina > 0) ? blackboard.currentSprintStamina - Time.deltaTime : 0;
-            }
-            else
-            {
-                blackboard.isSprinting = false;
-                blackboard.isRunning = false;
-            }
-        }
+        
 
         public virtual void Crouch()
         {

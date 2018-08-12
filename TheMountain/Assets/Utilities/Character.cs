@@ -4,9 +4,6 @@
 /// <summary>
 /// The base abstract class for all character controllers, provides common functionality.
 /// </summary>
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CapsuleCollider))]
-
 public abstract class Character : HealthController
 {
 
@@ -37,7 +34,6 @@ public abstract class Character : HealthController
 
     private PhysicMaterial zeroFrictionMaterial;
     private PhysicMaterial highFrictionMaterial;
-    protected Rigidbody rb;
     protected const float half = 0.5f;
     protected float originalHeight;
     protected Vector3 originalCenter;
@@ -54,8 +50,8 @@ public abstract class Character : HealthController
     protected override void Start()
     {
         base.Start();
-        capsule = GetComponent<Collider>() as CapsuleCollider;
-        rb = GetComponent<Rigidbody>();
+        capsule = GetComponentInChildren<Collider>() as CapsuleCollider;
+        _rigidbody = GetComponentInChildren<Rigidbody>();
 
         // Store the collider volume
         originalHeight = capsule.height;
@@ -72,7 +68,7 @@ public abstract class Character : HealthController
         highFrictionMaterial = new PhysicMaterial();
 
         // Making sure rigidbody rotation is fixed
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
 
     protected Vector3 GetGravity()
@@ -89,7 +85,7 @@ public abstract class Character : HealthController
     protected virtual RaycastHit GetSpherecastHit()
     {
         Vector3 up = transform.up;
-        Ray ray = new Ray(rb.position + up * airborneThreshold, -up);
+        Ray ray = new Ray(_rigidbody.position + up * airborneThreshold, -up);
         RaycastHit h = new RaycastHit();
         h.point = transform.position - transform.transform.up * airborneThreshold;
         h.normal = transform.up;
@@ -110,8 +106,8 @@ public abstract class Character : HealthController
     {
         Quaternion rotation = Quaternion.AngleAxis(angle, axis);
         Vector3 d = transform.position - point;
-        rb.MovePosition(point + rotation * d);
-        rb.MoveRotation(rotation * transform.rotation);
+        _rigidbody.MovePosition(point + rotation * d);
+        _rigidbody.MoveRotation(rotation * transform.rotation);
     }
 
     // Scale the capsule collider to 'mlp' of the initial value

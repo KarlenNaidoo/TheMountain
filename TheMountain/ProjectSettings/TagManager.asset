@@ -39,7 +39,7 @@ TagManager:
   - Player
   - NPC
   - NPC_Trigger
-  - HostileTrigger
+  - Player_Trigger
   - HitBox
   - PushBox
   - HurtBox

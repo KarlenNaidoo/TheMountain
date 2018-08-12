@@ -29,8 +29,10 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public Vector2 oldInput { get; set; }
 
 
+    public const int SPRINT_SPEED = 3;
+    public const int RUN_SPEED = 2;
+
     public bool isCrouching { get; set; }
-    public bool isRunning { get; set; }
     public bool isSprinting { get; set; }
     public float maxSprintStamina { get; set; }
     public float currentSprintStamina { get; set; }
@@ -58,6 +60,12 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
         input = new Vector2(x, y);
     }
 
+    public Transform lockTarget { get; set; }
+    private bool _lockOnPressed = false;
+
+    public bool lockOnPressed { get { return _lockOnPressed; } set { _lockOnPressed = !_lockOnPressed; } }
+
+    //TODO: Create singleton pattern
     private void Awake()
     {
         animator = GetComponent<Animator>();

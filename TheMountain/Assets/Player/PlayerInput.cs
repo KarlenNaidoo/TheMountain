@@ -82,6 +82,7 @@ namespace Player.PlayerController
         protected virtual void StoreMovement()
         {
             blackboard.SetPlayerInputParameters(playerActions.Move.X, playerActions.Move.Y);
+            blackboard.speed = Mathf.Abs(playerActions.Move.Y);
         }
         
         
@@ -90,15 +91,35 @@ namespace Player.PlayerController
             if (playerActions.Sprint.IsPressed)
             {
                 blackboard.isSprinting = true;
+                DecreaseSprintStamina(blackboard.currentSprintStamina);
             }
             else
             {
 
                 blackboard.isSprinting = false;
-                blackboard.currentSprintStamina = (blackboard.currentSprintStamina < blackboard.maxSprintStamina) ? blackboard.currentSprintStamina + Time.deltaTime : blackboard.maxSprintStamina;
+                IncreaseSprintStamina(blackboard.currentSprintStamina);
             }
         }
 
+        protected virtual void DecreaseSprintStamina(float currentSprintStamina)
+        {
+            currentSprintStamina -= Time.deltaTime;
+            if(currentSprintStamina <= 0)
+            {
+                currentSprintStamina = 0;
+            }
+            blackboard.currentSprintStamina = currentSprintStamina;
+        }
+
+        protected virtual void IncreaseSprintStamina(float currentSprintStamina)
+        {
+            currentSprintStamina += Time.deltaTime;
+            if(currentSprintStamina >= blackboard.maxSprintStamina)
+            {
+                currentSprintStamina = blackboard.maxSprintStamina;
+            }
+            blackboard.currentSprintStamina = currentSprintStamina;
+        }
         protected virtual void CheckForCrouch()
         {
                 if (playerActions.Crouch)

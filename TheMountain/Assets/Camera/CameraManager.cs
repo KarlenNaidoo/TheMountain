@@ -3,6 +3,7 @@ using System.Collections;
 using Player;
 using Player.Input;
 using Player.PlayerController;
+using com.ootii.Cameras;
 
 public class CameraManager: PlayerInput
 {
@@ -21,7 +22,6 @@ public class CameraManager: PlayerInput
     public bool smoothCameraState;                      // generic bool to know if the state will change with or without lerp  
     [HideInInspector]
     public bool keepDirection;                          // keep the current direction in case you change the cameraState
-   
 
     public virtual void CameraInput()
     {
@@ -43,6 +43,12 @@ public class CameraManager: PlayerInput
 
         // change keepDirection from input diference
         if (keepDirection && Vector2.Distance(blackboard.input, blackboard.oldInput) > 0.2f) keepDirection = false;
+
+        if (playerActions.LockOn.WasPressed)
+        {
+            blackboard.lockOnPressed = true;
+        }
+            
     }
 
     protected virtual void UpdateCameraStates()
@@ -66,6 +72,7 @@ public class CameraManager: PlayerInput
             cam.ChangeState("Crouch", true);
         else
             cam.ChangeState("MovementState", true);
+
     }
 
     public void ChangeCameraState(string cameraState)
@@ -94,7 +101,6 @@ public class CameraManager: PlayerInput
         }
 
     }
-    
 
     protected virtual void LateUpdate()
     {

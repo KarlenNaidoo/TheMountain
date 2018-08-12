@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using com.ootii.Cameras;
+using com.ootii.Geometry;
+using System.Collections;
 using UnityEngine;
 
 namespace Player
@@ -6,6 +8,7 @@ namespace Player
     public class ThirdPersonCamera : MonoBehaviour
     {
         private static ThirdPersonCamera _instance;
+      
 
         public static ThirdPersonCamera instance
         {
@@ -22,8 +25,7 @@ namespace Player
                 return _instance;
             }
         }
-
-        #region inspector properties
+        
 
         public Transform target;
 
@@ -49,7 +51,8 @@ namespace Player
 
         public Vector2 offsetMouse;
 
-        #endregion inspector properties
+
+        CameraTransform camTrans;
 
         #region hide properties
 
@@ -95,7 +98,6 @@ namespace Player
         private float currentHeight;
         private float currentZoom;
         private float cullingHeight;
-        private float cullingDistance;
         private float switchRight, currentSwitchRight;
         private float heightOffset;
         private bool isInit;
@@ -104,17 +106,14 @@ namespace Player
         private bool firstStateIsInit;
         private Quaternion fixedRotation;
         public bool lockCursor = true; // If true, the mouse will be locked to screen center and hidden
+        public LayerMask ignoreLayers;
 
-        public float CullingDistance
-        {
-            get
-            {
-                return cullingDistance;
-            }
-        }
+        public float CullingDistance { get; private set; }
 
         #endregion hide properties
-
+        PlayerBlackboard blackboard;
+        private bool hitSomething = false;
+        [SerializeField] float collisionRecoverSpeed = 5f;
         private void OnDrawGizmos()
         {
             if (showGizmos)
@@ -128,6 +127,10 @@ namespace Player
             }
         }
 
+        private void Awake()
+        {
+            blackboard = FindObjectOfType<PlayerBlackboard>();
+        }
         private void Start()
         {
             Init();
@@ -168,7 +171,7 @@ namespace Player
         }
 
         // Keep checking what camera mode we are in (freedirection, fixed angle, fixed point
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             if (target == null || targetLookAt == null || currentState == null || transitionState == null || !isInit) return;
 
@@ -200,6 +203,15 @@ namespace Player
             this.heightOffset = heightOffset;
         }
 
+        public void SetLockTarget(Transform _lockTarget)
+        {
+            lockTarget = _lockTarget;
+        }
+
+        public void ClearLockOnTarget()
+        {
+            lockTarget = null;
+        }
         public void RemoveLockTarget()
         {
             lockTarget = null;
@@ -463,6 +475,64 @@ namespace Player
             mouseX = Utility.ClampAngle(x, currentState.xMinLimit, currentState.xMaxLimit);
         }
 
+
+        protected virtual void CameraCollisions(float targetZ, ref float actualZ)
+        {
+            float step = Mathf.Abs(targetZ);
+            int stepCount = 2;
+            float stepIncremental = step / stepCount;
+            Transform camTrans = transform;
+            RaycastHit hit;
+            Vector3 origin = currentTargetPos;
+            Vector3 direction = -currentTargetPos;
+            Debug.DrawRay(origin, direction * step, Color.blue);
+
+            if (Physics.Raycast(origin, direction, out hit, step, ignoreLayers))
+            {
+                float distance = Vector3.Distance(hit.point, origin);
+                actualZ = -(distance / 2);
+            }
+            else
+            {
+                for (int s = 0; s < stepCount + 1; s++)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector3 dir = Vector3.zero;
+                        Vector3 secondOrigin = origin + (direction * s) * stepIncremental;
+
+                        switch (i)
+                        {
+                            case 0:
+                                dir = camTrans.right;
+                                break;
+                            case 1:
+                                dir = -camTrans.right;
+                                break;
+                            case 2:
+                                dir = camTrans.up;
+                                break;
+                            case 3:
+                                dir = -camTrans.up;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        Debug.DrawRay(secondOrigin, dir * 1, Color.red);
+                        if (Physics.Raycast(secondOrigin, dir, out hit, 1, ignoreLayers))
+                        {
+                            float distance = Vector3.Distance(secondOrigin, origin);
+                            actualZ = -(distance / 2);
+                        }
+                    }
+                }
+            }
+        }
+
+        
+
+       
         private void CameraMovement()
         {
             if (currentTarget == null || _camera == null)
@@ -487,15 +557,18 @@ namespace Player
             }
 
             _camera.fieldOfView = currentState.fov;
-            cullingDistance = Mathf.Lerp(cullingDistance, currentZoom, smoothBetweenState * Time.deltaTime);
+            //cullingDistance = Mathf.Lerp(cullingDistance, currentZoom, smoothBetweenState * Time.deltaTime);
             currentSwitchRight = Mathf.Lerp(currentSwitchRight, switchRight, smoothBetweenState * Time.deltaTime);
             var camDir = (currentState.forward * -targetLookAt.forward) + ((currentState.right * currentSwitchRight) * targetLookAt.right);
+
+           
 
             camDir = camDir.normalized;
             var targetPos = new Vector3(currentTarget.position.x, currentTarget.position.y, currentTarget.position.z) + currentTarget.transform.up * offSetPlayerPivot;
             currentTargetPos = targetPos;
             desired_cPos = targetPos + currentTarget.transform.up * currentState.height;
             current_cPos = targetPos + currentTarget.transform.up * currentHeight;
+            #region Clipping
             RaycastHit hitInfo;
 
             Utility.ClipPlanePoints planePoints = _camera.NearClipPlanePoints(current_cPos + (camDir * (distance)), clipPlaneMargin);
@@ -503,6 +576,7 @@ namespace Player
             //Check if Height is not blocked
             if (Physics.SphereCast(targetPos, checkHeightRadius, currentTarget.transform.up, out hitInfo, currentState.cullingHeight + 0.2f, cullingLayer))
             {
+                hitSomething = true;
                 var t = hitInfo.distance - 0.2f;
                 t -= currentState.height;
                 t /= (currentState.cullingHeight - currentState.height);
@@ -522,7 +596,8 @@ namespace Player
                     t -= currentState.cullingMinDist;
                     t /= (currentZoom - currentState.cullingMinDist);
                     currentHeight = Mathf.Lerp(cullingHeight, currentState.height, Mathf.Clamp(t, 0.0f, 1.0f));
-                    current_cPos = targetPos + currentTarget.transform.up * currentHeight;
+                    current_cPos = targetPos + currentTarget.transform.up * currentHeight ;
+                    hitSomething = true;
                 }
             }
             else
@@ -530,15 +605,34 @@ namespace Player
                 currentHeight = useSmooth ? Mathf.Lerp(currentHeight, currentState.height, smoothBetweenState * Time.deltaTime) : currentState.height;
             }
             //Check if target position with culling height applied is not blocked
-            if (CullingRayCast(current_cPos, planePoints, out hitInfo, distance, cullingLayer, Color.cyan)) distance = Mathf.Clamp(cullingDistance, 0.0f, currentState.defaultDistance);
+            if (CullingRayCast(current_cPos, planePoints, out hitInfo, distance, cullingLayer, Color.cyan)) distance = Mathf.Clamp(CullingDistance, 0.0f, currentState.defaultDistance);
+
+            #endregion
             var lookPoint = current_cPos + targetLookAt.forward * 2f;
             lookPoint += (targetLookAt.right * Vector3.Dot(camDir * (distance), targetLookAt.right));
+           
             targetLookAt.position = current_cPos;
-
+       
             Quaternion newRot = Quaternion.Euler(mouseY + offsetMouse.y, mouseX + offsetMouse.x, 0);
             targetLookAt.rotation = useSmooth ? Quaternion.Lerp(targetLookAt.rotation, newRot, smoothCameraRotation * Time.deltaTime) : newRot;
-            transform.position = current_cPos + (camDir * (distance));
+
+            if (hitSomething)
+            {
+
+                transform.position = Vector3.Lerp(transform.position, current_cPos + (camDir * (distance)), Time.deltaTime * collisionRecoverSpeed);
+                hitSomething = false;
+            }
+            else
+            {
+
+                transform.position = current_cPos + (camDir * (distance));
+            }
             var rotation = Quaternion.LookRotation((lookPoint) - transform.position);
+
+            if (blackboard.lockOnPressed)
+                SetLockTarget(blackboard.lockTarget);
+            else
+                ClearLockOnTarget();
 
             if (lockTarget)
             {
@@ -578,6 +672,7 @@ namespace Player
             transform.rotation = _rot;
             movementSpeed = Vector2.zero;
         }
+        
 
         private void CameraFixed()
         {
@@ -628,25 +723,25 @@ namespace Player
             if (Physics.Raycast(from, _to.LowerLeft - from, out hitInfo, distance, cullingLayer))
             {
                 value = true;
-                cullingDistance = hitInfo.distance;
+                CullingDistance = hitInfo.distance;
             }
 
             if (Physics.Raycast(from, _to.LowerRight - from, out hitInfo, distance, cullingLayer))
             {
                 value = true;
-                if (cullingDistance > hitInfo.distance) cullingDistance = hitInfo.distance;
+                if (CullingDistance > hitInfo.distance) CullingDistance = hitInfo.distance;
             }
 
             if (Physics.Raycast(from, _to.UpperLeft - from, out hitInfo, distance, cullingLayer))
             {
                 value = true;
-                if (cullingDistance > hitInfo.distance) cullingDistance = hitInfo.distance;
+                if (CullingDistance > hitInfo.distance) CullingDistance = hitInfo.distance;
             }
 
             if (Physics.Raycast(from, _to.UpperRight - from, out hitInfo, distance, cullingLayer))
             {
                 value = true;
-                if (cullingDistance > hitInfo.distance) cullingDistance = hitInfo.distance;
+                if (CullingDistance > hitInfo.distance) CullingDistance = hitInfo.distance;
             }
 
             return value;

@@ -102,12 +102,12 @@ namespace Player.PlayerController
         {
             gravity = GetGravity();
 
-            verticalVelocity = V3Tools.ExtractVertical(rb.velocity, gravity, 1f);
+            verticalVelocity = V3Tools.ExtractVertical(_rigidbody.velocity, gravity, 1f);
             velocityY = verticalVelocity.magnitude;
             if (Vector3.Dot(verticalVelocity, gravity) > 0f) velocityY = -velocityY;
 
             // Smoothing out the fixed time step
-            rb.interpolation = smoothPhysics ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
+            _rigidbody.interpolation = smoothPhysics ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
 
 
             MoveFixed(blackboard.fixedDeltaPosition);
@@ -124,17 +124,17 @@ namespace Player.PlayerController
             // Individual gravity
             if (gravityTarget != null)
             {
-                rb.useGravity = false;
+                _rigidbody.useGravity = false;
 
-                if (!stopSlide) rb.AddForce(gravity);
+                if (!stopSlide) _rigidbody.AddForce(gravity);
             }
 
             if (stopSlide)
             {
-                rb.useGravity = false;
-                rb.velocity = Vector3.zero;
+                _rigidbody.useGravity = false;
+                _rigidbody.velocity = Vector3.zero;
             }
-            else if (gravityTarget == null) rb.useGravity = true;
+            else if (gravityTarget == null) _rigidbody.useGravity = true;
             
 
             // Scale the capsule colllider while crouching
@@ -153,6 +153,8 @@ namespace Player.PlayerController
             animState.crouch = blackboard.isCrouching;
             animState.isStrafing = moveMode == MoveMode.Strafe;
             blackboard.animState = animState;
+            Rotate();
+
         }
         public virtual void RotateToTarget(Transform target)
         {
@@ -195,16 +197,16 @@ namespace Player.PlayerController
             {
                 // Air move
                 Vector3 airMove = V3Tools.ExtractHorizontal(blackboard.input * airSpeed, gravity, 1f);
-                velocity = Vector3.Lerp(rb.velocity, airMove, Time.deltaTime * airControl);
+                velocity = Vector3.Lerp(_rigidbody.velocity, airMove, Time.deltaTime * airControl);
             }
 
             if (onGround && Time.time > jumpEndTime)
             {
-                rb.velocity = rb.velocity - transform.up * stickyForce * Time.deltaTime;
+                _rigidbody.velocity = _rigidbody.velocity - transform.up * stickyForce * Time.deltaTime;
             }
 
             // Vertical velocity
-            Vector3 verticalVelocity = V3Tools.ExtractVertical(rb.velocity, gravity, 1f);
+            Vector3 verticalVelocity = V3Tools.ExtractVertical(_rigidbody.velocity, gravity, 1f);
             Vector3 horizontalVelocity = V3Tools.ExtractHorizontal(velocity, gravity, 1f);
 
             if (onGround)
@@ -249,7 +251,7 @@ namespace Player.PlayerController
             if (wallRunWeight <= 0f) return;
 
             // Make sure the character won't fall down
-            if (onGround && velocityY < 0f) rb.velocity = V3Tools.ExtractHorizontal(rb.velocity, gravity, 1f);
+            if (onGround && velocityY < 0f) _rigidbody.velocity = V3Tools.ExtractHorizontal(_rigidbody.velocity, gravity, 1f);
 
             // transform.forward flattened
             Vector3 f = V3Tools.ExtractHorizontal(transform.forward, gravity, 1f);
@@ -305,9 +307,9 @@ namespace Player.PlayerController
         protected virtual void Rotate()
         {
             if (gravityTarget != null)
-                rb.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
+                _rigidbody.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
             if (platformAngularVelocity != Vector3.zero)
-                rb.MoveRotation(Quaternion.Euler(platformAngularVelocity) * transform.rotation);
+                _rigidbody.MoveRotation(Quaternion.Euler(platformAngularVelocity) * transform.rotation);
 
             float angle = GetAngleFromForward(GetForwardDirection());
 
@@ -315,7 +317,7 @@ namespace Player.PlayerController
                 angle *= (1.01f - (Mathf.Abs(angle) / 180f)) * stationaryTurnSpeedMlp;
 
             // Rotating the character
-            rb.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * rb.rotation);
+            _rigidbody.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * _rigidbody.rotation);
         }
 
         // Which way to look at?
@@ -327,10 +329,10 @@ namespace Player.PlayerController
             {
                 case MoveMode.Directional:
                     if (isMoving) return blackboard.input;
-                    return lookInCameraDirection ? blackboard.lookPos - rb.position : transform.forward;
+                    return lookInCameraDirection ? blackboard.lookPos - _rigidbody.position : transform.forward;
                 case MoveMode.Strafe:
-                    if (isMoving) return blackboard.lookPos - rb.position;
-                    return lookInCameraDirection ? blackboard.lookPos - rb.position : transform.forward;
+                    if (isMoving) return blackboard.lookPos - _rigidbody.position;
+                    return lookInCameraDirection ? blackboard.lookPos - _rigidbody.position : transform.forward;
             }
 
             return Vector3.zero;
@@ -350,7 +352,7 @@ namespace Player.PlayerController
             //normal = hit.normal;
             normal = transform.up;
             //groundDistance = r.position.y - hit.point.y;
-            groundDistance = Vector3.Project(rb.position - hit.point, transform.up).magnitude;
+            groundDistance = Vector3.Project(_rigidbody.position - hit.point, transform.up).magnitude;
 
             // if not jumping...
             bool findGround = Time.time > jumpEndTime;
@@ -364,7 +366,7 @@ namespace Player.PlayerController
                 float groundHeight = !g ? airborneThreshold * 0.5f : airborneThreshold;
 
                 //Vector3 horizontalVelocity = r.velocity;
-                Vector3 horizontalVelocity = V3Tools.ExtractHorizontal(rb.velocity, gravity, 1f);
+                Vector3 horizontalVelocity = V3Tools.ExtractHorizontal(_rigidbody.velocity, gravity, 1f);
 
                 float velocityF = horizontalVelocity.magnitude;
 

@@ -10,10 +10,13 @@ public class StateManager : PlayerMotor, IHitboxResponder
     public HitboxProfile[] hitboxProfile;
     PlayerHitboxController _hitboxController;
     HitBox _hitbox;
+    [SerializeField] float maxSprintStamina = 10f;
+    PlayerBlackboard _blackboard;
 
     protected override void Awake()
     {
         base.Awake();
+        _blackboard = GetComponent<PlayerBlackboard>();
         _cameraManager = GetComponent<CameraManager>();
         _hitbox = GetComponentInChildren<HitBox>();
         _hitboxController = GetComponent<PlayerHitboxController>();
@@ -21,6 +24,8 @@ public class StateManager : PlayerMotor, IHitboxResponder
     protected override void Start()
     {
         base.Start();
+        _blackboard.maxSprintStamina = maxSprintStamina;
+        _blackboard.currentSprintStamina = maxSprintStamina;
     }
     
 
