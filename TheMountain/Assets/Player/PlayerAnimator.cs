@@ -151,6 +151,7 @@ namespace Player.PlayerController
             blackboard.animator.SetBool("Crouch", blackboard.animState.crouch);
             blackboard.animator.SetBool("OnGround", blackboard.animState.onGround);
             blackboard.animator.SetBool("IsStrafing", blackboard.animState.isStrafing);
+            blackboard.animator.SetFloat("MovementMagnitude", blackboard.input.magnitude);
             if (blackboard.isSprinting && blackboard.currentSprintStamina > 0)
             {
                 blackboard.speed = PlayerBlackboard.SPRINT_SPEED;

@@ -111,7 +111,7 @@ namespace Player.PlayerController
 
 
             MoveFixed(blackboard.fixedDeltaPosition);
-            //Rotate();
+            Rotate();
 
             GroundCheck(); // detect and stick to ground
 
@@ -153,7 +153,6 @@ namespace Player.PlayerController
             animState.crouch = blackboard.isCrouching;
             animState.isStrafing = moveMode == MoveMode.Strafe;
             blackboard.animState = animState;
-            Rotate();
 
         }
         public virtual void RotateToTarget(Transform target)
@@ -310,14 +309,21 @@ namespace Player.PlayerController
                 _rigidbody.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
             if (platformAngularVelocity != Vector3.zero)
                 _rigidbody.MoveRotation(Quaternion.Euler(platformAngularVelocity) * transform.rotation);
+            if (blackboard.lookInCameraDirection && blackboard.lookPos)
+            {
+                     RotateWithAnotherTransform(blackboard.lookPos);
+            }
+            else
+            {
+                float angle = GetAngleFromForward(GetForwardDirection());
 
-            float angle = GetAngleFromForward(GetForwardDirection());
+                if (blackboard.input == Vector2.zero)
+                    angle *= (1.01f - (Mathf.Abs(angle) / 180f)) * stationaryTurnSpeedMlp;
 
-            if (blackboard.input == Vector2.zero)
-                angle *= (1.01f - (Mathf.Abs(angle) / 180f)) * stationaryTurnSpeedMlp;
+                // Rotating the character
+                _rigidbody.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * _rigidbody.rotation);
 
-            // Rotating the character
-            _rigidbody.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * _rigidbody.rotation);
+            }
         }
 
         // Which way to look at?
@@ -328,11 +334,22 @@ namespace Player.PlayerController
             switch (moveMode)
             {
                 case MoveMode.Directional:
-                    if (isMoving) return blackboard.input;
-                    return lookInCameraDirection ? blackboard.lookPos - _rigidbody.position : transform.forward;
+                   
+                        if (isMoving)
+                        {
+                            Vector3 forwardVector;
+                            forwardVector = new Vector3(blackboard.input.x, 0, blackboard.input.y);
+                            return forwardVector;
+                        }
+                        else
+                        {
+                            return transform.forward;
+                        }
+                    
                 case MoveMode.Strafe:
-                    if (isMoving) return blackboard.lookPos - _rigidbody.position;
-                    return lookInCameraDirection ? blackboard.lookPos - _rigidbody.position : transform.forward;
+                    if (isMoving)
+                        return blackboard.lookPos.position - _rigidbody.position;
+                    return lookInCameraDirection ? blackboard.lookPos.position - _rigidbody.position : transform.forward;
             }
 
             return Vector3.zero;

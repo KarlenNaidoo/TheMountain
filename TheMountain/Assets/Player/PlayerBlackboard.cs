@@ -23,7 +23,7 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public WeaponAction actionSlot { get; set; }
     public Animator animator { get; set; }
 
-    public float inputX { set { _inputX = value; } }
+    public float inputX { get { return _inputX; }  set { _inputX = value; } }
     public float inputY { set { _inputY = value; } }
     public Vector2 input { get; private set; }
     public Vector2 oldInput { get; set; }
@@ -39,9 +39,9 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public bool useRootMotion { get; set; } = true;
     public float speed { get; set; }
 
-    public Vector3 lookPos { get; set; }
+    public Transform lookPos { get; set; }
     public AnimState animState { get; set; }
-
+    public bool lookInCameraDirection { get; set; }
     public Vector3 fixedDeltaPosition { get; set; }
     public Quaternion fixedDeltaRotation { get; set; } = Quaternion.identity;
 
