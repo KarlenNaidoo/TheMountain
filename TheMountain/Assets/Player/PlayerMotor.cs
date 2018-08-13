@@ -305,24 +305,31 @@ namespace Player.PlayerController
         // Rotate the character
         protected virtual void Rotate()
         {
-            if (gravityTarget != null)
-                _rigidbody.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
-            if (platformAngularVelocity != Vector3.zero)
-                _rigidbody.MoveRotation(Quaternion.Euler(platformAngularVelocity) * transform.rotation);
-            if (blackboard.lookInCameraDirection && blackboard.lookPos)
+            
+            bool isMovingForward = Mathf.Abs(blackboard.input.y) > 0.2f;
+            Debug.Log(isMovingForward);
+            if (isMovingForward)
             {
-                     RotateWithAnotherTransform(blackboard.lookPos);
-            }
-            else
-            {
-                float angle = GetAngleFromForward(GetForwardDirection());
+                if (gravityTarget != null)
+                    _rigidbody.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
+                if (platformAngularVelocity != Vector3.zero)
+                    _rigidbody.MoveRotation(Quaternion.Euler(platformAngularVelocity) * transform.rotation);
 
-                if (blackboard.input == Vector2.zero)
-                    angle *= (1.01f - (Mathf.Abs(angle) / 180f)) * stationaryTurnSpeedMlp;
+                if (blackboard.lookInCameraDirection && blackboard.lookPos)
+                {
+                    RotateWithAnotherTransform(blackboard.lookPos);
+                }
+                else
+                {
+                    float angle = GetAngleFromForward(GetForwardDirection());
 
-                // Rotating the character
-                _rigidbody.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * _rigidbody.rotation);
+                    //if (blackboard.input == Vector2.zero)
+                    //    angle *= (1.01f - (Mathf.Abs(angle) / 180f)) * stationaryTurnSpeedMlp;
 
+                    // Rotating the character
+                    _rigidbody.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * _rigidbody.rotation);
+
+                }
             }
         }
 
@@ -334,18 +341,10 @@ namespace Player.PlayerController
             switch (moveMode)
             {
                 case MoveMode.Directional:
-                   
-                        if (isMoving)
-                        {
-                            Vector3 forwardVector;
-                            forwardVector = new Vector3(blackboard.input.x, 0, blackboard.input.y);
-                            return forwardVector;
-                        }
-                        else
-                        {
-                            return transform.forward;
-                        }
-                    
+                    Vector3 forwardVector;
+                    forwardVector = new Vector3(blackboard.input.x, 0, blackboard.input.y);
+                    return forwardVector;
+                      
                 case MoveMode.Strafe:
                     if (isMoving)
                         return blackboard.lookPos.position - _rigidbody.position;
