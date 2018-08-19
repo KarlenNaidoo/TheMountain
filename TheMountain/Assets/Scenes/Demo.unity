@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 140094961}
   - component: {fileID: 140094960}
   - component: {fileID: 140094959}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6287,7 +6287,7 @@ MonoBehaviour:
   solver:
     layers:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 65537
     maxStep: 0.5
     heightOffset: 0
     footSpeed: 2.5
@@ -6851,22 +6851,16 @@ MonoBehaviour:
       targetAnim: LightAtk1
     - inputButton: 1
       targetAnim: HeavyAtk1
-    - inputButton: 2
-      targetAnim: Phase
     twoHandedSwordActions:
     - inputButton: 0
       targetAnim: 2Handed_Attack_01
     - inputButton: 1
       targetAnim: 2Handed_Attack_02
-    - inputButton: 2
-      targetAnim: Phase
     meleeActions:
     - inputButton: 0
       targetAnim: Fists_Punch_L
     - inputButton: 1
       targetAnim: Fists_Kick_Front_L
-    - inputButton: 2
-      targetAnim: Phase
 --- !u!114 &2058997273
 MonoBehaviour:
   m_ObjectHideFlags: 0
