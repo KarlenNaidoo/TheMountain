@@ -47,12 +47,20 @@ public class ControllerActionManager : PlayerInput
                     a.targetAnim = weaponList.twoHandedSwordActions[i].targetAnim;
                 }
                 break;
+            case WeaponStatus.None:
+                EmptyAllSlots();
+                for (int i = 0; i < weaponList.meleeActions.Count; i++)
+                {
+                    WeaponAction a = GetAction(weaponList.meleeActions[i].inputButton);
+                    a.targetAnim = weaponList.meleeActions[i].targetAnim;
+                }
+                break;
             default:
                 EmptyAllSlots();
-                for (int i = 0; i < weaponList.oneHandedSwordActions.Count; i++)
+                for (int i = 0; i < weaponList.meleeActions.Count; i++)
                 {
-                    WeaponAction a = GetAction(weaponList.oneHandedSwordActions[i].inputButton);
-                    a.targetAnim = weaponList.oneHandedSwordActions[i].targetAnim;
+                    WeaponAction a = GetAction(weaponList.meleeActions[i].inputButton);
+                    a.targetAnim = weaponList.meleeActions[i].targetAnim;
                 }
                 break;
         }
@@ -76,18 +84,19 @@ public class ControllerActionManager : PlayerInput
 
     public ControllerActionInput GetActionInput ()
     {
-        if (playerActions.LightAttack.IsPressed)
+        if (playerActions.LightAttack.WasPressed)
             return ControllerActionInput.R1;            
-        if (playerActions.HeavyAttack.IsPressed)
+        if (playerActions.HeavyAttack.WasPressed)
             return ControllerActionInput.R2;
-        if (playerActions.Crouch.IsPressed)
+        if (playerActions.Phase.WasPressed)
             return ControllerActionInput.L1;
-        if (playerActions.Crouch.IsPressed)
+        if (playerActions.Crouch.WasPressed)
             return ControllerActionInput.L2;
 
         return ControllerActionInput.None;
     }
 
+    // Monitors whether player pressed the equip left or right and updates the blackboard's currentweapon
     public void IsOneHandedOrTwoHanded()
     {
         if (!blackboard.weaponEquipped)

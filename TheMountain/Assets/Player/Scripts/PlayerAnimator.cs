@@ -136,14 +136,14 @@ namespace Player.PlayerController
         {
             if (blackboard.currentWeapon == WeaponStatus.OneHanded && !blackboard.weaponEquipped)
             {
-                blackboard.animator.Play("Sword1h_Equip");
+                blackboard.animator.CrossFade("Sword1h_Equip", 0.4f);
                 blackboard.weaponEquipped = true;
                 weapon.transform.parent = weaponParentDestination.transform;
                 weapon.transform.localRotation = Quaternion.identity;
                 weapon.transform.localPosition = Vector3.zero;
             }
                 
-            blackboard.animator.SetFloat("IsTwoHanded", (float)blackboard.currentWeapon);
+            blackboard.animator.SetFloat("IsTwoHanded", Mathf.Lerp(blackboard.animator.GetFloat("IsTwoHanded"), (float)blackboard.currentWeapon, Time.deltaTime));
         }
 
         public void LocomotionAnimation()

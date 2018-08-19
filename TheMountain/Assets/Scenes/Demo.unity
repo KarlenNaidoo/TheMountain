@@ -6263,6 +6263,7 @@ GameObject:
   - component: {fileID: 2058997267}
   - component: {fileID: 2058997279}
   - component: {fileID: 2058997280}
+  - component: {fileID: 2058997281}
   m_Layer: 9
   m_Name: Oki
   m_TagString: Player
@@ -6850,11 +6851,22 @@ MonoBehaviour:
       targetAnim: LightAtk1
     - inputButton: 1
       targetAnim: HeavyAtk1
+    - inputButton: 2
+      targetAnim: Phase
     twoHandedSwordActions:
     - inputButton: 0
       targetAnim: 2Handed_Attack_01
     - inputButton: 1
       targetAnim: 2Handed_Attack_02
+    - inputButton: 2
+      targetAnim: Phase
+    meleeActions:
+    - inputButton: 0
+      targetAnim: Fists_Punch_L
+    - inputButton: 1
+      targetAnim: Fists_Kick_Front_L
+    - inputButton: 2
+      targetAnim: Phase
 --- !u!114 &2058997273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7028,6 +7040,18 @@ MonoBehaviour:
     lerpSpeed: 5
     weightSpeed: 1
     isPaused: 0
+--- !u!114 &2058997281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2058997266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3facab8829f796b4c8d8c8ee94047d1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phaseDistance: 5
 --- !u!1 &2061882498
 GameObject:
   m_ObjectHideFlags: 0

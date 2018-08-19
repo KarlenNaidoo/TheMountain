@@ -12,21 +12,28 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     InventoryManager _inventoryManager;
     ControllerActionManager _actionManager;
     PlayerMotor _motor;
+
+    //Input Variables
     float _inputX;
     float _inputY;
-    
+    public float inputX { get { return _inputX; } set { _inputX = value; } }
+    public float inputY { set { _inputY = value; } }
+    public Vector2 input { get; private set; }
+    public Vector2 oldInput { get; set; }
+    public void SetPlayerInputParameters(float x, float y)
+    {
+        input = new Vector2(x, y);
+    }
+
+
     public Rigidbody rb { get; set; }
+    public Animator animator { get; set; }
+
     // general variables to the locomotion
     protected Vector3 _targetDirection;
     protected Quaternion _targetRotation;
 
     public WeaponAction actionSlot { get; set; }
-    public Animator animator { get; set; }
-
-    public float inputX { get { return _inputX; }  set { _inputX = value; } }
-    public float inputY { set { _inputY = value; } }
-    public Vector2 input { get; private set; }
-    public Vector2 oldInput { get; set; }
 
 
     public const int SPRINT_SPEED = 3;
@@ -56,11 +63,6 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     public bool weaponEquipped { get; set; } = false;
     public bool doOnce { get; set; }
     public bool canAttack { get; set; }
-    public void SetPlayerInputParameters(float x, float y)
-    {
-        input = new Vector2(x, y);
-    }
-
     public Transform lockTarget { get; set; }
     private bool _lockOnPressed = false;
 

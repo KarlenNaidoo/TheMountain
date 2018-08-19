@@ -25,4 +25,5 @@ public class WeaponList
 {
      public List<WeaponAction> oneHandedSwordActions;
      public List<WeaponAction> twoHandedSwordActions;
+     public List<WeaponAction> meleeActions;
 }

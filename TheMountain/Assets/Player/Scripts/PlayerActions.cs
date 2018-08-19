@@ -22,6 +22,7 @@
         public PlayerAction OneHanded;
         public PlayerAction TwoHanded;
         public PlayerAction LockOn;
+        public PlayerAction Phase;
 
         public PlayerTwoAxisAction Move;
         public PlayerTwoAxisAction MoveMouse;
@@ -33,6 +34,7 @@
             OneHanded = CreatePlayerAction("OneHanded");
             TwoHanded = CreatePlayerAction("TwoHanded");
             LockOn = CreatePlayerAction("LockOn");
+            Phase = CreatePlayerAction("Phase");
             Jump = CreatePlayerAction("Jump");
             Left = CreatePlayerAction("Move Left");
             Right = CreatePlayerAction("Move Right");
@@ -64,8 +66,11 @@
             playerActions.HeavyAttack.AddDefaultBinding(InputControlType.Action4);
             playerActions.HeavyAttack.AddDefaultBinding(Mouse.RightButton);
 
+            playerActions.Phase.AddDefaultBinding(InputControlType.LeftBumper);
+            playerActions.Phase.AddDefaultBinding(Key.E);
+
             playerActions.Jump.AddDefaultBinding(Key.Space);
-            playerActions.Jump.AddDefaultBinding(InputControlType.Action3);
+            playerActions.Jump.AddDefaultBinding(InputControlType.Action4);
             playerActions.Jump.AddDefaultBinding(InputControlType.Back);
 
             playerActions.Sprint.AddDefaultBinding(Key.LeftShift);
