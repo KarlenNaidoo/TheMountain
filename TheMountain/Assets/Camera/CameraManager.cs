@@ -97,7 +97,8 @@ public class CameraManager: PlayerInput
         // rotate the camera around the character and align with when the char move
         else if (blackboard.input != Vector2.zero)
         {
-            blackboard.RotateWithAnotherTransform(cameraTransform);
+            blackboard.lookPos = cameraTransform;
+            //blackboard.RotateWithAnotherTransform(cameraTransform);
         }
 
     }

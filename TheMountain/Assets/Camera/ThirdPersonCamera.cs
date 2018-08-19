@@ -167,6 +167,7 @@ namespace Player
                 mouseY = transform.root.eulerAngles.x;
                 mouseX = transform.root.eulerAngles.y;
             }
+           
             isInit = true;
         }
 
@@ -402,6 +403,14 @@ namespace Player
         /// <param name="y"></param>
         public void RotateCamera(float x, float y)
         {
+            if(Mathf.Abs(x) > 0 || Mathf.Abs(y) > 0)
+            {
+                blackboard.lookInCameraDirection = true;
+            }
+            else
+            {
+                blackboard.lookInCameraDirection = false;
+            }
             if (currentState.cameraMode.Equals(TPCameraMode.FixedPoint)) return;
             if (!currentState.cameraMode.Equals(TPCameraMode.FixedAngle))
             {

@@ -95,10 +95,14 @@ public abstract class Character : HealthController
     }
 
     // Gets angle around y axis from a world space direction
-    public float GetAngleFromForward(Vector3 worldDirection)
+    public float GetAngleFromForward(Vector3 worldDirection, bool localtransform = false)
     {
-        Vector3 local = transform.InverseTransformDirection(worldDirection);
-        return Mathf.Atan2(local.x, local.z) * Mathf.Rad2Deg;
+        if (localtransform)
+        {
+            Vector3 local = transform.InverseTransformDirection(worldDirection);
+            return Mathf.Atan2(local.x, local.z) * Mathf.Rad2Deg;
+        }
+        return Mathf.Atan2(worldDirection.x, worldDirection.z) * Mathf.Rad2Deg;
     }
 
     // Rotate a rigidbody around a point and axis by angle
