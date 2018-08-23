@@ -37,6 +37,7 @@ namespace Player.PlayerController
 
         [Header("Movement")]
         public MoveMode moveMode; // Is the character always rotating to face the move direction or is he strafing?
+        public bool runByDefault = true;
         public bool smoothPhysics = true; // If true, will use interpolation to smooth out the fixed time step.
         public float smoothAccelerationTime = 0.2f; // The smooth acceleration of the speed of the character (using Vector3.SmoothDamp)
         public float linearAccelerationSpeed = 3f; // The linear acceleration of the speed of the character (using Vector3.MoveTowards)
@@ -94,7 +95,7 @@ namespace Player.PlayerController
             wallNormal = -gravity.normalized;
             onGround = true;
             animState.onGround = true;
-
+            blackboard.runByDefault = runByDefault;
             if (cam != null) cam.enabled = false;
         }
         

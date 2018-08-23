@@ -82,7 +82,14 @@ namespace Player.PlayerController
         protected virtual void StoreMovement()
         {
             blackboard.SetPlayerInputParameters(playerActions.Move.X, playerActions.Move.Y);
-            blackboard.speed = Mathf.Abs(playerActions.Move.Y);
+            if (blackboard.runByDefault)
+            {
+                blackboard.speed = Mathf.Abs(playerActions.Move.Y) + 1;
+            }
+            else
+            {
+                blackboard.speed = Mathf.Abs(playerActions.Move.Y);
+            }
         }
         
         
