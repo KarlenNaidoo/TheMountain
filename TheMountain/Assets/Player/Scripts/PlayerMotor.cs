@@ -45,6 +45,9 @@ namespace Player.PlayerController
         public float groundStickyEffect = 4f;               // power of 'stick to ground' effect - prevents bumping down slopes.
         public float maxVerticalVelocityOnGround = 3f;      // the maximum y velocity while the character is grounded
         public float velocityToGroundTangentWeight = 0f;    // the weight of rotating character velocity vector to the ground tangent
+        [Range(0,5)] public float wallDistance = 1f;
+        public Transform headHeight;
+        public Transform waistHeight;
 
         [Header("Rotation")]
         public bool lookInCameraDirection; // should the character be looking in the same direction that the camera is facing
@@ -153,6 +156,8 @@ namespace Player.PlayerController
             animState.yVelocity = Mathf.Lerp(animState.yVelocity, velocityY, Time.deltaTime * 10f);
             animState.crouch = blackboard.isCrouching;
             animState.isStrafing = moveMode == MoveMode.Strafe;
+            animState.vertical = CheckForObstacle() ? 0 : blackboard.input.y;
+            animState.horizontal = CheckForObstacle() ? 0 : blackboard.input.x;
             blackboard.animState = animState;
 
         }
@@ -167,6 +172,24 @@ namespace Player.PlayerController
             }
         }
 
+        public bool CheckForObstacle()
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(headHeight.position, transform.forward, out hit, wallDistance))
+            {
+                Debug.Log("Hit " + hit.collider.name);
+                return true;
+
+            }
+            // Can be later used for vaulting if legs are being stopped but the head has clearance
+            if (Physics.Raycast(waistHeight.position, transform.forward, out hit, wallDistance))
+            {
+                Debug.Log("Hit " + hit.collider.name);
+                return true;
+
+            }
+            return false;
+        }
         public virtual void RotateWithAnotherTransform(Transform referenceTransform)
         {
             var newRotation = new Vector3(transform.eulerAngles.x, referenceTransform.eulerAngles.y, transform.eulerAngles.z);
@@ -409,7 +432,18 @@ namespace Player.PlayerController
             // remember when we were last in air, for jump delay
             if (!onGround) lastAirTime = Time.time;
         }
+
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawRay(headHeight.position, transform.forward * wallDistance);
+            Gizmos.DrawRay(waistHeight.position, transform.forward * wallDistance);
+
+        }
     }
+
+
+
 }
 
 

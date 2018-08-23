@@ -6879,8 +6879,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633eb75775cd3d3439749f9480e6dba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallDistance: 1
-  headOffset: {fileID: 1987173027}
   actionSlots:
   - inputButton: 0
     targetAnim: 
@@ -6961,8 +6959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a9c6fc9cdf9b041bd0d7cd08ac7d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallDistance: 1
-  headOffset: {fileID: 1987173027}
   ignoreCameraRotation: 0
   cam: {fileID: 0}
   desiredCameraState: 
@@ -7007,6 +7003,9 @@ MonoBehaviour:
   groundStickyEffect: 4
   maxVerticalVelocityOnGround: 3
   velocityToGroundTangentWeight: 0
+  wallDistance: 1
+  headHeight: {fileID: 1987173027}
+  waistHeight: {fileID: 1399757389}
   lookInCameraDirection: 1
   turnSpeed: 4
   stationaryTurnSpeedMlp: 0
@@ -7058,7 +7057,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2058997266}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 70
   m_Drag: 0
   m_AngularDrag: 999
   m_UseGravity: 1

@@ -14,9 +14,8 @@ namespace Player.PlayerController
         protected PlayerActions playerActions;
         string saveData;
         private Rigidbody _rigidbody;
-        [SerializeField] float _wallDistance = 5f;
         protected PlayerBlackboard blackboard;
-        public Transform headOffset;
+
         void OnEnable()
         {
             // See PlayerActions.cs for this setup.
@@ -78,27 +77,12 @@ namespace Player.PlayerController
             CheckForCrouch();
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawRay(headOffset.position, transform.forward * _wallDistance);
-           
-        }
-
         protected virtual void StoreMovement()
         {
-
-            RaycastHit hit;
-            if (Physics.Raycast(headOffset.position, transform.forward, out hit, _wallDistance))
-            {
-                    Debug.Log("Hit a wall");
-                    blackboard.SetPlayerInputParameters(playerActions.Move.X, 0);
-                
-            }
-            else
-            {
+            
 
                 blackboard.SetPlayerInputParameters(playerActions.Move.X, playerActions.Move.Y);
-            }
+            
             if (blackboard.runByDefault)
             {
                 blackboard.speed = Mathf.Abs(playerActions.Move.Y) + 1;

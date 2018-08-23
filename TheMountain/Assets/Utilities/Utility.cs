@@ -267,5 +267,7 @@ public struct AnimState
     public bool onGround; // is the character grounded
     public bool isStrafing; // should the character always rotate to face the move direction or strafe?
     public float yVelocity; // y velocity of the character
+    public float vertical;
+    public float horizontal;
 }
 

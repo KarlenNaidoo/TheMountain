@@ -159,12 +159,12 @@ namespace Player.PlayerController
 
             // Update Animator params
             blackboard.animator.SetFloat("Turn", Mathf.Lerp(blackboard.animator.GetFloat("Turn"), angle, Time.deltaTime * turnSpeed));
-            blackboard.animator.SetFloat("InputVertical", blackboard.input.y);
-            blackboard.animator.SetFloat("InputHorizontal", blackboard.input.x);
+            blackboard.animator.SetFloat("InputVertical", blackboard.animState.vertical);
+            blackboard.animator.SetFloat("InputHorizontal", blackboard.animState.horizontal);
             blackboard.animator.SetBool("Crouch", blackboard.animState.crouch);
             blackboard.animator.SetBool("OnGround", blackboard.animState.onGround);
             blackboard.animator.SetBool("IsStrafing", blackboard.animState.isStrafing);
-            blackboard.animator.SetFloat("MovementMagnitude", blackboard.input.magnitude);
+            blackboard.animator.SetFloat("MovementMagnitude", (Mathf.Abs(blackboard.animState.vertical) + Mathf.Abs(blackboard.animState.horizontal)));
             if (blackboard.isSprinting && blackboard.currentSprintStamina > 0)
             {
                 blackboard.speed = PlayerBlackboard.SPRINT_SPEED;
