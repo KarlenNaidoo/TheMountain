@@ -6879,6 +6879,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633eb75775cd3d3439749f9480e6dba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wallDistance: 1
+  headOffset: {fileID: 1987173027}
   actionSlots:
   - inputButton: 0
     targetAnim: 
@@ -6959,6 +6961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a9c6fc9cdf9b041bd0d7cd08ac7d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wallDistance: 1
+  headOffset: {fileID: 1987173027}
   ignoreCameraRotation: 0
   cam: {fileID: 0}
   desiredCameraState: 
@@ -6995,6 +6999,7 @@ MonoBehaviour:
     m_Bits: 1
   cam: {fileID: 0}
   moveMode: 0
+  runByDefault: 1
   smoothPhysics: 1
   smoothAccelerationTime: 0.2
   linearAccelerationSpeed: 3

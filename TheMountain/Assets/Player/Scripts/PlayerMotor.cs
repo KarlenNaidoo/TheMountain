@@ -307,9 +307,7 @@ namespace Player.PlayerController
         protected virtual void Rotate()
         {
             
-            bool isMovingForward = Mathf.Abs(blackboard.input.y) > 0.2f; //issue when press back
-            if (isMovingForward)
-            {
+            
                 if (gravityTarget != null)
                     _rigidbody.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
                 if (platformAngularVelocity != Vector3.zero)
@@ -330,7 +328,7 @@ namespace Player.PlayerController
                     _rigidbody.MoveRotation(Quaternion.AngleAxis(angle * Time.deltaTime * turnSpeed, transform.up) * _rigidbody.rotation);
 
                 }
-            }
+            
         }
 
         // Which way to look at?
