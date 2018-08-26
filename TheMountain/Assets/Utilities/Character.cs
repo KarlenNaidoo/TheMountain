@@ -10,7 +10,7 @@ public abstract class Character : HealthController
     
     protected Rigidbody _rigidbody;                                // access the Rigidbody component
     protected PhysicMaterial frictionPhysics, maxFrictionPhysics, slippyPhysics;       // create PhysicMaterial for the Rigidbody
-    protected CapsuleCollider _capsuleCollider;                    // access CapsuleCollider information
+    protected Collider[] _colliders;                    // access CapsuleCollider information
     protected float colliderRadius, colliderHeight;        // storage capsule collider extra information        ]
     protected Vector3 colliderCenter;                      // storage the center of the capsule collider info
     protected IBlackboard blackboard;
@@ -37,7 +37,6 @@ public abstract class Character : HealthController
     protected const float half = 0.5f;
     protected float originalHeight;
     protected Vector3 originalCenter;
-    protected CapsuleCollider capsule;
 
 
 
@@ -50,12 +49,13 @@ public abstract class Character : HealthController
     protected override void Start()
     {
         base.Start();
-        capsule = GetComponentInChildren<Collider>() as CapsuleCollider;
+        _colliders = blackboard.colliders;
         _rigidbody = blackboard.primaryRigidbody;
 
-        // Store the collider volume
-        originalHeight = capsule.height;
-        originalCenter = capsule.center;
+
+        //// Store the collider volume
+        //originalHeight = collider.height;
+        //originalCenter = collider.center;
 
         // Physics materials
         zeroFrictionMaterial = new PhysicMaterial();
@@ -115,26 +115,40 @@ public abstract class Character : HealthController
         _rigidbody.MoveRotation(rotation * transform.rotation);
     }
 
-    // Scale the capsule collider to 'mlp' of the initial value
-    protected void ScaleCapsule(float mlp)
-    {
-        if (capsule.height != originalHeight * mlp)
-        {
-            capsule.height = Mathf.MoveTowards(capsule.height, originalHeight * mlp, Time.deltaTime * 4);
-            capsule.center = Vector3.MoveTowards(capsule.center, originalCenter * mlp, Time.deltaTime * 2);
-        }
-    }
+    //// Scale the capsule collider to 'mlp' of the initial value
+    //protected void ScaleCapsule(float mlp)
+    //{
+    //    foreach(Collider _collider in _colliders)
+    //    {
+    //        originalHeight = _collider.h;
+    //        originalCenter = _collider.center;
+    //    }
+    //    if (collider.height != originalHeight * mlp)
+    //    {
+    //        collider.height = Mathf.MoveTowards(collider.height, originalHeight * mlp, Time.deltaTime * 4);
+    //        collider.center = Vector3.MoveTowards(collider.center, originalCenter * mlp, Time.deltaTime * 2);
+    //    }
+    //}
 
     // Set the collider to high friction material
     protected void HighFriction()
     {
-        capsule.material = highFrictionMaterial;
+        foreach(Collider _collider in _colliders)
+        {
+
+            _collider.material = highFrictionMaterial;
+
+        }
     }
 
     // Set the collider to zero friction material
     protected void ZeroFriction()
     {
-        capsule.material = zeroFrictionMaterial;
+        foreach(Collider _collider in _colliders)
+        {
+            _collider.material = zeroFrictionMaterial;
+        }
+        
     }
 
     // Get the damper of velocity on the slopes

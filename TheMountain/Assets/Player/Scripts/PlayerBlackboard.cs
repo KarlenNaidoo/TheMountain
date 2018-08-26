@@ -23,7 +23,7 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
         input = new Vector2(x, y);
     }
 
-
+    [Header("References")]
     [SerializeField] Rigidbody _playerRigidbody;
 
     public Rigidbody primaryRigidbody
@@ -33,8 +33,13 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
             return _playerRigidbody;
         }
     }
+    [SerializeField] Animator _animator;
+    public Animator animator { get { return _animator; } }
+    [SerializeField] Collider[] _colliders;
+    public Collider[] colliders { get { return _colliders; } }
+    [SerializeField] ControllerActionManager _controllerActionManager;
+    public ControllerActionManager controllerActionManager { get { return _controllerActionManager; } }
 
-    public Animator animator { get; private set; }
 
     // general variables to the locomotion
     protected Vector3 _targetDirection;
@@ -79,7 +84,6 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     //TODO: Create singleton pattern
     private void Awake()
     {
-        animator = GetComponent<Animator>();
         _actionManager = GetComponent<ControllerActionManager>();
         _motor = GetComponent<PlayerMotor>();
         _inventoryManager = GetComponent<InventoryManager>();

@@ -10,10 +10,11 @@ namespace Player.PlayerController
 {
     public class PlayerMotor : Character
     {
-     
-        new PlayerBlackboard blackboard;
 
 
+
+        [Header("References")]
+        public PlayerBlackboard _blackboard;
 
         // Is the character always rotating to face the move direction or is he strafing?
         [System.Serializable]
@@ -23,10 +24,6 @@ namespace Player.PlayerController
             Strafe
         }
 
-
-        [Header("References")]
-          
-        public CameraManager cam; // Camera controller (optional). If assigned will update the camera in LateUpdate only if character moves
 
         [Header("Movement")]
         public MoveMode moveMode; // Is the character always rotating to face the move direction or is he strafing?
@@ -87,7 +84,7 @@ namespace Player.PlayerController
         protected override void Awake()
         {
             base.Awake();
-            blackboard = GetComponent<PlayerBlackboard>();
+            _blackboard = GetComponent<PlayerBlackboard>();
         }
 
         // Use this for initialization
@@ -98,8 +95,7 @@ namespace Player.PlayerController
             wallNormal = -gravity.normalized;
             onGround = true;
             animState.onGround = true;
-            blackboard.runByDefault = runByDefault;
-            if (cam != null) cam.enabled = false;
+            _blackboard.runByDefault = runByDefault;
         }
         
         void FixedUpdate()
@@ -113,7 +109,7 @@ namespace Player.PlayerController
             // Smoothing out the fixed time step
             _rigidbody.interpolation = smoothPhysics ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
        
-            MoveFixed(blackboard.fixedDeltaPosition);
+            MoveFixed(_blackboard.fixedDeltaPosition);
 
             //blackboard.fixedDeltaPosition = Vector3.zero;
 
@@ -125,7 +121,7 @@ namespace Player.PlayerController
             GroundCheck(); // detect and stick to ground
 
             // Friction
-            if (blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
+            if (_blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
             else ZeroFriction();
 
             bool stopSlide = false;//onGround && groundDistance < airborneThreshold * 0.5f;
@@ -150,7 +146,7 @@ namespace Player.PlayerController
                 _rigidbody.AddForce(gravity * gravityMultiplier);
             }
             // Scale the capsule colllider while crouching
-            ScaleCapsule(blackboard.isCrouching ? crouchCapsuleScaleMlp : 1f);
+            //ScaleCapsule(blackboard.isCrouching ? crouchCapsuleScaleMlp : 1f);
 
             fixedFrame = true;
 
@@ -161,11 +157,11 @@ namespace Player.PlayerController
             // Fill in animState
             animState.onGround = onGround;
             animState.moveDirection = GetMoveDirection();
-            animState.crouch = blackboard.isCrouching;
+            animState.crouch = _blackboard.isCrouching;
             animState.isStrafing = moveMode == MoveMode.Strafe;
-            animState.vertical = CheckForObstacle() ? 0 : blackboard.input.y;
-            animState.horizontal = CheckForObstacle() ? 0 : blackboard.input.x;
-            blackboard.animState = animState;
+            animState.vertical = CheckForObstacle() ? 0 : _blackboard.input.y;
+            animState.horizontal = CheckForObstacle() ? 0 : _blackboard.input.x;
+            _blackboard.animState = animState;
 
         }
 
@@ -183,7 +179,7 @@ namespace Player.PlayerController
             {
                 Quaternion rot = Quaternion.LookRotation(target.position - transform.position);
                 var newPos = new Vector3(transform.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
-                blackboard.targetRotation = Quaternion.Euler(newPos);
+                _blackboard.targetRotation = Quaternion.Euler(newPos);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newPos), Time.deltaTime * turnSpeed);
             }
         }
@@ -210,7 +206,7 @@ namespace Player.PlayerController
         {
             var newRotation = new Vector3(transform.eulerAngles.x, referenceTransform.eulerAngles.y, transform.eulerAngles.z);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), Time.deltaTime * turnSpeed);
-            blackboard.targetRotation = transform.rotation;
+            _blackboard.targetRotation = transform.rotation;
         }
 
         private void MoveFixed(Vector3 deltaPosition)
@@ -235,7 +231,7 @@ namespace Player.PlayerController
             else
             {
                 // Air move
-                Vector3 airMove = V3Tools.ExtractHorizontal(blackboard.input * airSpeed, gravity, 1f);
+                Vector3 airMove = V3Tools.ExtractHorizontal(_blackboard.input * airSpeed, gravity, 1f);
                 velocity = Vector3.Lerp(_rigidbody.velocity, airMove, Time.deltaTime * airControl);
             }
 
@@ -298,7 +294,7 @@ namespace Player.PlayerController
             // Raycasting to find a walkable wall
             RaycastHit velocityHit = new RaycastHit();
             velocityHit.normal = -gravity.normalized;
-            Physics.Raycast(onGround ? transform.position : capsule.bounds.center, f, out velocityHit, 3f, wallRunLayers);
+            //Physics.Raycast(onGround ? transform.position : collider.bounds.center, f, out velocityHit, 3f, wallRunLayers);
 
             // Finding the normal to rotate to
             wallNormal = Vector3.Lerp(wallNormal, velocityHit.normal, Time.deltaTime * wallRunRotationSpeed);
@@ -321,7 +317,7 @@ namespace Player.PlayerController
             if (Time.time < jumpEndTime - 0.1f) return false;
             if (Time.time > jumpEndTime - 0.1f + wallRunMaxLength) return false;
             if (velocityY < wallRunMinVelocityY) return false;
-            if (blackboard.input.magnitude < wallRunMinMoveMag) return false;
+            if (_blackboard.input.magnitude < wallRunMinMoveMag) return false;
             return true;
         }
 
@@ -331,12 +327,12 @@ namespace Player.PlayerController
             switch (moveMode)
             {
                 case MoveMode.Directional:
-                    moveDirection = Vector3.SmoothDamp(moveDirection, new Vector3(0f, 0f, blackboard.input.magnitude), ref moveDirectionVelocity, smoothAccelerationTime);
-                    moveDirection = Vector3.MoveTowards(moveDirection, new Vector3(0f, 0f, blackboard.input.magnitude), Time.deltaTime * linearAccelerationSpeed);
+                    moveDirection = Vector3.SmoothDamp(moveDirection, new Vector3(0f, 0f, _blackboard.input.magnitude), ref moveDirectionVelocity, smoothAccelerationTime);
+                    moveDirection = Vector3.MoveTowards(moveDirection, new Vector3(0f, 0f, _blackboard.input.magnitude), Time.deltaTime * linearAccelerationSpeed);
                     return moveDirection * forwardMlp;
                 case MoveMode.Strafe:
-                    moveDirection = Vector3.SmoothDamp(moveDirection, blackboard.input, ref moveDirectionVelocity, smoothAccelerationTime);
-                    moveDirection = Vector3.MoveTowards(moveDirection, blackboard.input, Time.deltaTime * linearAccelerationSpeed);
+                    moveDirection = Vector3.SmoothDamp(moveDirection, _blackboard.input, ref moveDirectionVelocity, smoothAccelerationTime);
+                    moveDirection = Vector3.MoveTowards(moveDirection, _blackboard.input, Time.deltaTime * linearAccelerationSpeed);
                     return transform.InverseTransformDirection(moveDirection);
             }
             return Vector3.zero;
@@ -349,10 +345,10 @@ namespace Player.PlayerController
                     _rigidbody.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
                 if (platformAngularVelocity != Vector3.zero)
                     _rigidbody.MoveRotation(Quaternion.Euler(platformAngularVelocity) * transform.rotation);
-
-                if (blackboard.lookInCameraDirection && blackboard.lookPos)
+                
+                if (_blackboard.lookInCameraDirection && _blackboard.lookPos)
                 {
-                    RotateWithAnotherTransform(blackboard.lookPos);
+                    RotateWithAnotherTransform(_blackboard.lookPos);
                 }
                 else
                 {
@@ -371,19 +367,19 @@ namespace Player.PlayerController
         // Which way to look at?
         private Vector3 GetForwardDirection()
         {
-            bool isMoving = blackboard.input != Vector2.zero;
+            bool isMoving = _blackboard.input != Vector2.zero;
 
             switch (moveMode)
             {
                 case MoveMode.Directional:
                     Vector3 forwardVector;
-                    forwardVector = new Vector3(blackboard.input.x, 0, blackboard.input.y);
+                    forwardVector = new Vector3(_blackboard.input.x, 0, _blackboard.input.y);
                     return forwardVector;
                       
                 case MoveMode.Strafe:
                     if (isMoving)
-                        return blackboard.lookPos.position - _rigidbody.position;
-                    return lookInCameraDirection ? blackboard.lookPos.position - _rigidbody.position : transform.forward;
+                        return _blackboard.lookPos.position - _rigidbody.position;
+                    return lookInCameraDirection ? _blackboard.lookPos.position - _rigidbody.position : transform.forward;
             }
 
             return Vector3.zero;

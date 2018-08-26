@@ -5,21 +5,16 @@ using Player;
 
 public class StateManager : PlayerMotor, IHitboxResponder
 {
-
-    CameraManager _cameraManager;
-    public HitboxProfile[] hitboxProfile;
-    PlayerHitboxController _hitboxController;
-    HitBox _hitbox;
+    
     [SerializeField] float maxSprintStamina = 10f;
-    PlayerBlackboard _blackboard;
+    [Header("References")]
+    [SerializeField] HitBox _hitbox;
+    [SerializeField] PlayerHitboxController _hitboxController;
+    public HitboxProfile[] hitboxProfile;
 
     protected override void Awake()
     {
         base.Awake();
-        _blackboard = GetComponent<PlayerBlackboard>();
-        _cameraManager = GetComponent<CameraManager>();
-        _hitbox = GetComponentInChildren<HitBox>();
-        _hitboxController = GetComponent<PlayerHitboxController>();
     }
     protected override void Start()
     {

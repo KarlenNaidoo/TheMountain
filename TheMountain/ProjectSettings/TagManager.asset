@@ -26,6 +26,8 @@ TagManager:
   - FreeClimb
   - ClimbDirection
   - Zipline
+  - Character 1
+  - Character 2
   layers:
   - Default
   - TransparentFX
@@ -44,7 +46,7 @@ TagManager:
   - PushBox
   - HurtBox
   - Ground
-  - 
+  - Ragdoll
   - 
   - 
   - 

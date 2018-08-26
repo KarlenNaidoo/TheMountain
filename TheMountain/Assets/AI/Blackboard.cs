@@ -43,6 +43,13 @@ public class Blackboard : MonoBehaviour, IBlackboard
 
     public Animator animator { get; set; }
 
+    Collider[] IBlackboard.colliders
+    {
+        get
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public void SetMoveParameters (Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {

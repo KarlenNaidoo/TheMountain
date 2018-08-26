@@ -8,10 +8,12 @@ using com.ootii.Cameras;
 public class CameraManager: PlayerInput
 {
 
+    [Header("References")]
+
+    public ThirdPersonCamera cam;              // acess camera info
+
+
     public bool ignoreCameraRotation;
-    [Header("Camera Input")]
-    [HideInInspector]
-    public ThirdPersonCamera cam;              // acess camera info                
     [HideInInspector]
     public string desiredCameraState;                    // generic string to change the CameraState        
     [HideInInspector]
@@ -57,14 +59,13 @@ public class CameraManager: PlayerInput
 
         if (cam == null)
         {
-            cam = FindObjectOfType<ThirdPersonCamera>();
-            if (cam == null)
-                return;
-            if (cam)
-            {
-                cam.SetMainTarget(this.transform);
-                cam.Init();
-            }
+             return;
+            
+        }
+        if (cam)
+        {
+            cam.SetMainTarget(this.transform);
+            cam.Init();
         }
         if (changeCameraState)
             cam.ChangeState(desiredCameraState, customlookAtPoint, smoothCameraState);

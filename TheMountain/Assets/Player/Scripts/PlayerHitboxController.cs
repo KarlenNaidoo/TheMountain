@@ -7,13 +7,12 @@ using Player.PlayerController;
 [RequireComponent(typeof(StateManager))]
 public class PlayerHitboxController : HitboxControllerBase
 {
-
-    StateManager stateManager;
+    [Header("References")]
+    [SerializeField] StateManager stateManager;
 
     protected override void Awake()
     {
         base.Awake();
-        stateManager = GetComponent<StateManager>();
     }
 
 

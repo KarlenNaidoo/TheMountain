@@ -8,8 +8,7 @@ namespace Player.PlayerController
 {
     public class PlayerAnimator : MonoBehaviour
     {
-
-        PlayerBlackboard blackboard;
+        
         ControllerActionManager controllerActionManager;
         private float randomIdleCount, randomIdle;
 
@@ -20,9 +19,14 @@ namespace Player.PlayerController
         private Vector3 lastForward;
         private float deltaAngle;
 
+        
         [SerializeField] GameObject weapon;
         [SerializeField] GameObject weaponParentDestination;
         [SerializeField] GameObject weaponParentOrigin;
+
+        [Header("References")]
+        [SerializeField] PlayerBlackboard blackboard;
+        [SerializeField] Transform parentTransform;
 
         // get Layers from the Animator Controller
         [HideInInspector]
@@ -42,14 +46,13 @@ namespace Player.PlayerController
 
         protected virtual void Awake()
         {
-            blackboard = GetComponent<PlayerBlackboard>();
-            controllerActionManager = GetComponent<ControllerActionManager>();
+            controllerActionManager = blackboard.controllerActionManager;
         }
 
         protected virtual void Start()
         {
 
-            lastForward = transform.forward;
+            lastForward = parentTransform.forward;
         }
 
         public void OnAnimatorMove()
@@ -57,8 +60,8 @@ namespace Player.PlayerController
 
             if (blackboard.useRootMotion)
             {
-                transform.position = blackboard.animator.rootPosition;
-                transform.rotation = blackboard.animator.rootRotation;
+                parentTransform.position = blackboard.animator.rootPosition;
+                //parentTransform.rotation = blackboard.animator.rootRotation;
             }
 
             Move(blackboard.animator.deltaPosition, blackboard.animator.deltaRotation);
@@ -153,7 +156,7 @@ namespace Player.PlayerController
             // Calculate the angular delta in character rotation
             float angle = -GetAngleFromForward(lastForward) - deltaAngle;
             deltaAngle = 0f;
-            lastForward = transform.forward;
+            lastForward = parentTransform.forward;
             angle *= turnSensitivity * 0.01f;
             angle = Mathf.Clamp(angle / Time.deltaTime, -1f, 1f);
 
@@ -195,7 +198,7 @@ namespace Player.PlayerController
         // Gets angle around y axis from a world space direction
         public float GetAngleFromForward(Vector3 worldDirection)
         {
-            Vector3 local = transform.InverseTransformDirection(worldDirection);
+            Vector3 local = parentTransform.InverseTransformDirection(worldDirection);
             return Mathf.Atan2(local.x, local.z) * Mathf.Rad2Deg;
         }
         protected virtual void Update()

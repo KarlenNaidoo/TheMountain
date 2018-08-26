@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Phase : MonoBehaviour 
 {
-    PlayerBlackboard _blackboard;
+    [Header("References")]
+    [SerializeField] PlayerBlackboard _blackboard;
     Rigidbody _rb;
     float offsetY;
     [SerializeField] float phaseDistance = 10f;
@@ -11,12 +12,7 @@ public class Phase : MonoBehaviour
     Vector3 _desiredPosition;
     float _groundDistance;
     // Use this for initialization
-    private void Awake()
-    {
-
-        _blackboard = GetComponent<PlayerBlackboard>();
-    }
-
+  
     void Start()
     {
         _rb = _blackboard.primaryRigidbody;
