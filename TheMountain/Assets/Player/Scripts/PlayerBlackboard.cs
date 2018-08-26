@@ -12,11 +12,8 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     InventoryManager _inventoryManager;
     ControllerActionManager _actionManager;
     PlayerMotor _motor;
-
-    //Input Variables
-    float _inputX;
     float _inputY;
-    public float inputX { get { return _inputX; } set { _inputX = value; } }
+    public float inputX { get; set; }
     public float inputY { set { _inputY = value; } }
     public Vector2 input { get; private set; }
     public Vector2 oldInput { get; set; }
@@ -27,8 +24,17 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     }
 
 
-    public Rigidbody rb { get; set; }
-    public Animator animator { get; set; }
+    [SerializeField] Rigidbody _playerRigidbody;
+
+    public Rigidbody primaryRigidbody
+    {
+        get
+        {
+            return _playerRigidbody;
+        }
+    }
+
+    public Animator animator { get; private set; }
 
     // general variables to the locomotion
     protected Vector3 _targetDirection;
@@ -68,6 +74,7 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     private bool _lockOnPressed = false;
 
     public bool lockOnPressed { get { return _lockOnPressed; } set { _lockOnPressed = !_lockOnPressed; } }
+
 
     //TODO: Create singleton pattern
     private void Awake()

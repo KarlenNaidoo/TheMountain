@@ -11,10 +11,15 @@ public class Phase : MonoBehaviour
     Vector3 _desiredPosition;
     float _groundDistance;
     // Use this for initialization
+    private void Awake()
+    {
+
+        _blackboard = GetComponent<PlayerBlackboard>();
+    }
+
     void Start()
     {
-        _blackboard = GetComponent<PlayerBlackboard>();
-        _rb = GetComponent<Rigidbody>();
+        _rb = _blackboard.primaryRigidbody;
         
         // But instead we want to collide against everything except layermask. The ~ operator does this, it inverts a bitmask.
         layerMask = ~layerMask;

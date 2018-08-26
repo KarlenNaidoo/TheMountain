@@ -58,7 +58,7 @@ namespace Player.PlayerController
             if (blackboard.useRootMotion)
             {
                 transform.position = blackboard.animator.rootPosition;
-                //transform.rotation = animator.rootRotation;
+                transform.rotation = blackboard.animator.rootRotation;
             }
 
             Move(blackboard.animator.deltaPosition, blackboard.animator.deltaRotation);

@@ -51,7 +51,7 @@ public abstract class Character : HealthController
     {
         base.Start();
         capsule = GetComponentInChildren<Collider>() as CapsuleCollider;
-        _rigidbody = GetComponentInChildren<Rigidbody>();
+        _rigidbody = blackboard.primaryRigidbody;
 
         // Store the collider volume
         originalHeight = capsule.height;

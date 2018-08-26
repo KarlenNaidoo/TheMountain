@@ -10,7 +10,16 @@ public class Blackboard : MonoBehaviour, IBlackboard
 {
     WorkingMemory _workingMemory;
     NavigationManager _navManager;
-    
+    [SerializeField] Rigidbody _npcRigidbody;
+
+    public Rigidbody primaryRigidbody
+    {
+        get
+        {
+           return _npcRigidbody;
+        }
+    }
+
     public bool isCrouching { get; set; }
     public enum AIAttackType { NoWeapon, MeleeWeapon, RangeWeapon }
     public ReGoapState<string, object> worldState { get { return _workingMemory.GetWorldState();} }
@@ -33,6 +42,7 @@ public class Blackboard : MonoBehaviour, IBlackboard
     public List<HitBox> activeHitboxComponents { get; set; }
 
     public Animator animator { get; set; }
+
 
     public void SetMoveParameters (Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {
