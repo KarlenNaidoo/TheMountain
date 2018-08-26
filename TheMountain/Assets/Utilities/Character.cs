@@ -7,7 +7,7 @@
 public abstract class Character : HealthController
 {
 
-
+    
     protected Rigidbody _rigidbody;                                // access the Rigidbody component
     protected PhysicMaterial frictionPhysics, maxFrictionPhysics, slippyPhysics;       // create PhysicMaterial for the Rigidbody
     protected CapsuleCollider _capsuleCollider;                    // access CapsuleCollider information
@@ -91,6 +91,7 @@ public abstract class Character : HealthController
         h.normal = transform.up;
 
         Physics.SphereCast(ray, spherecastRadius, out h, airborneThreshold * 2f, groundLayers);
+        
         return h;
     }
 

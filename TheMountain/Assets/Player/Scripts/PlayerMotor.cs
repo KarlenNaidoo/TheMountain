@@ -13,13 +13,6 @@ namespace Player.PlayerController
      
         new PlayerBlackboard blackboard;
 
-     
-        protected override void Awake()
-        {
-            base.Awake();
-            blackboard = GetComponent<PlayerBlackboard>() ;
-        }
-        
 
 
         // Is the character always rotating to face the move direction or is he strafing?
@@ -90,6 +83,13 @@ namespace Player.PlayerController
         private Vector3 verticalVelocity;
         private float velocityY;
 
+
+        protected override void Awake()
+        {
+            base.Awake();
+            blackboard = GetComponent<PlayerBlackboard>();
+        }
+
         // Use this for initialization
         protected override void Start()
         {
@@ -112,9 +112,14 @@ namespace Player.PlayerController
 
             // Smoothing out the fixed time step
             _rigidbody.interpolation = smoothPhysics ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
-
-
+       
             MoveFixed(blackboard.fixedDeltaPosition);
+
+            //blackboard.fixedDeltaPosition = Vector3.zero;
+
+            //_rigidbody.MoveRotation(transform.rotation * blackboard.fixedDeltaRotation);
+            //blackboard.fixedDeltaRotation = Quaternion.identity;
+
             Rotate();
 
             GroundCheck(); // detect and stick to ground
@@ -123,7 +128,7 @@ namespace Player.PlayerController
             if (blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
             else ZeroFriction();
 
-            bool stopSlide = onGround && groundDistance < airborneThreshold * 0.5f;
+            bool stopSlide = false;//onGround && groundDistance < airborneThreshold * 0.5f;
 
             // Individual gravity
             if (gravityTarget != null)
@@ -139,8 +144,11 @@ namespace Player.PlayerController
                 _rigidbody.velocity = Vector3.zero;
             }
             else if (gravityTarget == null) _rigidbody.useGravity = true;
-            
 
+            if (!onGround)
+            {
+                _rigidbody.AddForce(gravity * gravityMultiplier);
+            }
             // Scale the capsule colllider while crouching
             ScaleCapsule(blackboard.isCrouching ? crouchCapsuleScaleMlp : 1f);
 
@@ -153,7 +161,6 @@ namespace Player.PlayerController
             // Fill in animState
             animState.onGround = onGround;
             animState.moveDirection = GetMoveDirection();
-            animState.yVelocity = Mathf.Lerp(animState.yVelocity, velocityY, Time.deltaTime * 10f);
             animState.crouch = blackboard.isCrouching;
             animState.isStrafing = moveMode == MoveMode.Strafe;
             animState.vertical = CheckForObstacle() ? 0 : blackboard.input.y;
@@ -161,6 +168,15 @@ namespace Player.PlayerController
             blackboard.animState = animState;
 
         }
+
+        protected virtual void LateUpdate()
+        {
+
+            if (!fixedFrame && _rigidbody.interpolation == RigidbodyInterpolation.None) return;
+
+            fixedFrame = false;
+        }
+
         public virtual void RotateToTarget(Transform target)
         {
             if (target)
@@ -223,10 +239,10 @@ namespace Player.PlayerController
                 velocity = Vector3.Lerp(_rigidbody.velocity, airMove, Time.deltaTime * airControl);
             }
 
-            if (onGround && Time.time > jumpEndTime)
-            {
-                _rigidbody.velocity = _rigidbody.velocity - transform.up * stickyForce * Time.deltaTime;
-            }
+            //if (onGround && Time.time > jumpEndTime)
+            //{
+            //    _rigidbody.velocity = _rigidbody.velocity - transform.up * stickyForce * Time.deltaTime;
+            //}
 
             // Vertical velocity
             Vector3 verticalVelocity = V3Tools.ExtractVertical(_rigidbody.velocity, gravity, 1f);
@@ -240,7 +256,7 @@ namespace Player.PlayerController
                 }
             }
 
-            //rb.velocity = horizontalVelocity + verticalVelocity;
+            //_rigidbody.velocity = horizontalVelocity + verticalVelocity;
 
             // Dampering forward speed on the slopes
             float slopeDamper = !onGround ? 1f : GetSlopeDamper(-deltaPosition / Time.deltaTime, normal);
@@ -329,8 +345,6 @@ namespace Player.PlayerController
         // Rotate the character
         protected virtual void Rotate()
         {
-            
-            
                 if (gravityTarget != null)
                     _rigidbody.MoveRotation(Quaternion.FromToRotation(transform.up, transform.position - gravityTarget.position) * transform.rotation);
                 if (platformAngularVelocity != Vector3.zero)
@@ -385,14 +399,13 @@ namespace Player.PlayerController
 
             // Spherecasting
             hit = GetSpherecastHit();
-
             //normal = hit.normal;
             normal = transform.up;
             //groundDistance = r.position.y - hit.point.y;
             groundDistance = Vector3.Project(_rigidbody.position - hit.point, transform.up).magnitude;
 
             // if not jumping...
-            bool findGround = Time.time > jumpEndTime;
+            bool findGround = true; //  Time.time > jumpEndTime;
 
             if (findGround)
             {
@@ -401,12 +414,12 @@ namespace Player.PlayerController
 
                 // The distance of considering the character grounded
                 float groundHeight = !g ? airborneThreshold * 0.5f : airborneThreshold;
-
+             
                 //Vector3 horizontalVelocity = r.velocity;
                 Vector3 horizontalVelocity = V3Tools.ExtractHorizontal(_rigidbody.velocity, gravity, 1f);
 
                 float velocityF = horizontalVelocity.magnitude;
-
+                
                 if (groundDistance < groundHeight)
                 {
                     // Force the character on the ground
@@ -427,9 +440,9 @@ namespace Player.PlayerController
             // Interpolate the additive velocity of the platform the character might be standing on
             platformVelocity = Vector3.Lerp(platformVelocity, platformVelocityTarget, Time.deltaTime * platformFriction);
 
-            stickyForce = stickyForceTarget;//Mathf.Lerp(stickyForce, stickyForceTarget, Time.deltaTime * 5f);
+            stickyForce = Mathf.Lerp(stickyForce, stickyForceTarget, Time.deltaTime * 5f);
 
-            // remember when we were last in air, for jump delay
+            //// remember when we were last in air, for jump delay
             if (!onGround) lastAirTime = Time.time;
         }
 

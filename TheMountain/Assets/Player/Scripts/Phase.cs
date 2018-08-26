@@ -8,6 +8,8 @@ public class Phase : MonoBehaviour
     float offsetY;
     [SerializeField] float phaseDistance = 10f;
     int layerMask = 1 << 16; // ground
+    Vector3 _desiredPosition;
+    float _groundDistance;
     // Use this for initialization
     void Start()
     {
@@ -28,9 +30,26 @@ public class Phase : MonoBehaviour
         {
             contextualPhaseDistance = CheckForObjectCollision();
             Debug.Log("Phase: " + contextualPhaseDistance);
-            _rb.position = transform.position + transform.forward * contextualPhaseDistance ;
-            _blackboard.animator.Play("Phase");
+            _desiredPosition = transform.position + transform.forward * contextualPhaseDistance ;
+            //_groundDistance = GroundDistance();
+            //_desiredPosition.y -= 0;
+            _rb.position = _desiredPosition;
+
+           // _blackboard.animator.Play("Phase");
         }
+    }
+
+    float GroundDistance()
+    {
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(transform.position, -transform.up, out hit, 100f, layerMask))
+        {
+            Debug.Log("Ground distance: " + hit.distance);
+            return hit.distance;
+        }
+
+        return 0;
     }
 
     float CheckForObjectCollision()
