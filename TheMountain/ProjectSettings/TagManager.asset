@@ -44,8 +44,8 @@ TagManager:
   - Player_Trigger
   - HitBox
   - PushBox
-  - HurtBox
-  - Ground
+  - PlayerHurtBox
+  - NPC_Hurtbox
   - Ragdoll
   - 
   - 

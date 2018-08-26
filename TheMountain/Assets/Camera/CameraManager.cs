@@ -62,11 +62,11 @@ public class CameraManager: PlayerInput
              return;
             
         }
-        if (cam)
-        {
-            cam.SetMainTarget(this.transform);
-            cam.Init();
-        }
+        //if (cam)
+        //{
+        //    cam.SetMainTarget(this.transform);
+        //    cam.Init();
+        //}
         if (changeCameraState)
             cam.ChangeState(desiredCameraState, customlookAtPoint, smoothCameraState);
         else if (blackboard.isCrouching)

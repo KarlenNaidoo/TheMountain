@@ -51,6 +51,7 @@ namespace Player.PlayerController
         [Header("Wall Running")]
 
         [SerializeField] LayerMask wallRunLayers; // walkable vertical surfaces
+        [SerializeField] LayerMask obstacleLayers;
         public float wallRunMaxLength = 1f;                 // max duration of a wallrun
         public float wallRunMinMoveMag = 0.6f;              // the minumum magnitude of the user control input move vector
         public float wallRunMinVelocityY = -1f;             // the minimum vertical velocity of doing a wall run
@@ -187,14 +188,14 @@ namespace Player.PlayerController
         public bool CheckForObstacle()
         {
             RaycastHit hit;
-            if (Physics.Raycast(headHeight.position, transform.forward, out hit, wallDistance))
+            if (Physics.Raycast(headHeight.position, transform.forward, out hit, wallDistance, obstacleLayers))
             {
                 Debug.Log("Hit " + hit.collider.name);
                 return true;
 
             }
             // Can be later used for vaulting if legs are being stopped but the head has clearance
-            if (Physics.Raycast(waistHeight.position, transform.forward, out hit, wallDistance))
+            if (Physics.Raycast(waistHeight.position, transform.forward, out hit, wallDistance, obstacleLayers))
             {
                 Debug.Log("Hit " + hit.collider.name);
                 return true;

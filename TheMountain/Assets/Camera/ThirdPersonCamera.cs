@@ -25,7 +25,9 @@ namespace Player
                 return _instance;
             }
         }
-        
+
+        [Header("References")]
+        [SerializeField] PlayerBlackboard blackboard;
 
         public Transform target;
 
@@ -111,7 +113,6 @@ namespace Player
         public float CullingDistance { get; private set; }
 
         #endregion hide properties
-        PlayerBlackboard blackboard;
         private bool hitSomething = false;
         [SerializeField] float collisionRecoverSpeed = 5f;
         private void OnDrawGizmos()
@@ -126,11 +127,7 @@ namespace Player
                 }
             }
         }
-
-        private void Awake()
-        {
-            blackboard = FindObjectOfType<PlayerBlackboard>();
-        }
+        
         private void Start()
         {
             Init();
