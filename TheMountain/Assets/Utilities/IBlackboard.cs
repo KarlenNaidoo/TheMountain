@@ -12,5 +12,4 @@ public interface IBlackboard
     List<HitBox> activeHitboxComponents { get; set; }
     void SetAttackParameters(bool shouldAttack);
     Rigidbody primaryRigidbody { get;}
-    Collider[] colliders { get; }
 }

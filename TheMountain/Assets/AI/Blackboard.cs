@@ -42,15 +42,7 @@ public class Blackboard : MonoBehaviour, IBlackboard
     public List<HitBox> activeHitboxComponents { get; set; }
 
     public Animator animator { get; set; }
-
-    Collider[] IBlackboard.colliders
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
-
+    
     public void SetMoveParameters (Vector3 localDesiredVelocity, float angle, bool shouldMove)
     {
         this.localDesiredVelocity = localDesiredVelocity;

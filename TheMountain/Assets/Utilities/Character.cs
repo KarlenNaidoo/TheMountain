@@ -7,10 +7,13 @@
 public abstract class Character : HealthController
 {
 
-    
+    [Header("References")]
+    [SerializeField] protected Collider _collider;
+
+
     protected Rigidbody _rigidbody;                                // access the Rigidbody component
     protected PhysicMaterial frictionPhysics, maxFrictionPhysics, slippyPhysics;       // create PhysicMaterial for the Rigidbody
-    protected Collider[] _colliders;                    // access CapsuleCollider information
+                      // access CapsuleCollider information
     protected float colliderRadius, colliderHeight;        // storage capsule collider extra information        ]
     protected Vector3 colliderCenter;                      // storage the center of the capsule collider info
     protected IBlackboard blackboard;
@@ -49,7 +52,6 @@ public abstract class Character : HealthController
     protected override void Start()
     {
         base.Start();
-        _colliders = blackboard.colliders;
         _rigidbody = blackboard.primaryRigidbody;
 
 
@@ -133,21 +135,15 @@ public abstract class Character : HealthController
     // Set the collider to high friction material
     protected void HighFriction()
     {
-        foreach(Collider _collider in _colliders)
-        {
-
             _collider.material = highFrictionMaterial;
 
-        }
     }
 
     // Set the collider to zero friction material
     protected void ZeroFriction()
     {
-        foreach(Collider _collider in _colliders)
-        {
             _collider.material = zeroFrictionMaterial;
-        }
+        
         
     }
 

@@ -27,7 +27,6 @@ namespace Player.PlayerController
         [Header("References")]
         [SerializeField] PlayerBlackboard blackboard;
         [SerializeField] Transform parentTransform;
-        [SerializeField] GameObject colliderTransform;
 
         // get Layers from the Animator Controller
         [HideInInspector]
@@ -63,8 +62,6 @@ namespace Player.PlayerController
             {
                 parentTransform.position = blackboard.animator.rootPosition;
                 parentTransform.rotation = blackboard.animator.rootRotation;
-                colliderTransform.transform.position = blackboard.animator.rootPosition;
-                colliderTransform.transform.rotation = blackboard.animator.rootRotation;
             }
 
             Move(blackboard.animator.deltaPosition, blackboard.animator.deltaRotation);

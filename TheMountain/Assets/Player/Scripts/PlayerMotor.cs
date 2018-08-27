@@ -121,9 +121,9 @@ namespace Player.PlayerController
 
             GroundCheck(); // detect and stick to ground
 
-            // Friction
-            if (_blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
-            else ZeroFriction();
+            //// Friction
+            //if (_blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
+            //else ZeroFriction();
 
             bool stopSlide = false;//onGround && groundDistance < airborneThreshold * 0.5f;
 

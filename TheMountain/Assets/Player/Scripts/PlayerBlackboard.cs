@@ -35,8 +35,7 @@ public class PlayerBlackboard : MonoBehaviour, IBlackboard
     }
     [SerializeField] Animator _animator;
     public Animator animator { get { return _animator; } }
-    [SerializeField] Collider[] _colliders;
-    public Collider[] colliders { get { return _colliders; } }
+
     [SerializeField] ControllerActionManager _controllerActionManager;
     public ControllerActionManager controllerActionManager { get { return _controllerActionManager; } }
 
