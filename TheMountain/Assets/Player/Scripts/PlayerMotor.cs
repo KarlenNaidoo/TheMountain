@@ -236,10 +236,10 @@ namespace Player.PlayerController
                 velocity = Vector3.Lerp(_rigidbody.velocity, airMove, Time.deltaTime * airControl);
             }
 
-            //if (onGround && Time.time > jumpEndTime)
-            //{
-            //    _rigidbody.velocity = _rigidbody.velocity - transform.up * stickyForce * Time.deltaTime;
-            //}
+            if (onGround && Time.time > jumpEndTime)
+            {
+                _rigidbody.velocity = _rigidbody.velocity - transform.up * stickyForce * Time.deltaTime;
+            }
 
             // Vertical velocity
             Vector3 verticalVelocity = V3Tools.ExtractVertical(_rigidbody.velocity, gravity, 1f);
@@ -347,7 +347,7 @@ namespace Player.PlayerController
                 if (platformAngularVelocity != Vector3.zero)
                     _rigidbody.MoveRotation(Quaternion.Euler(platformAngularVelocity) * transform.rotation);
                 
-                if (_blackboard.lookInCameraDirection && _blackboard.lookPos)
+                if (_blackboard.lookInCameraDirection && _blackboard.lookPos && _blackboard.input.sqrMagnitude > 0.1f)
                 {
                     RotateWithAnotherTransform(_blackboard.lookPos);
                 }
