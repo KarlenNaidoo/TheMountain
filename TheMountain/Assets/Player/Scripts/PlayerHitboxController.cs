@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using static Player.Utility;
 using Player.PlayerController;
 
-[RequireComponent(typeof(StateManager))]
 public class PlayerHitboxController : HitboxControllerBase
 {
     [Header("References")]

@@ -11,11 +11,14 @@ namespace Player.PlayerController
 {
     public class PlayerInput : MonoBehaviour
     {
+        [Header("References")]
+        [SerializeField] protected Rigidbody _rigidbody;
+        [SerializeField] protected PlayerBlackboard blackboard;
+
+
         protected PlayerActions playerActions;
         string saveData;
-        private Rigidbody _rigidbody;
-        protected PlayerBlackboard blackboard;
-
+        
         void OnEnable()
         {
             // See PlayerActions.cs for this setup.
@@ -33,11 +36,6 @@ namespace Player.PlayerController
             playerActions.Destroy();
         }
 
-        protected virtual void Awake()
-        {
-            blackboard = GetComponent<PlayerBlackboard>();
-            _rigidbody = GetComponent<Rigidbody>();
-        }
         
 
         void SaveBindings()
@@ -74,7 +72,7 @@ namespace Player.PlayerController
         {
             StoreMovement();
             CheckForSprint();
-            CheckForCrouch();
+            //CheckForCrouch();
         }
 
         protected virtual void StoreMovement()
@@ -129,21 +127,22 @@ namespace Player.PlayerController
             }
             blackboard.currentSprintStamina = currentSprintStamina;
         }
-        protected virtual void CheckForCrouch()
-        {
-                if (playerActions.Crouch)
-                {
-                    blackboard.isCrouching = true;
-                    AudioManager.instance.Pause("Theme");
-                    AudioManager.instance.Play("Crouch");
-                }
-                else
-                {
-                    blackboard.isCrouching = false;
-                    AudioManager.instance.StopPlaying("Crouch");
-                    AudioManager.instance.Play("Theme");
-            }
-        }
+
+        //protected virtual void CheckForCrouch()
+        //{
+        //        if (playerActions.Crouch)
+        //        {
+        //            blackboard.isCrouching = true;
+        //            AudioManager.instance.Pause("Theme");
+        //            AudioManager.instance.Play("Crouch");
+        //        }
+        //        else
+        //        {
+        //            blackboard.isCrouching = false;
+        //            AudioManager.instance.StopPlaying("Crouch");
+        //            AudioManager.instance.Play("Theme");
+        //    }
+        //}
 
 
     }

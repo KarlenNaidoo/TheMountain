@@ -5,8 +5,6 @@ using static Player.Utility;
 using System.Collections.Generic;
 using System;
 
-[RequireComponent(typeof(ControllerActionManager))]
-[RequireComponent(typeof(InventoryManager))]
 public class PlayerBlackboard : MonoBehaviour, IBlackboard
 {
     InventoryManager _inventoryManager;

@@ -95,6 +95,7 @@ namespace Player.PlayerController
             
             wallNormal = -gravity.normalized;
             onGround = true;
+            
             animState.onGround = true;
             _blackboard.runByDefault = runByDefault;
         }
@@ -121,11 +122,11 @@ namespace Player.PlayerController
 
             GroundCheck(); // detect and stick to ground
 
-            //// Friction
+            // Friction
             //if (_blackboard.input == Vector2.zero && groundDistance < airborneThreshold * 0.5f) HighFriction();
             //else ZeroFriction();
 
-            bool stopSlide = false;//onGround && groundDistance < airborneThreshold * 0.5f;
+            bool stopSlide = onGround && groundDistance < airborneThreshold * 0.5f;
 
             // Individual gravity
             if (gravityTarget != null)
@@ -137,7 +138,7 @@ namespace Player.PlayerController
 
             if (stopSlide)
             {
-                _rigidbody.useGravity = false;
+                //_rigidbody.useGravity = false;
                 _rigidbody.velocity = Vector3.zero;
             }
             else if (gravityTarget == null) _rigidbody.useGravity = true;
