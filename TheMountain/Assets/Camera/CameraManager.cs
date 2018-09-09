@@ -43,7 +43,7 @@ public class CameraManager: PlayerInput
         cam.RotateCamera(X, Y);
         //tpCamera.Zoom(zoom);
 
-        // change keepDirection from input diference
+        // change keepDirection from input difference
         if (keepDirection && Vector2.Distance(blackboard.input, blackboard.oldInput) > 0.2f) keepDirection = false;
 
         if (playerActions.LockOn.WasPressed)
