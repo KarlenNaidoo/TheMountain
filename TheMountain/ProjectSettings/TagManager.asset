@@ -28,6 +28,7 @@ TagManager:
   - Zipline
   - Character 1
   - Character 2
+  - UpperArmR
   layers:
   - Default
   - TransparentFX

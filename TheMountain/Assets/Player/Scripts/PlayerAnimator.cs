@@ -206,7 +206,6 @@ namespace Player.PlayerController
         protected virtual void Update()
         {
             UpdateAnimator();
-            Debug.Log("Am I being called?");
         }
 
     }
