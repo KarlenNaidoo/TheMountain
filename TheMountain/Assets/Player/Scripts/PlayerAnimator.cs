@@ -79,8 +79,11 @@ namespace Player.PlayerController
 
         public virtual void UpdateAnimator()
         {
-            if (blackboard.animator == null || !blackboard.animator.enabled) return;
-
+            if (blackboard.animator == null)
+            {
+                Debug.Log("Animator not set correctly");
+                return;
+            }
             LayerControl();
             EquipWeapon();
             LocomotionAnimation();
@@ -159,7 +162,6 @@ namespace Player.PlayerController
             lastForward = parentTransform.forward;
             angle *= turnSensitivity * 0.01f;
             angle = Mathf.Clamp(angle / Time.deltaTime, -1f, 1f);
-
             // Update Animator params
             blackboard.animator.SetFloat("Turn", Mathf.Lerp(blackboard.animator.GetFloat("Turn"), angle, Time.deltaTime * turnSpeed));
             blackboard.animator.SetFloat("InputVertical", blackboard.animState.vertical);
@@ -204,6 +206,7 @@ namespace Player.PlayerController
         protected virtual void Update()
         {
             UpdateAnimator();
+            Debug.Log("Am I being called?");
         }
 
     }

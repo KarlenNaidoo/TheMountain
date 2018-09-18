@@ -85,7 +85,6 @@ namespace Player.PlayerController
         protected override void Awake()
         {
             base.Awake();
-            _blackboard = GetComponent<PlayerBlackboard>();
         }
 
         // Use this for initialization
